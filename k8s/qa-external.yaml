@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Service
-metadata:
-  name: external-qa-todo-service
-  namespace: ingress-basic
-spec:
-  type: ExternalName
-  externalName: todo-service.qa
