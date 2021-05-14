@@ -8,7 +8,7 @@ export interface HelloRes {
 export class AppService {
   getHello(): HelloRes {
     return {
-      value1: "승업이가 수정",
+      value1: "todo-service 1",
     };
   }
 }
