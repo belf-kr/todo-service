@@ -8,7 +8,7 @@ export interface HelloRes {
 export class AppService {
   getHello(): HelloRes {
     return {
-      value1: "todo-service 2",
+      value1: "QA에서만 확인",
     };
   }
 }
