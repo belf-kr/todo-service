@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
-@Entity()
-export class User {
+@Entity({})
+export class File {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,6 +14,7 @@ export class User {
   @Column({
     length: 255,
     type: "nvarchar",
+    charset: "utf8mb4",
   })
   original_file_name: string;
 
