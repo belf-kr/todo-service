@@ -1,9 +1,9 @@
 {
   "type": "mysql",
-  "host": "localhost",
+  "host": "mysql.qa",
   "port": 3306,
   "username": "root",
-  "password": "example",
+  "password": "qpfvm1234!",
   "database": "belf",
   "entities": ["dist/**/*.entity{.ts,.js}"],
   "synchronize": true
