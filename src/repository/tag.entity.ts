@@ -9,6 +9,7 @@ export class Tag {
     length: 50,
     type: "nvarchar",
     charset: "utf8mb4",
+    unique: true,
   })
   value: string;
 }
