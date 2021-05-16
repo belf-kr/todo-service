@@ -11,14 +11,16 @@ export class CoursePriority {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "user_id" })
-  user_id: number;
+  userId: number;
 
   @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "course_id" })
-  course_id: number;
+  courseId: number;
 
-  @Column({})
+  @Column({
+    nullable: false,
+  })
   priority: number;
 }
