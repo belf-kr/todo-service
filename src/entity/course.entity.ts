@@ -50,6 +50,7 @@ export class Course {
 
   @Column({
     type: "text",
+    charset: "utf8mb4",
     nullable: true,
   })
   explanation: string;

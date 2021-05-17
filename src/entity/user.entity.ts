@@ -30,6 +30,7 @@ export class User {
 
   @Column({
     type: "text",
+    charset: "utf8mb4",
     nullable: true,
   })
   introduction: string;
