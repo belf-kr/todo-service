@@ -6,7 +6,7 @@ export class RepeatedDaysOfTheWeek {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => WorkTodo, (work_to_do) => work_to_do.id, {
+  @ManyToOne(() => WorkTodo, (workToDo) => workToDo.id, {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "work_todo_id" })
