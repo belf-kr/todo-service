@@ -1,4 +1,3 @@
-import { text } from "express";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { File } from "./file.entity";
 
