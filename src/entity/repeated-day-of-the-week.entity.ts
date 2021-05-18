@@ -10,7 +10,7 @@ export class RepeatedDaysOfTheWeek {
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "work_todo_id" })
-  workToDoId: number;
+  workTodoId: number;
 
   @Column({
     name: "day_of_the_week",

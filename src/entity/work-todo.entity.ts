@@ -7,7 +7,7 @@ export class WorkTodo {
   id: number;
 
   @ManyToOne(() => Course, (course) => course.id, {
-    onDelete: "SET NULL",
+    onDelete: "CASCADE",
   })
   @JoinColumn({ name: "course_id" })
   courseId: number;
@@ -38,6 +38,7 @@ export class WorkTodo {
   passedDay: number;
 
   @CreateDateColumn({
+    type: "datetime",
     name: "add_date",
   })
   addDate: Date;

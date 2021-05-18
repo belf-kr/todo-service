@@ -19,8 +19,6 @@ export class CoursePriority {
   @JoinColumn({ name: "course_id" })
   courseId: number;
 
-  @Column({
-    nullable: false,
-  })
+  @Column({})
   priority: number;
 }

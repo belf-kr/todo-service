@@ -42,18 +42,18 @@ export class Course {
   endDate: Date;
 
   @Column({
-    length: 50,
-    type: "nvarchar",
-    charset: "utf8mb4",
-  })
-  title: string;
-
-  @Column({
     type: "text",
     charset: "utf8mb4",
     nullable: true,
   })
   explanation: string;
+
+  @Column({
+    length: 50,
+    type: "nvarchar",
+    charset: "utf8mb4",
+  })
+  title: string;
 
   @Column({
     default: 0,

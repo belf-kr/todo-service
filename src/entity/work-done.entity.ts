@@ -9,7 +9,7 @@ export class WorkDone {
   id: number;
 
   @ManyToOne(() => User, (user) => user.id, {
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
   })
   @JoinColumn({ name: "user_id" })
   userId: number;
