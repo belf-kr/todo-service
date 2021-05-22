@@ -16,4 +16,9 @@ export class AppController {
   version() {
     return version;
   }
+
+  @Get("env")
+  getEnv() {
+    return process.env;
+  }
 }
