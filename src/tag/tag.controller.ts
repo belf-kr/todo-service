@@ -57,7 +57,7 @@ export class TagController {
   async remove(@Body() tag: Tag): Promise<string> {
     await this.tagService.remove(tag.id.toString());
     return Object.assign({
-      data: { userId: tag.id.toString() },
+      data: { tagId: tag.id.toString() },
       statusCode: 201,
       statusMsg: `deleted successfully`,
     });
