@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { Tag } from "src/entity/tag.entity";
 import { TagService } from "./tag.service";
 
@@ -7,6 +7,18 @@ export class TagController {
   constructor(private readonly tagService: TagService) {
     this.tagService = tagService;
   }
+
+  //  Create
+  @Post()
+  async create(@Body() tag: Tag): Promise<string> {
+    this.tagService.create(tag);
+    return Object.assign({
+      data: { ...tag },
+      statusCode: 201,
+      statusMsg: `saved successfully`,
+    });
+  }
+  //  Read
   @Get()
   async findAll(): Promise<Tag[]> {
     const tagList = await this.tagService.findAll();
@@ -28,4 +40,8 @@ export class TagController {
       statusMsg: `데이터 조회가 성공적으로 완료되었습니다.`,
     });
   }
+
+  //   Update
+
+  // Delete
 }

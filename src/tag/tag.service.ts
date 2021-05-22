@@ -12,7 +12,7 @@ export class TagService {
 
   //   Create
   async create(tag: Tag): Promise<void> {
-    this.tagRepository.create(tag);
+    this.tagRepository.save(tag);
 
     return;
   }
