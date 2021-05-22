@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { Tag } from "src/entity/tag.entity";
 import { TagService } from "./tag.service";
 
@@ -42,6 +42,15 @@ export class TagController {
   }
 
   //   Update
+  @Put()
+  async update(@Body() tag: Tag): Promise<string> {
+    await this.tagService.update(tag);
+    return Object.assign({
+      data: { tagId: tag.id.toString(), tag },
+      statusCode: 201,
+      statusMsg: `update successfully`,
+    });
+  }
 
   // Delete
   @Delete()

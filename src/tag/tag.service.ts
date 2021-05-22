@@ -28,7 +28,9 @@ export class TagService {
   }
 
   //   Update
-  async update(tag: Tag): Promise<void> {}
+  async update(tag: Tag): Promise<void> {
+    await this.tagRepository.update(tag.id, tag);
+  }
 
   //   Delete
   async remove(id: string): Promise<void> {
