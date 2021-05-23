@@ -1,20 +1,24 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { TagModule } from "./tag/tag.module";
+import { ConnectionOptions } from "typeorm";
+import AppConfig from "./config/app.config";
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
-      // envFilePath: `.env`
+      isGlobal: false,
+      load: [AppConfig],
     }),
     TypeOrmModule.forRootAsync({
-      useFactory: () => ({}),
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        return configService.get<ConnectionOptions>("database");
+      },
+      inject: [ConfigService],
     }),
-    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
