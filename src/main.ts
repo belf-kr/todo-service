@@ -12,7 +12,7 @@ bootstrap();
 
 function init() {
   if (!process.env.STAGES) {
-    process.env.STAGES = "LOCAL";
+    process.env.STAGES = "local";
     APP_PORT = 3002;
   }
 }
