@@ -12,18 +12,20 @@
 
 ## Local 환경
 
-| Variable           | dev | qa/prod | Usage                                                           | Default   | Example   |
-| ------------------ | :-: | :-----: | --------------------------------------------------------------- | --------- | --------- |
-| DB_MASTER_HOST     |  ✔  |    ✖    | `DB 연결을 위한 주소로 MASTER 환경에서` 사용되는 값입니다.      | localhost | localhost |
-| DB_MASTER_PORT     |  ✔  |    ✖    | `DB 연결을 위한 포트 번호로 MASTER 환경에서` 사용되는 값입니다. | 3306      | 3306      |
-| DB_MASTER_USERNAME |  ✔  |    ✖    | `DB 계정명으로 MASTER 환경에서` 사용되는 값입니다.              | root      | root      |
-| DB_MASTER_PASSWORD |  ✔  |    ✖    | `DB 계정의 비밀번호로 MASTER 환경에서` 사용되는 값입니다.       | example   | example   |
-| DB_MASTER_DATABASE |  ✔  |    ✖    | `연결을 할 DB명으로 MASTER 환경에서` 사용되는 값입니다.         | belf      | belf      |
-| DB_SLAVE_HOST      |  ✔  |    ✖    | `DB 연결을 위한 주소로 SLAVE 환경에서` 사용되는 값입니다.       | localhost | localhost |
-| DB_SLAVE_PORT      |  ✔  |    ✖    | `DB 연결을 위한 포트 번호로 SLAVE 환경에서` 사용되는 값입니다.  | 3306      | 3306      |
-| DB_SLAVE_USERNAME  |  ✔  |    ✖    | `DB 계정명으로 SLAVE 환경에서` 사용되는 값입니다.               | root      | root      |
-| DB_SLAVE_PASSWORD  |  ✔  |    ✖    | `DB 계정의 비밀번호로 SLAVE 환경에서` 사용되는 값입니다.        | example   | example   |
-| DB_SLAVE_DATABASE  |  ✔  |    ✖    | `연결을 할 DB명으로 SLAVE 환경에서` 사용되는 값입니다.          | belf      | belf      |
+| Variable           | dev | qa/prod | Usage                                                                                                    | Default   | Example         |
+| ------------------ | :-: | :-----: | -------------------------------------------------------------------------------------------------------- | --------- | --------------- |
+| STAGES             |  ✔  |    ✔    | `NodeJS 실행 환경에서` 실행 환경의 구분을 위해 사용되는 값입니다.                                        | null      | local, qa, prod |
+| DB_MASTER_HOST     |  ✔  |    ✔    | `DB 연결을 위한 주소로 MASTER 환경에서` 사용되는 값입니다.                                               | localhost | localhost       |
+| DB_MASTER_PORT     |  ✔  |    ✔    | `DB 연결을 위한 포트 번호로 MASTER 환경에서` 사용되는 값입니다.                                          | 3306      | 3306            |
+| DB_MASTER_USERNAME |  ✔  |    ✔    | `DB 계정명으로 MASTER 환경에서` 사용되는 값입니다.                                                       | root      | root            |
+| DB_MASTER_PASSWORD |  ✔  |    ✔    | `DB 계정의 비밀번호로 MASTER 환경에서` 사용되는 값입니다.                                                | example   | example         |
+| DB_MASTER_DATABASE |  ✔  |    ✔    | `연결을 할 DB명으로 MASTER 환경에서` 사용되는 값입니다.                                                  | belf      | belf            |
+| DB_SLAVE_HOST      |  ✔  |    ✔    | `DB 연결을 위한 주소로 SLAVE 환경에서` 사용되는 값입니다.                                                | localhost | localhost       |
+| DB_SLAVE_PORT      |  ✔  |    ✔    | `DB 연결을 위한 포트 번호로 SLAVE 환경에서` 사용되는 값입니다.                                           | 3306      | 3306            |
+| DB_SLAVE_USERNAME  |  ✔  |    ✔    | `DB 계정명으로 SLAVE 환경에서` 사용되는 값입니다.                                                        | root      | root            |
+| DB_SLAVE_PASSWORD  |  ✔  |    ✔    | `DB 계정의 비밀번호로 SLAVE 환경에서` 사용되는 값입니다.                                                 | example   | example         |
+| DB_SLAVE_DATABASE  |  ✔  |    ✔    | `연결을 할 DB명으로 SLAVE 환경에서` 사용되는 값입니다.                                                   | belf      | belf            |
+| DB_SYNCHRONIZE     |  ✔  |    ✖    | `DB 스키마를 entity 코드와 자동 동기화(기존 스키마의 정보가 삭제됨) 할지를 물어볼 때` 사용되는 값입니다. | false     | false, true     |
 
 # History
 
