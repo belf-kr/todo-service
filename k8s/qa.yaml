@@ -19,12 +19,14 @@ spec:
           ports:
             - containerPort: 3000
           env:
+            # 배포 stages
             - name: STAGES
               valueFrom:
                 configMapKeyRef:
                   name: qa-config
                   key: STAGES
-            # MASTER
+
+            # db master config
             - name: DB_MASTER_HOST
               valueFrom:
                 configMapKeyRef:
@@ -54,7 +56,8 @@ spec:
                 configMapKeyRef:
                   name: qa-config
                   key: DB_MASTER_DATABASE
-            # SLAVE
+
+            # db slave config
             - name: DB_SLAVE_HOST
               valueFrom:
                 configMapKeyRef:
