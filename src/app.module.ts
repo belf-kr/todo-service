@@ -5,6 +5,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ConnectionOptions } from "typeorm";
 import AppConfig from "./config/app.config";
+import { TagModule } from "./tag/tag.module";
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import AppConfig from "./config/app.config";
       },
       inject: [ConfigService],
     }),
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
