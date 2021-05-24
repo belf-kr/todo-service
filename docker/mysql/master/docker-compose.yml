@@ -1,7 +1,7 @@
 services:
     db:
       image: "belf-todo-service-db"
-      container_name: "belf-todo-service-db"
+      container_name: "belf-todo-service-master-db"
       volumes:
         - "./mysql-data:/var/lib/mysql"
       ports: 
