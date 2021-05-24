@@ -10,29 +10,25 @@ export class TagService {
     private tagRepository: Repository<Tag>
   ) {}
 
-  //   Create
+  // Create
   async create(tag: Tag): Promise<void> {
     this.tagRepository.save(tag);
 
     return;
   }
-
-  //   Read
+  // Read
   findAll(): Promise<Tag[]> {
     return this.tagRepository.find();
   }
-
-  //   Read
+  // Read
   findOne(id: string): Promise<Tag> {
     return this.tagRepository.findOne(id);
   }
-
-  //   Update
+  // Update
   async update(tag: Tag): Promise<void> {
     await this.tagRepository.update(tag.id, tag);
   }
-
-  //   Delete
+  // Delete
   async remove(id: string): Promise<void> {
     await this.tagRepository.delete(id);
   }
