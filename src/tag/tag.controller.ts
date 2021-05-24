@@ -8,7 +8,7 @@ export class TagController {
     this.tagService = tagService;
   }
 
-  //  Create
+  // Create
   @Post()
   async create(@Body() tag: Tag): Promise<string> {
     this.tagService.create(tag);
@@ -18,7 +18,7 @@ export class TagController {
       statusMsg: `saved successfully`,
     });
   }
-  //  Read
+  // Read
   @Get()
   async findAll(): Promise<Tag[]> {
     const tagList = await this.tagService.findAll();
@@ -29,7 +29,6 @@ export class TagController {
       statusMsg: `데이터 조회가 성공적으로 완료되었습니다.`,
     });
   }
-
   @Get(":tagId")
   async find(@Param("tagId") tagId: string): Promise<Tag> {
     const tag = await this.tagService.findOne(tagId);
@@ -40,8 +39,7 @@ export class TagController {
       statusMsg: `데이터 조회가 성공적으로 완료되었습니다.`,
     });
   }
-
-  //   Update
+  // Update
   @Put()
   async update(@Body() tag: Tag): Promise<string> {
     await this.tagService.update(tag);
@@ -51,7 +49,6 @@ export class TagController {
       statusMsg: `update successfully`,
     });
   }
-
   // Delete
   @Delete()
   async remove(@Body() tag: Tag): Promise<string> {
