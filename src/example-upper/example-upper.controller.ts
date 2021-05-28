@@ -13,17 +13,17 @@ export class ExampleUpperController {
   @Post()
   async create(@Body() exampleUpper: ExampleUpper): Promise<string> {
     //   서비스 메소드 정상 동작 여부를 반환
-    const result: boolean = await this.exampleUpperService.create(exampleUpper);
+    const result: ExampleUpper = await this.exampleUpperService.create(exampleUpper);
 
-    if (result === true) {
+    if (result.id) {
       return Object.assign({
         statusCode: 201,
-        statusMsg: `saved successfully`,
+        statusMsg: `create successfully`,
       });
-    } else if (result === false) {
+    } else if (!result.id) {
       return Object.assign({
         statusCode: 500,
-        statusMsg: `saved failed`,
+        statusMsg: `create failed`,
       });
     }
   }
