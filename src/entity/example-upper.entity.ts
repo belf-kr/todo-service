@@ -1,6 +1,8 @@
 import { Column, CreateDateColumn, Double, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-@Entity({})
+@Entity({
+  name: "example_upper",
+})
 export class ExampleUpper {
   @PrimaryGeneratedColumn()
   id: number;
