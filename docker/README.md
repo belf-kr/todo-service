@@ -32,7 +32,7 @@ brew install docker
 
 ### Docker image(MySQL) 빌드 방법
 
-프로젝트의 **루트** 디렉토리 내부에 있는 **docker** 디렉토리로 이동하신 다음 아래의 명령어를 입력하면 `Docker image`가 빌드됩니다.
+프로젝트의 **루트** 디렉토리 내부에 있는 **/docker/mysql/master** 디렉토리로 이동하신 다음 아래의 명령어를 입력하면 `Docker image`가 빌드됩니다.
 
 ```shell
 docker build -t belf-todo-service-db .
@@ -54,7 +54,7 @@ docker images
 
 ### Docker container(MySQL) 생성
 
-아래 명령어를 **docker** 디렉토리로 이동하신 다음 입력하시면 됩니다.
+아래 명령어를 **/docker/mysql/masterr** 디렉토리로 이동하신 다음 입력하시면 됩니다.
 
 ```shell
     docker-compose up -d
