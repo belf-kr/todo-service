@@ -6,6 +6,7 @@ import { AppService } from "./app.service";
 import { ConnectionOptions } from "typeorm";
 import AppConfig from "./config/app.config";
 import { TagModule } from "./tag/tag.module";
+import { ExampleUpperModule } from "./example-upper/example-upper.module";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { TagModule } from "./tag/tag.module";
       inject: [ConfigService],
     }),
     TagModule,
+    ExampleUpperModule,
   ],
   controllers: [AppController],
   providers: [AppService],
