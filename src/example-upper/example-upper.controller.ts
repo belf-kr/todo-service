@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Post } from "@nestjs/common";
 
 import { ExampleUpperService } from "./example-upper.service";
 
@@ -10,7 +10,7 @@ export class ExampleUpperController {
     this.exampleUpperService = exampleUpperService;
   }
   // 1개 행 Create
-  @Post()
+  @Post("create")
   async create(@Body() exampleUpper: ExampleUpper): Promise<string> {
     //   서비스 메소드 정상 동작 여부를 반환
     const result: ExampleUpper = await this.exampleUpperService.create(exampleUpper);
@@ -29,7 +29,7 @@ export class ExampleUpperController {
   }
 
   //   1개 행 Read
-  @Get()
+  @Post("read")
   async read(@Body() exampleUpper: ExampleUpper): Promise<string> {
     //   서비스 메소드 정상 동작 여부를 반환
     const result: ExampleUpper = await this.exampleUpperService.read(exampleUpper);
