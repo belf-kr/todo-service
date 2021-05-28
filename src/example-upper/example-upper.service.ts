@@ -12,4 +12,10 @@ export class ExampleUpperService {
     @InjectRepository(ExampleUpper)
     private exampleUpperRepository: Repository<ExampleUpper>
   ) {}
+
+  // 1개 행 Create
+  async create(exampleUpper: ExampleUpper): Promise<boolean> {
+    if (this.exampleUpperRepository.save(exampleUpper)) return true;
+    else return false;
+  }
 }
