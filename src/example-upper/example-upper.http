@@ -1,8 +1,14 @@
 @Host = http://localhost:3002
 @Router = example-upper
 
-### 오늘 하루 todo list 조회
-GET {{Host}}/{{Router}}/1/today-todos
+### example-upper 1개 조회
+GET {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "id": 1
+}
+
 
 ### example-upper 1개 생성
 POST {{Host}}/{{Router}}

@@ -1,7 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { ExampleUpper } from "src/entity/example-upper.entity";
+
 import { Repository } from "typeorm";
+
+import { ExampleUpper } from "src/entity/example-upper.entity";
 
 @Injectable()
 export class ExampleUpperService {
@@ -17,5 +19,10 @@ export class ExampleUpperService {
   async create(exampleUpper: ExampleUpper): Promise<boolean> {
     if (this.exampleUpperRepository.save(exampleUpper)) return true;
     else return false;
+  }
+
+  // 1개 행 Read
+  async read(exampleUpper: ExampleUpper): Promise<ExampleUpper> {
+    return this.exampleUpperRepository.findOne(exampleUpper);
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 
 import { ExampleUpperService } from "./example-upper.service";
 
@@ -24,6 +24,25 @@ export class ExampleUpperController {
       return Object.assign({
         statusCode: 500,
         statusMsg: `saved failed`,
+      });
+    }
+  }
+
+  //   1개 행 Read
+  @Get()
+  async read(@Body() exampleUpper: ExampleUpper): Promise<string> {
+    //   서비스 메소드 정상 동작 여부를 반환
+    const result: ExampleUpper = await this.exampleUpperService.read(exampleUpper);
+    if (result.id) {
+      return Object.assign({
+        statusCode: 201,
+        statusMsg: `read successfully`,
+        data: { ...result },
+      });
+    } else if (!result.id) {
+      return Object.assign({
+        statusCode: 500,
+        statusMsg: `read failed`,
       });
     }
   }
