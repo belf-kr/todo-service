@@ -16,9 +16,8 @@ export class ExampleUpperService {
   ) {}
 
   // 1개 행 Create
-  async create(exampleUpper: ExampleUpper): Promise<boolean> {
-    if (this.exampleUpperRepository.save(exampleUpper)) return true;
-    else return false;
+  async create(exampleUpper: ExampleUpper): Promise<ExampleUpper> {
+    return this.exampleUpperRepository.save(exampleUpper);
   }
 
   // 1개 행 Read
