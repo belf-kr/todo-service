@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-
 import { Repository } from "typeorm";
 
 import { ExampleUpper } from "src/entity/example-upper.entity";
@@ -24,6 +23,10 @@ export class ExampleUpperService {
   async findOne(exampleUpper: ExampleUpper): Promise<ExampleUpper> {
     // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
     return this.exampleUpperRepository.findOneOrFail(exampleUpper);
+  }
+
+  async find(exampleUppers: ExampleUpper[]): Promise<ExampleUpper[]> {
+    return await this.exampleUpperRepository.find({ where: exampleUppers });
   }
 
   // 1개 행 Update

@@ -31,12 +31,13 @@ export class ExampleUpperController {
     }
   }
 
-  // 1개 행 Read
+  // 1개 이상의 행 Read
   @Get()
-  async read(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
+  async read(@Body() exampleUppers: ExampleUpper[]): Promise<HttpStatus> {
     try {
       // 결과를 받아올 상수 선언
-      const result = await this.exampleUpperService.findOne(exampleUpper);
+      // TODO: 검색 결과가 없어 result가 비어있는 경우에 대한 예외 처리
+      const result = await this.exampleUpperService.find(exampleUppers);
 
       // Service가 동작 된 경우 결과값을 반환
       return Object.assign({
