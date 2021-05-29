@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { ExampleUpper } from "src/entity/example-upper.entity";
+import { exception } from "console";
 
 @Injectable()
 export class ExampleUpperService {
@@ -16,12 +17,16 @@ export class ExampleUpperService {
   ) {}
 
   // 1개 행 Create
-  async create(exampleUpper: ExampleUpper): Promise<ExampleUpper> {
-    return this.exampleUpperRepository.save(exampleUpper);
+  async create(exampleUpper: ExampleUpper): Promise<void> {
+    await this.exampleUpperRepository.save(exampleUpper);
   }
 
   // 1개 행 Read
   async read(exampleUpper: ExampleUpper): Promise<ExampleUpper> {
-    return this.exampleUpperRepository.findOne(exampleUpper);
+    try {
+      return this.exampleUpperRepository.findOne(exampleUpper);
+    } catch {
+      throw exception;
+    }
   }
 }
