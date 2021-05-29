@@ -5,16 +5,17 @@
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 
+# 값이 한 치의 오차도 없이 정확해야 한다.
+
 [
-    
-    {
-        "id": 1
-    },
-    {
-        "id": 2
-    },
     {
         "id": 3
+    },
+    {
+        "title": "테스트1"
+    },
+    {
+        "defaultDouble": 40
     },
     {
         "id": 111111111
