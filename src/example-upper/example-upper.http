@@ -42,14 +42,26 @@ Content-Type: application/json
 ]
 
 
-### example-upper 1개 수정
+### example-upper 1개 이상 수정
 PUT {{Host}}/{{Router}}
 Content-Type: application/json
 
+# 조건으로 준 쿼리의 질의 결과가 1개라도 일치하지 않거나, 
+# 결과값으로 변경을 원하는 컬럼 명이 다를 경우 ORM을 사용한 쿼리가 실행이 안됨 
+
 {
-    "id": 1,
-    "title": "제목입니다.",
-    "content": "이것은 콘텐츠입니다. \n아주 긴 텍스트입니다."
+    "exampleUpperSearchFilters": 
+        [
+            {
+                "title": "제목입니다",
+                "defaultDouble": 40
+            }
+        ],
+    "exampleUpperChangeResult": 
+        {
+            "title": "변경 완료된 제목입니다.",
+            "content": "본문!"
+        }
 }
 
 
