@@ -1,0 +1,40 @@
+@Host = http://localhost:3002
+@Router = example-upper
+
+### example-upper 1개 조회
+GET {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "id": 1
+}
+
+
+### example-upper 1개 생성
+POST {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "title": "제목입니다.",
+    "content": "이것은 콘텐츠입니다. 아주 긴 텍스트를 입력할 수 있죠.\n여러 줄도 별 문제 없습니다.\n히히 다음줄"
+}
+
+
+### example-upper 1개 수정
+PUT {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "id": 1,
+    "title": "제목입니다.",
+    "content": "이것은 콘텐츠입니다. \n아주 긴 텍스트입니다."
+}
+
+
+### example-upper 1개 삭제
+DELETE  {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "id": 15
+}
