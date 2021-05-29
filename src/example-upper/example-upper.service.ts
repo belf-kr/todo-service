@@ -30,11 +30,18 @@ export class ExampleUpperService {
     return await this.exampleUpperRepository.find({ where: exampleUppers });
   }
 
-  // 1개 행 Update
-  async updateOne(exampleUpper: ExampleUpper): Promise<void> {
+  // 1개 행 이상 Update
+  async update(exampleUpperSearchFilters: ExampleUpper[], exampleUpperChangeResult: ExampleUpper): Promise<void> {
     // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
-    await this.findOne(exampleUpper);
-    await this.exampleUpperRepository.update(exampleUpper.id, exampleUpper);
+    const findResult = await this.find(exampleUpperSearchFilters);
+    const findResultIDs = [];
+
+    // ID 값들을 가져와 배열에 저장하기
+    for (const item of findResult) {
+      findResultIDs.push(item["id"]);
+    }
+
+    await this.exampleUpperRepository.update(findResultIDs, exampleUpperChangeResult);
   }
 
   // 1개 이상의 행 Delete

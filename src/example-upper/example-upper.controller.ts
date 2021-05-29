@@ -64,9 +64,12 @@ export class ExampleUpperController {
 
   // 1개 행 Update
   @Put()
-  async update(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
+  async update(
+    @Body("exampleUpperSearchFilters") exampleUpperSearchFilters: ExampleUpper[],
+    @Body("exampleUpperChangeResult") exampleUpperChangeResult: ExampleUpper
+  ): Promise<HttpStatus> {
     try {
-      await this.exampleUpperService.updateOne(exampleUpper);
+      await this.exampleUpperService.update(exampleUpperSearchFilters, exampleUpperChangeResult);
 
       return Object.assign({
         status: HttpStatus.OK,
