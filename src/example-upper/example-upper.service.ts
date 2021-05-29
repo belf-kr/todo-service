@@ -4,7 +4,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { ExampleUpper } from "src/entity/example-upper.entity";
-import { exception } from "console";
 
 @Injectable()
 export class ExampleUpperService {
@@ -23,10 +22,14 @@ export class ExampleUpperService {
 
   // 1개 행 Read
   async read(exampleUpper: ExampleUpper): Promise<ExampleUpper> {
-    try {
-      return this.exampleUpperRepository.findOne(exampleUpper);
-    } catch {
-      throw exception;
-    }
+    // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
+    return this.exampleUpperRepository.findOneOrFail(exampleUpper);
+  }
+
+  // 1개 행 Update
+  async update(exampleUpper: ExampleUpper): Promise<void> {
+    // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
+    await this.exampleUpperRepository.findOneOrFail(exampleUpper);
+    await this.exampleUpperRepository.update(exampleUpper.id, exampleUpper);
   }
 }
