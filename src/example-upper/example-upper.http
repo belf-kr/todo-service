@@ -6,7 +6,7 @@ GET {{Host}}/{{Router}}
 Content-Type: application/json
 
 {
-    "id": 1111
+    "id": 1
 }
 
 
