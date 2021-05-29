@@ -1,4 +1,6 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
+import { HttpException } from "@nestjs/common";
+import { exception } from "console";
 
 import { ExampleUpperService } from "./example-upper.service";
 
@@ -12,38 +14,50 @@ export class ExampleUpperController {
   // 1개 행 Create
   @Post("create")
   async create(@Body() exampleUpper: ExampleUpper): Promise<string> {
-    //   서비스 메소드 정상 동작 여부를 반환
-    const result: ExampleUpper = await this.exampleUpperService.create(exampleUpper);
+    try {
+      await this.exampleUpperService.create(exampleUpper);
 
-    if (result.id) {
       return Object.assign({
-        statusCode: 201,
-        statusMsg: `create successfully`,
+        status: HttpStatus.CREATED,
+        msg: `create successfully`,
       });
-    } else if (!result.id) {
-      return Object.assign({
-        statusCode: 500,
-        statusMsg: `create failed`,
-      });
+    } catch {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          msg: `create failed`,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 
   //   1개 행 Read
   @Post("read")
   async read(@Body() exampleUpper: ExampleUpper): Promise<string> {
-    //   서비스 메소드 정상 동작 여부를 반환
-    const result: ExampleUpper = await this.exampleUpperService.read(exampleUpper);
-    if (result.id) {
-      return Object.assign({
-        statusCode: 201,
-        statusMsg: `read successfully`,
-        data: { ...result },
-      });
-    } else if (!result.id) {
-      return Object.assign({
-        statusCode: 500,
-        statusMsg: `read failed`,
-      });
+    try {
+      const result = await this.exampleUpperService.read(exampleUpper);
+
+      // Service가 동작 된 경우
+      if (result !== undefined) {
+        return Object.assign({
+          status: HttpStatus.CREATED,
+          msg: `read successfully`,
+          data: { ...result },
+        });
+      }
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
+      else {
+        throw exception;
+      }
+    } catch {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: `read failed`,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 }
