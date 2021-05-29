@@ -37,7 +37,12 @@ export class ExampleUpperController {
     try {
       // 결과를 받아올 상수 선언
       // TODO: 검색 결과가 없어 result가 비어있는 경우에 대한 예외 처리
-      const result = await this.exampleUpperService.find(exampleUppers);
+      const result: ExampleUpper[] = await this.exampleUpperService.find(exampleUppers);
+
+      // ORM 리턴 값이 비어있는 경우
+      if (!result.length) {
+        throw new Error("Call HttpException on catch");
+      }
 
       // Service가 동작 된 경우 결과값을 반환
       return Object.assign({
