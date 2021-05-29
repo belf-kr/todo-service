@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Post, Put } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
 
 import { ExampleUpperService } from "./example-upper.service";
@@ -70,6 +70,27 @@ export class ExampleUpperController {
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           error: `read failed`,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  // 1개 행 Delete
+  @Delete()
+  async delete(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
+    try {
+      await this.exampleUpperService.delete(exampleUpper);
+
+      return Object.assign({
+        status: HttpStatus.OK,
+        msg: `delete successfully`,
+      });
+    } catch {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: `delete failed`,
         },
         HttpStatus.INTERNAL_SERVER_ERROR
       );
