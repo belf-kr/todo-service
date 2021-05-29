@@ -14,7 +14,7 @@ export class ExampleUpperController {
   @Post()
   async create(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
     try {
-      await this.exampleUpperService.create(exampleUpper);
+      await this.exampleUpperService.createOne(exampleUpper);
 
       return Object.assign({
         status: HttpStatus.CREATED,
@@ -35,11 +35,12 @@ export class ExampleUpperController {
   @Get()
   async read(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
     try {
-      const result = await this.exampleUpperService.read(exampleUpper);
+      // 결과를 받아올 상수 선언
+      const result = await this.exampleUpperService.findOne(exampleUpper);
 
-      // Service가 동작 된 경우
+      // Service가 동작 된 경우 결과값을 반환
       return Object.assign({
-        status: HttpStatus.CREATED,
+        status: HttpStatus.OK,
         msg: `read successfully`,
         data: { ...result },
       });
@@ -59,7 +60,7 @@ export class ExampleUpperController {
   @Put()
   async update(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
     try {
-      await this.exampleUpperService.update(exampleUpper);
+      await this.exampleUpperService.updateOne(exampleUpper);
 
       return Object.assign({
         status: HttpStatus.OK,
@@ -69,7 +70,7 @@ export class ExampleUpperController {
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: `read failed`,
+          error: `update failed`,
         },
         HttpStatus.INTERNAL_SERVER_ERROR
       );
@@ -80,7 +81,7 @@ export class ExampleUpperController {
   @Delete()
   async delete(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
     try {
-      await this.exampleUpperService.delete(exampleUpper);
+      await this.exampleUpperService.deleteOne(exampleUpper);
 
       return Object.assign({
         status: HttpStatus.OK,
