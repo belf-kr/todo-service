@@ -32,4 +32,11 @@ export class ExampleUpperService {
     await this.exampleUpperRepository.findOneOrFail(exampleUpper);
     await this.exampleUpperRepository.update(exampleUpper.id, exampleUpper);
   }
+
+  // 1개 행 Delete
+  async delete(exampleUpper: ExampleUpper): Promise<void> {
+    // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
+    await this.exampleUpperRepository.findOneOrFail(exampleUpper);
+    await this.exampleUpperRepository.delete(exampleUpper);
+  }
 }
