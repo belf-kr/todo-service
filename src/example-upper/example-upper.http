@@ -1,14 +1,25 @@
-@Host = http://localhost:3002
+@Host = http://localhost:3000
 @Router = example-upper
 
-### example-upper 1개 조회
+### example-upper 1개 이상 조회
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 
-{
-    "id": 1
-}
-
+[
+    
+    {
+        "id": 1
+    },
+    {
+        "id": 2
+    },
+    {
+        "id": 3
+    },
+    {
+        "id": 111111111
+    }
+]
 
 ### example-upper 1개 생성
 POST {{Host}}/{{Router}}
