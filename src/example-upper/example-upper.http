@@ -22,7 +22,7 @@ Content-Type: application/json
     }
 ]
 
-### example-upper 1개 생성
+### example-upper 1개 이상 생성
 POST {{Host}}/{{Router}}
 Content-Type: application/json
 
@@ -53,7 +53,7 @@ Content-Type: application/json
 }
 
 
-### example-upper 1개 삭제
+### example-upper 1개 이상 삭제
 DELETE   {{Host}}/{{Router}}
 Content-Type: application/json
 
