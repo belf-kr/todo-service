@@ -10,11 +10,11 @@ export class ExampleUpperController {
   constructor(private readonly exampleUpperService: ExampleUpperService) {
     this.exampleUpperService = exampleUpperService;
   }
-  // 1개 행 Create
+  // 1개 이상의 행 Create
   @Post()
-  async create(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
+  async create(@Body() exampleUppers: ExampleUpper[]): Promise<HttpStatus> {
     try {
-      await this.exampleUpperService.createOne(exampleUpper);
+      await this.exampleUpperService.create(exampleUppers);
 
       return Object.assign({
         status: HttpStatus.CREATED,
