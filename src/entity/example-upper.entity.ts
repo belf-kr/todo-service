@@ -39,12 +39,15 @@ export class ExampleUpper {
   @Column({
     type: "double",
     default: 50.0,
+    name: "default_double",
+    comment: "기본값이 50.0이 들어가는 컬럼입니다.",
   })
   defaultDouble: Double;
 
   @Column({
     type: "int",
     nullable: true,
+    name: "nullable_int",
     comment: "null값이 허용되는 컬럼입니다.",
   })
   nullableInt: number;

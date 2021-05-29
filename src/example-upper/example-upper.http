@@ -5,17 +5,18 @@
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 
-# 값이 한 치의 오차도 없이 정확해야 한다.
+# 검색을 원하는 값이 한 치의 오차도 없이 정확해야 한다.
 
 [
     {
-        "id": 3
+        "id": 3,
+        "title": "겸색을 원하는 값"
     },
     {
         "title": "테스트1"
     },
     {
-        "defaultDouble": 40
+        "default_double": 40
     },
     {
         "id": 111111111
@@ -36,8 +37,8 @@ Content-Type: application/json
     {
         "title": "어떤 내용을 입력하고 싶으신가요?",
         "content": "본문을 이 곳에 입력할 수 있습니다.",
-        "nullableInt": 30,
-        "defaultDouble": 50.2
+        "nullable_int": 30,
+        "default_double": 50.2
     }
 ]
 
@@ -54,7 +55,10 @@ Content-Type: application/json
         [
             {
                 "title": "제목입니다",
-                "defaultDouble": 40
+                "default_double": 40
+            },
+            {
+                "id": 1
             }
         ],
     "exampleUpperChangeResult": 
@@ -73,7 +77,11 @@ Content-Type: application/json
 
 [
     {
-        "title": "제목입니다.",
-        "content": "이것은 콘텐츠입니다. 아주 긴 텍스트를 입력할 수 있죠.\n여러 줄도 별 문제 없습니다.\n히히 다음줄"
+        "id": 37
+    },
+    {
+        "id": 38,
+        "title": "변경 완료된 제목입니다.",
+        "content": "본문!"
     }
 ]
