@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 
-import { version } from "../package.json";
+import { name, version } from "../package.json";
 
 @Injectable()
 export class AppService {
   getHello(): string {
-    return "Hello World!";
+    return name;
   }
 
   getVersion(): string {
