@@ -13,7 +13,7 @@ export class ExampleUpperController {
   }
   // 1개 행 Create
   @Post()
-  async create(@Body() exampleUpper: ExampleUpper): Promise<string> {
+  async create(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
     try {
       await this.exampleUpperService.create(exampleUpper);
 
@@ -34,7 +34,7 @@ export class ExampleUpperController {
 
   //   1개 행 Read
   @Get()
-  async read(@Body() exampleUpper: ExampleUpper): Promise<string> {
+  async read(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
     try {
       const result = await this.exampleUpperService.read(exampleUpper);
 
