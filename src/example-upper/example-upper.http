@@ -2,7 +2,7 @@
 @Router = example-upper
 
 ### example-upper 1개 조회
-POST {{Host}}/{{Router}}/read
+GET {{Host}}/{{Router}}
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 
 
 ### example-upper 1개 생성
-POST {{Host}}/{{Router}}/create
+POST {{Host}}/{{Router}}
 Content-Type: application/json
 
 {

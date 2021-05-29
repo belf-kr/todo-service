@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Post } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
 import { exception } from "console";
 
@@ -12,7 +12,7 @@ export class ExampleUpperController {
     this.exampleUpperService = exampleUpperService;
   }
   // 1개 행 Create
-  @Post("create")
+  @Post()
   async create(@Body() exampleUpper: ExampleUpper): Promise<string> {
     try {
       await this.exampleUpperService.create(exampleUpper);
@@ -33,7 +33,7 @@ export class ExampleUpperController {
   }
 
   //   1개 행 Read
-  @Post("read")
+  @Get()
   async read(@Body() exampleUpper: ExampleUpper): Promise<string> {
     try {
       const result = await this.exampleUpperService.read(exampleUpper);
