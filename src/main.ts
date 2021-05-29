@@ -1,18 +1,13 @@
 import { NestFactory } from "@nestjs/core";
+
 import { AppModule } from "./app.module";
 
-let APP_PORT = 3000;
+import { version } from "../package.json";
+
+console.log(`version: ${version}`);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  init();
-  await app.listen(APP_PORT);
+  await app.listen(3000);
 }
 bootstrap();
-
-function init() {
-  if (!process.env.STAGES) {
-    process.env.STAGES = "local";
-    APP_PORT = 3002;
-  }
-}

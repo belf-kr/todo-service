@@ -1,11 +1,14 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { ConnectionOptions } from "typeorm";
+
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { ConnectionOptions } from "typeorm";
-import AppConfig from "./config/app.config";
+
 import { TagModule } from "./tag/tag.module";
+
+import AppConfig from "./config/app.config";
 
 @Module({
   imports: [
