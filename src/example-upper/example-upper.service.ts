@@ -14,9 +14,9 @@ export class ExampleUpperService {
     private exampleUpperRepository: Repository<ExampleUpper>
   ) {}
 
-  // 1개 행 Create
-  async createOne(exampleUpper: ExampleUpper): Promise<void> {
-    await this.exampleUpperRepository.save(exampleUpper);
+  // 1개 이상의 행 Create
+  async create(exampleUppers: ExampleUpper[]): Promise<void> {
+    await this.exampleUpperRepository.save(exampleUppers);
   }
 
   // 1개 행 Read
@@ -25,6 +25,7 @@ export class ExampleUpperService {
     return this.exampleUpperRepository.findOneOrFail(exampleUpper);
   }
 
+  // 1개 이상의 행 Read
   async find(exampleUppers: ExampleUpper[]): Promise<ExampleUpper[]> {
     return await this.exampleUpperRepository.find({ where: exampleUppers });
   }
