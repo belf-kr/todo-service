@@ -37,10 +37,16 @@ export class ExampleUpperService {
     await this.exampleUpperRepository.update(exampleUpper.id, exampleUpper);
   }
 
-  // 1개 행 Delete
-  async deleteOne(exampleUpper: ExampleUpper): Promise<void> {
+  // 1개 이상의 행 Delete
+  async delete(exampleUppers: ExampleUpper[]): Promise<void> {
     // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
-    await this.findOne(exampleUpper);
-    await this.exampleUpperRepository.delete(exampleUpper);
+    // if ((await this.find(exampleUppers)).length == 0) throw "질의 결과를 만족하지 못 했으므로 HTTP 예외를 Controller 에서 만듭니다.";
+    // 조건을 만족하는 데이터가 존재하는지 확인
+    const findResult = await this.find(exampleUppers);
+
+    if (findResult.length === 0) {
+      throw "질의 결과를 만족하지 못 했으므로 HTTP 예외를 발생한다.";
+    }
+    await this.exampleUpperRepository.remove(findResult);
   }
 }

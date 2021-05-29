@@ -54,9 +54,14 @@ Content-Type: application/json
 
 
 ### example-upper 1개 삭제
-DELETE  {{Host}}/{{Router}}
+DELETE   {{Host}}/{{Router}}
 Content-Type: application/json
 
-{
-    "id": 15
-}
+# 입력 할 행의 컬럼에 1개의 문제라도 존재하면 ORM을 사용한 쿼리가 1개도 실행되지 않음
+
+[
+    {
+        "title": "제목입니다.",
+        "content": "이것은 콘텐츠입니다. 아주 긴 텍스트를 입력할 수 있죠.\n여러 줄도 별 문제 없습니다.\n히히 다음줄"
+    }
+]

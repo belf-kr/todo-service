@@ -85,15 +85,16 @@ export class ExampleUpperController {
 
   // 1개 행 Delete
   @Delete()
-  async delete(@Body() exampleUpper: ExampleUpper): Promise<HttpStatus> {
+  async delete(@Body() exampleUppers: ExampleUpper[]): Promise<HttpStatus> {
     try {
-      await this.exampleUpperService.deleteOne(exampleUpper);
+      await this.exampleUpperService.delete(exampleUppers);
 
       return Object.assign({
         status: HttpStatus.OK,
         msg: `delete successfully`,
       });
     } catch {
+      // 동작이 실패한 경우 무조껀 catch에서 예외 발생 후 결과를 client 에게 송신
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
