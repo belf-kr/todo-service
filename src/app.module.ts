@@ -7,6 +7,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 
 import { ExampleUpperModule } from "./example-upper/example-upper.module";
+import { ExampleLowerModule } from "./example-lower/example-lower.module";
 
 import AppConfig from "./config/app.config";
 
@@ -24,6 +25,7 @@ import AppConfig from "./config/app.config";
       inject: [ConfigService],
     }),
     ExampleUpperModule,
+    ExampleLowerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
