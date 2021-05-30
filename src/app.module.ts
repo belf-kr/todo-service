@@ -6,7 +6,6 @@ import { ConnectionOptions } from "typeorm";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 
-import { TagModule } from "./tag/tag.module";
 import { ExampleUpperModule } from "./example-upper/example-upper.module";
 
 import AppConfig from "./config/app.config";
@@ -24,7 +23,6 @@ import AppConfig from "./config/app.config";
       },
       inject: [ConfigService],
     }),
-    TagModule,
     ExampleUpperModule,
   ],
   controllers: [AppController],
