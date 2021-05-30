@@ -36,7 +36,6 @@ export class ExampleUpperController {
   async read(@Body() exampleUppers: ExampleUpper[]): Promise<HttpStatus> {
     try {
       // 결과를 받아올 상수 선언
-      // TODO: 검색 결과가 없어 result가 비어있는 경우에 대한 예외 처리
       const result: ExampleUpper[] = await this.exampleUpperService.find(exampleUppers);
 
       // ORM 리턴 값이 비어있는 경우
