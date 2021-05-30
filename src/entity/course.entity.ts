@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+
 import { Color } from "./color.entity";
 import { User } from "./user.entity";
 
@@ -10,6 +11,7 @@ export class Course {
   @OneToOne(() => Course, (course) => course.id, {
     onDelete: "SET NULL",
     nullable: true,
+    eager: true,
   })
   @JoinColumn({ name: "original_course_id" })
   originalCourseId: number;
@@ -17,12 +19,14 @@ export class Course {
   @ManyToOne(() => Color, (color) => color.id, {
     onDelete: "SET NULL",
     nullable: true,
+    eager: true,
   })
   @JoinColumn({ name: "color" })
   color: string;
 
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: "SET NULL",
+    eager: true,
   })
   @JoinColumn({ name: "creator_id" })
   creatorId: number;

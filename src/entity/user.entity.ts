@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
 import { File } from "./file.entity";
 
 @Entity({})
@@ -9,6 +10,7 @@ export class User {
   @OneToOne(() => File, {
     onDelete: "SET NULL",
     nullable: true,
+    eager: true,
   })
   @JoinColumn({ name: "profile_picture" })
   profilePicture: number;

@@ -1,4 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
 import { WorkTodo } from "./work-todo.entity";
 
 @Entity({})
@@ -8,6 +9,7 @@ export class RepeatedDaysOfTheWeek {
 
   @ManyToOne(() => WorkTodo, (workToDo) => workToDo.id, {
     onDelete: "CASCADE",
+    eager: true,
   })
   @JoinColumn({ name: "work_todo_id" })
   workTodoId: number;
