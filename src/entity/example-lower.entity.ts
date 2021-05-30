@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { ExampleUpper } from "./example-upper.entity";
 
@@ -20,6 +20,9 @@ export class ExampleLower {
     // FK의 실제 데이터가 삭제 될 경우 어떻게 할 것인가를 의미하며, 예제는 연쇄적으로 이 테이블의 해당 행도 삭제하는 CASCADE 사용
     onDelete: "CASCADE",
     eager: true,
+  })
+  @JoinColumn({
+    name: "example_upper_id",
   })
   exampleUpperID: number;
 }
