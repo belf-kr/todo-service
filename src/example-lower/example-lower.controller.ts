@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Put } from "@nestjs/common";
 
 import { ExampleLowerService } from "./example-lower.service";
 
@@ -55,6 +55,30 @@ export class ExampleLowerController {
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           error: `read failed`,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  // 1개 행 Update
+  @Put()
+  async update(
+    @Body("exampleLowerSearchFilters") exampleLowerSearchFilters: ExampleLower[],
+    @Body("exampleLowerChangeResult") exampleLowerChangeResult: ExampleLower
+  ): Promise<HttpStatus> {
+    try {
+      await this.exampleLowerService.update(exampleLowerSearchFilters, exampleLowerChangeResult);
+
+      return Object.assign({
+        status: HttpStatus.OK,
+        msg: `update successfully`,
+      });
+    } catch {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: `update failed`,
         },
         HttpStatus.INTERNAL_SERVER_ERROR
       );

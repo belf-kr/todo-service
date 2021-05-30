@@ -25,6 +25,20 @@ export class ExampleLowerService {
     return this.exampleLowerRepository.findOneOrFail(exampleLower);
   }
 
+  // 1개 행 이상 Update
+  async update(exampleLowerSearchFilters: ExampleLower[], exampleLowerChangeResult: ExampleLower): Promise<void> {
+    // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
+    const findResult = await this.find(exampleLowerSearchFilters);
+    const findResultIDs = [];
+
+    // ID 값들을 가져와 배열에 저장하기
+    for (const item of findResult) {
+      findResultIDs.push(item["id"]);
+    }
+
+    await this.exampleLowerRepository.update(findResultIDs, exampleLowerChangeResult);
+  }
+
   // 1개 이상의 행 Read
   async find(exampleLowers: ExampleLower[]): Promise<ExampleLower[]> {
     return await this.exampleLowerRepository.find({ where: exampleLowers });

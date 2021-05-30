@@ -44,20 +44,18 @@ Content-Type: application/json
 # 수정을 원하는 조건 및 결과의 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
 
 {
-    "exampleUpperSearchFilters": 
+    "exampleLowerSearchFilters": 
     [
         {
-            "title": "수정을 원하는 행을 검색하기 위한 제목입니다.",
-            "default_double": 40
+            "id": 3
         },
         {
-            "id": 1
+            "name": "This is name 1 from http"
         }
     ],
-    "exampleUpperChangeResult": 
+    "exampleLowerChangeResult": 
     {
-        "title": "검색 된 행을 수정하기 위한 제목입니다.",
-        "content": "검색 된 행을 수정하기 위한 본문입니다."
+        "name": "This is modified name from http"
     }
 }
 
