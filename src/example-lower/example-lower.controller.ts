@@ -1,11 +1,34 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus } from "@nestjs/common";
-import { ExampleLower } from "src/entity/example-lower.entity";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
+
 import { ExampleLowerService } from "./example-lower.service";
+
+import { ExampleLower } from "src/entity/example-lower.entity";
 
 @Controller("example-lower")
 export class ExampleLowerController {
   constructor(private readonly exampleLowerService: ExampleLowerService) {
     this.exampleLowerService = exampleLowerService;
+  }
+
+  // 1개 이상의 행 Create
+  @Post()
+  async create(@Body() exampleLowers: ExampleLower[]): Promise<HttpStatus> {
+    try {
+      await this.exampleLowerService.create(exampleLowers);
+
+      return Object.assign({
+        status: HttpStatus.CREATED,
+        msg: `create successfully`,
+      });
+    } catch {
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          msg: `create failed`,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   // 1개 이상의 행 Read

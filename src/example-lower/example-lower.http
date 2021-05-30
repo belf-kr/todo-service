@@ -26,14 +26,12 @@ Content-Type: application/json
 
 [
     {
-        "title": "입력을 원하는 제목입니다.",
-        "content": "입력을 원하는 내용입니다.\n다음 줄 입니다."
+        "name": "This is name 1 from http",
+        "exampleUpperID": 1
     },
     {
-        "title": "입력을 원하는 제목입니다.",
-        "content": "입력을 원하는 내용입니다.\n다음 줄 입니다.",
-        "nullable_int": 30,
-        "default_double": 50.2
+        "name": "This is name 2 from http",
+        "exampleUpperID": 2
     }
 ]
 

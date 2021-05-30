@@ -14,6 +14,11 @@ export class ExampleLowerService {
     private exampleLowerRepository: Repository<ExampleLower>
   ) {}
 
+  // 1개 이상의 행 Create
+  async create(exampleLowers: ExampleLower[]): Promise<void> {
+    await this.exampleLowerRepository.save(exampleLowers);
+  }
+
   // 1개 행 Read
   async findOne(exampleLower: ExampleLower): Promise<ExampleLower> {
     // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
