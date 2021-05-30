@@ -1,0 +1,80 @@
+@Host = http://localhost:3000
+@Router = example-lower
+
+### example-lower 1개 이상 조회
+GET {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 검색을 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+
+[
+    {
+        "name": "test name",
+        "exampleUpperID": 1
+    },
+    {
+        "exampleUpperID": 1
+    }
+]
+
+### example-lower 1개 이상 생성
+POST {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 입력을 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+
+[
+    {
+        "title": "입력을 원하는 제목입니다.",
+        "content": "입력을 원하는 내용입니다.\n다음 줄 입니다."
+    },
+    {
+        "title": "입력을 원하는 제목입니다.",
+        "content": "입력을 원하는 내용입니다.\n다음 줄 입니다.",
+        "nullable_int": 30,
+        "default_double": 50.2
+    }
+]
+
+
+### example-lower 1개 이상 수정
+PUT {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 수정을 원하는 조건 및 결과의 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+
+{
+    "exampleUpperSearchFilters": 
+    [
+        {
+            "title": "수정을 원하는 행을 검색하기 위한 제목입니다.",
+            "default_double": 40
+        },
+        {
+            "id": 1
+        }
+    ],
+    "exampleUpperChangeResult": 
+    {
+        "title": "검색 된 행을 수정하기 위한 제목입니다.",
+        "content": "검색 된 행을 수정하기 위한 본문입니다."
+    }
+}
+
+
+### example-lower 1개 이상 삭제
+DELETE   {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 삭제를 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+
+[
+    {
+        "id": 37
+    },
+    {
+        "id": 38,
+        "title": "삭제를 위해 검색할 제목입니다.",
+        "content": "삭제를 위해 검색할 본문입니다."
+    }
+]

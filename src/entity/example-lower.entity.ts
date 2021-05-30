@@ -18,9 +18,7 @@ export class ExampleLower {
   @ManyToOne(() => ExampleUpper, (exampleUpper) => exampleUpper.id, {
     // FK의 실제 데이터가 삭제 될 경우 어떻게 할 것인가를 의미하며, 예제는 연쇄적으로 이 테이블의 해당 행도 삭제하는 CASCADE 사용
     onDelete: "CASCADE",
+    eager: true,
   })
-  // FK 컬럼명을 무엇으로 할 건지 등은 아래에 서술
-  // FK 컬럼명은 무조껀 해당 테이블명+ID으로 설정
-  @JoinColumn({ name: "example_upper_id" })
   exampleUpperID: number;
 }
