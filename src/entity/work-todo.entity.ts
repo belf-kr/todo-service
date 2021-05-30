@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+
 import { Course } from "./course.entity";
 
 @Entity({})
@@ -8,6 +9,7 @@ export class WorkTodo {
 
   @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "CASCADE",
+    eager: true,
   })
   @JoinColumn({ name: "course_id" })
   courseId: number;
