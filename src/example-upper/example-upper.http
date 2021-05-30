@@ -5,6 +5,7 @@
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 
+# 여러 json 객체를 입력하는 경우 OR 형태로 검색이 된다.
 # 검색을 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
 
 [
@@ -41,6 +42,7 @@ Content-Type: application/json
 PUT {{Host}}/{{Router}}
 Content-Type: application/json
 
+# 여러 json 객체를 입력하는 경우 OR 형태로 검색이 된다.
 # 수정을 원하는 조건 및 결과의 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
 
 {
@@ -66,6 +68,7 @@ Content-Type: application/json
 DELETE   {{Host}}/{{Router}}
 Content-Type: application/json
 
+# 여러 json 객체를 입력하는 경우 OR 형태로 검색이 된다.
 # 삭제를 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
 
 [
