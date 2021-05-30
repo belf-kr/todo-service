@@ -7,7 +7,9 @@ import { version } from "../package.json";
 console.log(`version: ${version}`);
 
 async function bootstrap() {
+  const port = 3000;
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  console.log(`listening at http://localhost:${port}`);
+  await app.listen(port);
 }
 bootstrap();
