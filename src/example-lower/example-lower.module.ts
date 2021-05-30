@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+
 import { ExampleLowerService } from "./example-lower.service";
 import { ExampleLowerController } from "./example-lower.controller";
-import { TypeOrmModule } from "@nestjs/typeorm";
 import { ExampleLower } from "src/entity/example-lower.entity";
 
 @Module({

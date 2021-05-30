@@ -4,9 +4,11 @@ import { Column, CreateDateColumn, Double, Entity, PrimaryGeneratedColumn, Updat
   name: "example_upper",
 })
 export class ExampleUpper {
+  // 기본적으로 생성되는 컬럼으로, 숫자값이 자동 증가됨
   @PrimaryGeneratedColumn()
   id: number;
 
+  // Insert 될 때의 시간을 자동 입력
   @CreateDateColumn({
     type: "datetime",
     name: "creation_date",
@@ -14,6 +16,7 @@ export class ExampleUpper {
   })
   creationDate: Date;
 
+  // 해당 행에 Update가 발생할 때의 시간을 자동 입력
   @UpdateDateColumn({
     type: "datetime",
     name: "update_date",
