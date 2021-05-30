@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus } from "@nestjs/common";
 import { ExampleLower } from "src/entity/example-lower.entity";
 import { ExampleLowerService } from "./example-lower.service";
 
@@ -32,6 +32,28 @@ export class ExampleLowerController {
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
           error: `read failed`,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+  }
+
+  // 1개 행 Delete
+  @Delete()
+  async delete(@Body() exampleLowers: ExampleLower[]): Promise<HttpStatus> {
+    try {
+      await this.exampleLowerService.delete(exampleLowers);
+
+      return Object.assign({
+        status: HttpStatus.OK,
+        msg: `delete successfully`,
+      });
+    } catch {
+      // 동작이 실패한 경우 무조껀 catch에서 예외 발생 후 결과를 client 에게 송신
+      throw new HttpException(
+        {
+          status: HttpStatus.INTERNAL_SERVER_ERROR,
+          error: `delete failed`,
         },
         HttpStatus.INTERNAL_SERVER_ERROR
       );
