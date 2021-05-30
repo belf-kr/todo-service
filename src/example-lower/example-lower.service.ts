@@ -32,6 +32,7 @@ export class ExampleLowerService {
     const findResultIDs = [];
 
     // ID 값들을 가져와 배열에 저장하기
+    // repository.update 메소드는 객체의 배열을 사용해 특정 컬럼들을 특정짓지 못하기 때문에 공통된(여기서는 테이블의 PK인 id컬럼) 값들의 배열로 update 메소드를 호출 해야한다.
     for (const item of findResult) {
       findResultIDs.push(item["id"]);
     }
@@ -46,14 +47,14 @@ export class ExampleLowerService {
 
   // 1개 이상의 행 Delete
   async delete(exampleLowers: ExampleLower[]): Promise<void> {
-    // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
-    // if ((await this.find(exampleUppers)).length == 0) throw "질의 결과를 만족하지 못 했으므로 HTTP 예외를 Controller 에서 만듭니다.";
     // 조건을 만족하는 데이터가 존재하는지 확인
     const findResult = await this.find(exampleLowers);
 
+    // 검색 조건을 만족하지 못 하는 경우 임의로 예외를 발생해 Controller 에서 처리한다.
     if (findResult.length === 0) {
       throw "질의 결과를 만족하지 못 했으므로 HTTP 예외를 발생한다.";
     }
+
     await this.exampleLowerRepository.remove(findResult);
   }
 }
