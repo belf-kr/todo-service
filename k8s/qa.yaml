@@ -16,6 +16,7 @@ spec:
       containers:
         - name: todo-service
           image: ghcr.io/belf-kr/todo-service/nestjs
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 3000
           env:
@@ -81,7 +82,7 @@ spec:
                 configMapKeyRef:
                   name: qa-config
                   key: DB_SLAVE_PASSWORD
-                  
+
             - name: DB_SLAVE_DATABASE
               valueFrom:
                 configMapKeyRef:
