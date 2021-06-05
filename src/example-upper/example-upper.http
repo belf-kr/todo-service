@@ -32,8 +32,8 @@ Content-Type: application/json
     {
         "title": "입력을 원하는 제목입니다.",
         "content": "입력을 원하는 내용입니다.\n다음 줄 입니다.",
-        "nullable_int": 30,
-        "default_double": 50.2
+        "nullableInt": 30,
+        "defaultDouble": 50.2
     }
 ]
 
@@ -46,17 +46,17 @@ Content-Type: application/json
 # 수정을 원하는 조건 및 결과의 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
 
 {
-    "exampleUpperSearchFilters": 
+    "crudEntitySearchFilters": 
     [
         {
             "title": "수정을 원하는 행을 검색하기 위한 제목입니다.",
-            "default_double": 40
+            "defaultDouble": 40
         },
         {
             "id": 1
         }
     ],
-    "exampleUpperChangeResult": 
+    "crudChangeResult": 
     {
         "title": "검색 된 행을 수정하기 위한 제목입니다.",
         "content": "검색 된 행을 수정하기 위한 본문입니다."

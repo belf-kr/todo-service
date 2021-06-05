@@ -47,7 +47,7 @@ Content-Type: application/json
 # 아래의 예시는 (id === 3) OR (name === "This is name 1 from http") 으로 검색된 행들의 name 컬럼값을 "This is modified name from http" 으로 변경한다.
 
 {
-    "exampleLowerSearchFilters": 
+    "crudEntitySearchFilters": 
     [
         {
             "id": 3
@@ -56,7 +56,7 @@ Content-Type: application/json
             "name": "This is name 1 from http"
         }
     ],
-    "exampleLowerChangeResult": 
+    "crudChangeResult": 
     {
         "name": "This is modified name from http"
     }
