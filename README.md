@@ -8,6 +8,10 @@
 1. vscode
 1. nest.js
 
+# 필수 조건
+
+1. mysql server가 활성화되어 있어야 합니다.
+
 # 환경 변수
 
 ## Local 환경
