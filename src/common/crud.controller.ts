@@ -59,9 +59,9 @@ export class CRUDController<T> {
 
   // 1개 행 Update
   @Put()
-  async update(@Body("crudEntitiesearchFilters") crudEntitiesearchFilters: T[], @Body("TChangeResult") TChangeResult: T): Promise<HttpStatus> {
+  async update(@Body("crudEntitySearchFilters") crudEntitySearchFilters: T[], @Body("crudChangeResult") crudChangeResult: T): Promise<HttpStatus> {
     try {
-      await this.crudService.update(crudEntitiesearchFilters, TChangeResult);
+      await this.crudService.update(crudEntitySearchFilters, crudChangeResult);
 
       return Object.assign({
         status: HttpStatus.OK,
