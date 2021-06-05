@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
 
-// 상속받는 클래스에서 입력 해 줄 타입을 제너릭 기호 T로 나타낸다.
+// 상속받는 클래스에서 엔티티의 타입을 입력 할 때 제너릭을 사용
 export class CRUDService<T> {
   // DB와 연관이 있는 서비스를 사용할 때 DB 접속에 사용될 레포지토리를 생성
   constructor(
@@ -25,6 +25,7 @@ export class CRUDService<T> {
   }
 
   // 1개 행 이상 Update
+  // DB에서 해당되는 행들을 찾을 검색 조건을 배열로, 검색된 행들을 변환해 줄 객체의 상태를 T자료형 객체로 받아옴
   async update(crudEntitySearchFilters: T[], crudEntityChangeResult: T): Promise<void> {
     // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
     const findResult = await this.find(crudEntitySearchFilters);
@@ -40,9 +41,9 @@ export class CRUDService<T> {
 
   // 1개 이상의 행 Delete
   async delete(crudEntities: T[]): Promise<void> {
+    // 조건을 만족하는 데이터가 존재하는지 확인
     // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
     // if ((await this.find(crudRepositorys)).length == 0) throw "질의 결과를 만족하지 못 했으므로 HTTP 예외를 Controller 에서 만듭니다.";
-    // 조건을 만족하는 데이터가 존재하는지 확인
     const findResult = await this.find(crudEntities);
 
     if (findResult.length === 0) {

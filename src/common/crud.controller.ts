@@ -1,7 +1,11 @@
 import { Body, Delete, Get, HttpException, HttpStatus, Post, Put } from "@nestjs/common";
 import { CRUDService } from "./crud.service";
 
+// CRUD의 기본 Controller 폼
+// 해당 클래스를 상속하는 클래스에서 동적으로 타입을 지정하기 위해 제너릭을 사용
 export class CRUDController<T> {
+  // ORM을 통해서 DB 접속에 사용되는 서비스 객체를 제너릭으로 생성
+  // 생성자 주입
   constructor(private readonly crudService: CRUDService<T>) {
     this.crudService = crudService;
   }
@@ -17,6 +21,7 @@ export class CRUDController<T> {
         msg: `create successfully`,
       });
     } catch {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -45,8 +50,8 @@ export class CRUDController<T> {
         msg: `read successfully`,
         data: { ...result },
       });
-      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
     } catch {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -57,7 +62,8 @@ export class CRUDController<T> {
     }
   }
 
-  // 1개 행 Update
+  // 1개 이상의 행 Update
+  // 업데이트를 위해서는 검색 결과에 사용될 엔티티 객체의 배열과, 변경될 객체의 속성 값에 대한 값들을 객체 형태로 넘겨줘야함
   @Put()
   async update(@Body("crudEntitySearchFilters") crudEntitySearchFilters: T[], @Body("crudChangeResult") crudChangeResult: T): Promise<HttpStatus> {
     try {
@@ -68,6 +74,7 @@ export class CRUDController<T> {
         msg: `update successfully`,
       });
     } catch {
+      // 동작이 실패한 경우 무조껀 catch에서 예외 발생 후 결과를 client 에게 송신
       throw new HttpException(
         {
           status: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -78,7 +85,7 @@ export class CRUDController<T> {
     }
   }
 
-  // 1개 행 Delete
+  // 1개 이상의 행 Delete
   @Delete()
   async delete(@Body() crudEntities: T[]): Promise<HttpStatus> {
     try {
