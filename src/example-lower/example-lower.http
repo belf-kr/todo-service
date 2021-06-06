@@ -1,0 +1,81 @@
+@Host = http://localhost:3000
+@Router = example-lower
+
+### example-lower 1개 이상 조회
+GET {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 여러 json 객체를 입력하는 경우 OR 형태로 검색이 된다.
+# 검색을 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+# 아래의 예시는 (name === "test name" AND exampleUpperID === 1) OR (exampleUpperID === 1)
+
+[
+    {
+        "name": "test name",
+        "exampleUpperID": 1
+    },
+    {
+        "exampleUpperID": 1
+    }
+]
+
+### example-lower 1개 이상 생성
+POST {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 입력을 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+# 아래 예시는 각 JSON 객채들을 Insert(총 2회)한다.
+
+[
+    {
+        "name": "This is name 1 from http",
+        "exampleUpperID": 1
+    },
+    {
+        "name": "This is name 2 from http",
+        "exampleUpperID": 2
+    }
+]
+
+
+### example-lower 1개 이상 수정
+PUT {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 여러 json 객체를 입력하는 경우 OR 형태로 검색이 된다.
+# 수정을 원하는 조건 및 결과의 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+# 아래의 예시는 (id === 3) OR (name === "This is name 1 from http") 으로 검색된 행들의 name 컬럼값을 "This is modified name from http" 으로 변경한다.
+
+{
+    "crudEntitySearchFilters": 
+    [
+        {
+            "id": 3
+        },
+        {
+            "name": "This is name 1 from http"
+        }
+    ],
+    "crudChangeResult": 
+    {
+        "name": "This is modified name from http"
+    }
+}
+
+
+### example-lower 1개 이상 삭제
+DELETE   {{Host}}/{{Router}}
+Content-Type: application/json
+
+# 여러 json 객체를 입력하는 경우 OR 형태로 검색이 된다.
+# 삭제를 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
+# 아래 예시는 (id === 1) OR (name === "test name2") 검색을 만족하는 행들을 전부 삭제한다.
+
+[
+    {
+        "id": 1
+    },
+    {
+        "name": "test name2"
+    }
+]

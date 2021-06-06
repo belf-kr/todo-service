@@ -16,8 +16,13 @@ spec:
       containers:
         - name: todo-service
           image: ghcr.io/belf-kr/todo-service/nestjs
+          imagePullPolicy: "Always"
           ports:
             - containerPort: 3000
+          resources:
+            limits:
+              cpu: 100m
+              memory: 100Mi
 ---
 apiVersion: v1
 kind: Service
