@@ -1,7 +1,8 @@
 # todo-service
 
-할일 관리에 대한 서비스를 제공합니다.  
-Mysql Replication 환경에 연결할 수 있도록 되어 있으며 주로 typeorm을 이용하여 데이터를 가공할 수 있도록 RESTful API를 제공합니다.
+할일 관리에 대한 서비스를 제공합니다.
+
+1. Mysql Replication 환경에 연결할 수 있도록 되어 있으며 주로 typeorm을 이용하여 데이터를 가공할 수 있도록 RESTful API를 제공합니다.
 
 # Stack
 
