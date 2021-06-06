@@ -19,7 +19,7 @@ import AppConfig from "./config/app.config";
       load: [AppConfig],
       // prod 환경의 환경변수는 모두 k8s가 컨트롤
       ignoreEnvFile: process.env.NODE_ENV === "production",
-      envFilePath: process.env.NODE_ENV === "development" ? ".env.dev" : null,
+      envFilePath: process.env.NODE_ENV === "development" ? ".env.dev" : "",
       validationSchema: Joi.object({
         DB_MASTER_HOST: Joi.string().required(),
         DB_MASTER_PORT: Joi.number().required(),
