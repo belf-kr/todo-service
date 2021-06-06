@@ -21,7 +21,8 @@ Mysql Replication 환경에 연결할 수 있도록 되어 있으며 주로 type
 
 | Variable           | dev | qa/prod | Usage                                                                                                    | Default   | Example         |
 | ------------------ | :-: | :-----: | -------------------------------------------------------------------------------------------------------- | --------- | --------------- |
-| STAGES             |  ✔  |    ✔    | `NodeJS 실행 환경에서` 실행 환경의 구분을 위해 사용되는 값입니다.                                        | null      | local, qa, prod |
+| STAGES             |  ✖  |    ✔    | `k8s에서` 실행 환경에 맞는 svc를 연결 및 디버깅을 위해 사용되는 값입니다.                                | 🤷‍♂️        | local, qa, prod |
+| NODE_ENV           |  ✔  |    ✔    | `NodeJS 실행 환경` 을 설정하는 값입니다.                                                                 | null      | local, qa, prod |
 | DB_MASTER_HOST     |  ✔  |    ✔    | `DB 연결을 위한 주소로 MASTER 환경에서` 사용되는 값입니다.                                               | localhost | localhost       |
 | DB_MASTER_PORT     |  ✔  |    ✔    | `DB 연결을 위한 포트 번호로 MASTER 환경에서` 사용되는 값입니다.                                          | 3306      | 3306            |
 | DB_MASTER_USERNAME |  ✔  |    ✔    | `DB 계정명으로 MASTER 환경에서` 사용되는 값입니다.                                                       | root      | root            |
