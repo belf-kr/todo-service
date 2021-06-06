@@ -33,5 +33,6 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-### mysql
-docker/mysql-data
+### mysql (@JP3Pe, 김재광)
+docker/mysql/master/mysql-data
+docker/mysql/slave1/mysql-data
