@@ -23,6 +23,75 @@ spec:
             limits:
               cpu: 100m
               memory: 100Mi
+          env:
+            # 배포 stages
+            - name: STAGES
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: STAGES
+
+            # db master config
+            - name: DB_MASTER_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_HOST
+
+            - name: DB_MASTER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_PORT
+
+            - name: DB_MASTER_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_USERNAME
+
+            - name: DB_MASTER_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_PASSWORD
+
+            - name: DB_MASTER_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_MASTER_DATABASE
+
+            # db slave config
+            - name: DB_SLAVE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_SLAVE_HOST
+
+            - name: DB_SLAVE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_SLAVE_PORT
+
+            - name: DB_SLAVE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_SLAVE_USERNAME
+
+            - name: DB_SLAVE_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_SLAVE_PASSWORD
+
+            - name: DB_SLAVE_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: qa-config
+                  key: DB_SLAVE_DATABASE
 ---
 apiVersion: v1
 kind: Service
