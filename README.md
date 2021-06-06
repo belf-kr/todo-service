@@ -14,7 +14,8 @@ Mysql Replication 환경에 연결할 수 있도록 되어 있으며 주로 type
 
 # 빠른 시작
 
-1. 사용할 mysql server 활성화 및 환경변수를 수정합니다.
+1. 환경에 맞게 환경 변수를 수정합니다.
+1. mysql server를 활성화합니다.
 1. `npm i && npm run start:dev` 를 이용해 nestjs를 시작합니다.
 
 # 환경 변수
