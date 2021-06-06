@@ -1,20 +1,23 @@
 # todo-service
 
-할일 관리에 대한 기능을 제공합니다.
+할일 관리에 대한 서비스를 제공합니다.  
+Mysql Replication 환경에 연결할 수 있도록 되어 있으며 주로 typeorm을 이용하여 데이터를 가공할 수 있도록 RESTful API를 제공합니다.
 
 # Stack
 
 1. node:v14.16.1
 1. vscode
 1. nest.js
+1. typeorm
+1. mysql:5.7.16
+1. docker
 
-# 필수 조건
+# 빠른 시작
 
-1. mysql server가 활성화되어 있어야 합니다.
+1. 사용할 mysql server 활성화 및 환경변수를 수정합니다.
+1. `npm i && npm run start:dev` 를 이용해 nestjs를 시작합니다.
 
 # 환경 변수
-
-## Local 환경
 
 | Variable           | dev | qa/prod | Usage                                                                                                    | Default   | Example         |
 | ------------------ | :-: | :-----: | -------------------------------------------------------------------------------------------------------- | --------- | --------------- |
@@ -30,23 +33,3 @@
 | DB_SLAVE_PASSWORD  |  ✔  |    ✔    | `DB 계정의 비밀번호로 SLAVE 환경에서` 사용되는 값입니다.                                                 | example   | example         |
 | DB_SLAVE_DATABASE  |  ✔  |    ✔    | `연결을 할 DB명으로 SLAVE 환경에서` 사용되는 값입니다.                                                   | belf      | belf            |
 | DB_SYNCHRONIZE     |  ✔  |    ✖    | `DB 스키마를 entity 코드와 자동 동기화(기존 스키마의 정보가 삭제됨) 할지를 물어볼 때` 사용되는 값입니다. | false     | false, true     |
-
-# History
-
-## 프로젝트 생성 방법
-
-공식도구인 `@nestjs/cli` 를 사용했습니다.
-
-```shell
-nest new api-gateway
-```
-
-## pipeline
-
-### origin인 `front-server` 와 다른점
-
-내부망에서 돌기 때문에 아래의 선언이 삭제되었습니다.  
-즉, `ingress-basic` ns와 관련있는 리소스가 남아있으면 안됩니다.
-
-1. `.github.workflows` 디렉터리의 `aks apply service for ingress` 삭제
-1. `k8s` 디렉터리의 `-external.yaml` 시리즈 리소스 삭제
