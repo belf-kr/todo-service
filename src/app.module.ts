@@ -11,6 +11,8 @@ import { ExampleUpperModule } from "./example-upper/example-upper.module";
 import { ExampleLowerModule } from "./example-lower/example-lower.module";
 import { ColorModule } from "./color/color.module";
 import { CourseModule } from "./course/course.module";
+import { TagModule } from "./tag/tag.module";
+import { CourseTagModule } from "./course-tag/course-tag.module";
 
 import AppConfig from "./config/app.config";
 
@@ -48,6 +50,8 @@ import AppConfig from "./config/app.config";
     ExampleLowerModule,
     ColorModule,
     CourseModule,
+    TagModule,
+    CourseTagModule,
   ],
   controllers: [AppController],
   providers: [AppService],
