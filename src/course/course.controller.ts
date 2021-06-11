@@ -6,6 +6,20 @@ import { Course } from "src/entity/course.entity";
 
 import { CourseService } from "./course.service";
 
+type TagType = {
+  value: string;
+};
+
+type CourseType = {
+  originalCourseID: number;
+  color: string;
+  creatorID: number;
+  explanation: string;
+  title: string;
+  likeCount: number;
+  tags: TagType[];
+};
+
 @Controller("course")
 export class CourseController extends CRUDController<Course> {
   constructor(private readonly courseService: CourseService) {
@@ -13,9 +27,9 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Post("create-course")
-  async createCourse(@Body() courseEntity: Course[]): Promise<void> {
+  async createCourse(@Body() coursesInput: CourseType): Promise<void> {
     try {
-      await this.courseService.createCourse(courseEntity);
+      await this.courseService.createCourse(coursesInput);
 
       return Object.assign({
         status: HttpStatus.CREATED,

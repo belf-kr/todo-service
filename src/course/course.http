@@ -67,10 +67,12 @@ Content-Type: application/json
 POST {{Host}}/{{Router}}/create-course
 Content-Type: application/json
 
-[
-    {
-        "color": "#FF8484",
-        "title": "영어공부하기",
-        "explanation": "토익 ..."
-    }
-]
+{
+    "color": "#FF8484",
+    "title": "영어공부하기",
+    "explanation": "토익 ...",
+    "tags": [
+        "영어",
+        "토익"
+    ]
+}
