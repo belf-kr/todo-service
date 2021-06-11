@@ -10,6 +10,7 @@ import { AppService } from "./app.service";
 import { ExampleUpperModule } from "./example-upper/example-upper.module";
 import { ExampleLowerModule } from "./example-lower/example-lower.module";
 import { ColorModule } from "./color/color.module";
+import { CourseModule } from "./course/course.module";
 
 import AppConfig from "./config/app.config";
 
@@ -46,6 +47,7 @@ import AppConfig from "./config/app.config";
     ExampleUpperModule,
     ExampleLowerModule,
     ColorModule,
+    CourseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
