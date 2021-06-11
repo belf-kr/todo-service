@@ -36,3 +36,4 @@
 | DB_SLAVE_PASSWORD  | ✅  |   ✅    |   🤷‍♂️    | example                 | `DB 계정의 비밀번호로 SLAVE 환경에서` 사용되는 값입니다.                                                 |
 | DB_SLAVE_DATABASE  | ✅  |   ✅    |   🤷‍♂️    | belf                    | `연결을 할 DB명으로 SLAVE 환경에서` 사용되는 값입니다.                                                   |
 | DB_SYNCHRONIZE     | ✅  |   🚫    |  false  | false                   | `DB 스키마를 entity 코드와 자동 동기화(기존 스키마의 정보가 삭제됨) 할지를 물어볼 때` 사용되는 값입니다. |
+| SERVER_PORT        | ✅  |   🚫    |  3000   | 3000, 3003              | `NodeJS의 listen 포트를 지정하는데` 사용되는 값입니다.                                                   |

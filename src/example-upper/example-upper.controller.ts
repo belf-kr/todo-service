@@ -2,8 +2,9 @@ import { Controller } from "@nestjs/common";
 
 import { ExampleUpperService } from "./example-upper.service";
 
-import { ExampleUpper } from "src/entity/example-upper.entity";
 import { CRUDController } from "src/common/crud.controller";
+
+import { ExampleUpper } from "src/entity/example-upper.entity";
 
 @Controller("example-upper")
 // CRUD 컨트롤러를 상속
