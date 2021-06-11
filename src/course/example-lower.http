@@ -61,3 +61,16 @@ Content-Type: application/json
         "name": "test name2"
     }
 ]
+
+# API
+### course 1개 이상 삽입
+POST {{Host}}/{{Router}}/create-course
+Content-Type: application/json
+
+[
+    {
+        "color": "#FF8484",
+        "title": "영어공부하기",
+        "explanation": "토익 ..."
+    }
+]
