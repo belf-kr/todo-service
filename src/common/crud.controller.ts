@@ -1,5 +1,8 @@
 import { Body, Delete, Get, HttpException, HttpStatus, Post, Put } from "@nestjs/common";
+
 import { CRUDService } from "./crud.service";
+
+import { getErrorHttpStatusCode, getErrorMessage } from "./lib/error";
 
 // CRUD의 기본 Controller 폼
 // 해당 클래스를 상속하는 클래스에서 동적으로 타입을 지정하기 위해 제너릭을 사용
@@ -20,15 +23,11 @@ export class CRUDController<T> {
         status: HttpStatus.CREATED,
         msg: `create successfully`,
       });
-    } catch {
+    } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          msg: `create failed`,
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
@@ -50,15 +49,11 @@ export class CRUDController<T> {
         msg: `read successfully`,
         data: { ...result },
       });
-    } catch {
+    } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: `read failed`,
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
@@ -73,15 +68,11 @@ export class CRUDController<T> {
         status: HttpStatus.OK,
         msg: `update successfully`,
       });
-    } catch {
-      // 동작이 실패한 경우 무조껀 catch에서 예외 발생 후 결과를 client 에게 송신
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: `update failed`,
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+    } catch (error) {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
@@ -95,15 +86,11 @@ export class CRUDController<T> {
         status: HttpStatus.OK,
         msg: `delete successfully`,
       });
-    } catch {
-      // 동작이 실패한 경우 무조껀 catch에서 예외 발생 후 결과를 client 에게 송신
-      throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: `delete failed`,
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
+    } catch (error) {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+      throw new HttpException(message, httpStatusCode);
     }
   }
 }
