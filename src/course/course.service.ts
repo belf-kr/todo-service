@@ -40,7 +40,5 @@ export class CourseService extends CRUDService<Course> {
     );
 
     return this.create(courseEntities);
-
-    // TODO: Course 객체에 대한 Tag를 삽입한다.
   }
 }

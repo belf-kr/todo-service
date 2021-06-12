@@ -1,8 +1,13 @@
 import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
 
-import { CRUDController } from "src/common/crud.controller";
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
+import { CRUDController } from "src/common/crud.controller";
+
 import { Course } from "src/entity/course.entity";
+import { Tag } from "src/entity/tag.entity";
+
+import { CourseTagService } from "src/course-tag/course-tag.service";
+import { TagService } from "src/tag/tag.service";
 
 import { CourseService } from "./course.service";
 
@@ -22,7 +27,7 @@ type CourseType = {
 
 @Controller("course")
 export class CourseController extends CRUDController<Course> {
-  constructor(private readonly courseService: CourseService) {
+  constructor(private readonly courseService: CourseService, private readonly tagService: TagService, private readonly courseTagService: CourseTagService) {
     super(courseService);
   }
 
@@ -30,6 +35,15 @@ export class CourseController extends CRUDController<Course> {
   async createCourse(@Body() coursesInput: CourseType): Promise<void> {
     try {
       await this.courseService.createCourse(coursesInput);
+
+      const tags = new Array<Tag>();
+      coursesInput.tags.forEach((tag) => {
+        tags.push(new Tag(tag.value));
+      });
+      await this.tagService.create(tags);
+
+      // TODO: 태그들, 코스의 ID 값 알아오기
+      // TODO: courseTag 관련 삽입 메소드 호출
 
       return Object.assign({
         status: HttpStatus.CREATED,

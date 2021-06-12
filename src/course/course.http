@@ -72,7 +72,11 @@ Content-Type: application/json
     "title": "영어공부하기",
     "explanation": "토익 ...",
     "tags": [
-        "영어",
-        "토익"
+        {
+            "value": "영어"
+        },
+        {
+            "value": "토익"
+        }
     ]
 }
