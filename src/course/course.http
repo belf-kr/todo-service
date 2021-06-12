@@ -68,5 +68,6 @@ Content-Type: application/json
         {
             "value": "토익"
         }
-    ]
+    ],
+    "sample": "Hello"
 }
