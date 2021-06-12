@@ -5,16 +5,6 @@
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 
-[
-    {
-        "name": "test name",
-        "exampleUpperId": 1
-    },
-    {
-        "exampleUpperId": 1
-    }
-]
-
 ### course 1개 이상 생성
 POST {{Host}}/{{Router}}
 Content-Type: application/json

@@ -5,6 +5,7 @@ import { CRUDController } from "src/common/crud.controller";
 
 import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
+import { CourseTag } from "src/entity/course-tag.entity";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
 import { TagService } from "src/tag/tag.service";
@@ -44,8 +45,26 @@ export class CourseController extends CRUDController<Course> {
 
       // Tag 들의 Id 값 찾기
       tags = await this.tagService.find(tags);
-      // TODO: 코스의 Id 값 알아오기
-      // TODO: courseTag 관련 삽입 메소드 호출
+
+      // 코스의 Id 값 알아오기
+      let courses = new Array<Course>();
+      const course = new Course(
+        coursesInput.originalCourseId,
+        coursesInput.color,
+        coursesInput.creatorId,
+        coursesInput.explanation,
+        coursesInput.title,
+        coursesInput.likeCount
+      );
+      courses.push(course);
+      courses = await this.courseService.find(courses);
+
+      // courseTag 관련 삽입 메소드 호출
+      const courseTags = new Array<CourseTag>();
+      tags.forEach((tag) => {
+        courseTags.push(new CourseTag(courses[0].id, tag.id));
+      });
+      this.courseTagService.create(courseTags);
 
       return Object.assign({
         status: HttpStatus.CREATED,

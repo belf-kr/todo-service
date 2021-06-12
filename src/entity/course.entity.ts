@@ -20,7 +20,6 @@ export class Course {
   @OneToOne(() => Course, (course) => course.id, {
     onDelete: "SET NULL",
     nullable: true,
-    eager: true,
   })
   @JoinColumn({ name: "original_course_id" })
   originalCourseId: number;
