@@ -36,13 +36,15 @@ export class CourseController extends CRUDController<Course> {
     try {
       await this.courseService.createCourse(coursesInput);
 
-      const tags = new Array<Tag>();
+      let tags = new Array<Tag>();
       coursesInput.tags.forEach((tag) => {
         tags.push(new Tag(tag.value));
       });
       await this.tagService.create(tags);
 
-      // TODO: 태그들, 코스의 Id 값 알아오기
+      // Tag 들의 Id 값 찾기
+      tags = await this.tagService.find(tags);
+      // TODO: 코스의 Id 값 알아오기
       // TODO: courseTag 관련 삽입 메소드 호출
 
       return Object.assign({
