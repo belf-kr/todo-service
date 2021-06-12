@@ -8,10 +8,10 @@ Content-Type: application/json
 [
     {
         "name": "test name",
-        "exampleUpperID": 1
+        "exampleUpperId": 1
     },
     {
-        "exampleUpperID": 1
+        "exampleUpperId": 1
     }
 ]
 

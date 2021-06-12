@@ -16,9 +16,9 @@ type TagType = {
 };
 
 type CourseType = {
-  originalCourseID: number;
+  originalCourseId: number;
   color: string;
-  creatorID: number;
+  creatorId: number;
   explanation: string;
   title: string;
   likeCount: number;
@@ -42,7 +42,7 @@ export class CourseController extends CRUDController<Course> {
       });
       await this.tagService.create(tags);
 
-      // TODO: 태그들, 코스의 ID 값 알아오기
+      // TODO: 태그들, 코스의 Id 값 알아오기
       // TODO: courseTag 관련 삽입 메소드 호출
 
       return Object.assign({

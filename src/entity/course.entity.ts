@@ -5,10 +5,10 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class Course {
-  constructor(originalCourseID: number = null, color: string, creatorID: number = null, explanation: string, title: string, likeCount = 0) {
-    this.originalCourseId = originalCourseID;
+  constructor(originalCourseId: number = null, color: string, creatorId: number = null, explanation: string, title: string, likeCount = 0) {
+    this.originalCourseId = originalCourseId;
     this.color = color;
-    this.creatorId = creatorID;
+    this.creatorId = creatorId;
     this.explanation = explanation;
     this.title = title;
     this.likeCount = likeCount;

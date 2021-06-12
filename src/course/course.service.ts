@@ -10,9 +10,9 @@ type TagType = {
 };
 
 type CourseType = {
-  originalCourseID: number;
+  originalCourseId: number;
   color: string;
-  creatorID: number;
+  creatorId: number;
   explanation: string;
   title: string;
   likeCount: number;
@@ -30,9 +30,9 @@ export class CourseService extends CRUDService<Course> {
     const courseEntities = new Array<Course>();
     courseEntities.push(
       new Course(
-        coursesInput.originalCourseID,
+        coursesInput.originalCourseId,
         coursesInput.color,
-        coursesInput.creatorID,
+        coursesInput.creatorId,
         coursesInput.explanation,
         coursesInput.title,
         coursesInput.likeCount
