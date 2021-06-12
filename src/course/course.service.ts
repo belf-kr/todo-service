@@ -2,22 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
+import { CourseType } from "src/type/course.type";
+
 import { CRUDService } from "src/common/crud.service";
 import { Course } from "src/entity/course.entity";
-
-type TagType = {
-  value: string;
-};
-
-type CourseType = {
-  originalCourseId: number;
-  color: string;
-  creatorId: number;
-  explanation: string;
-  title: string;
-  likeCount: number;
-  tags: TagType[];
-};
 
 @Injectable()
 export class CourseService extends CRUDService<Course> {

@@ -3,6 +3,8 @@ import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/commo
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
 
+import { CourseType } from "src/type/course.type";
+
 import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
@@ -11,20 +13,6 @@ import { CourseTagService } from "src/course-tag/course-tag.service";
 import { TagService } from "src/tag/tag.service";
 
 import { CourseService } from "./course.service";
-
-type TagType = {
-  value: string;
-};
-
-type CourseType = {
-  originalCourseId: number;
-  color: string;
-  creatorId: number;
-  explanation: string;
-  title: string;
-  likeCount: number;
-  tags: TagType[];
-};
 
 @Controller("course")
 export class CourseController extends CRUDController<Course> {
