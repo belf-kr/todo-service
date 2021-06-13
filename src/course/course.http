@@ -53,7 +53,7 @@ Content-Type: application/json
 ]
 
 # API
-### course 1개 이상 삽입
+### course 생성
 POST {{Host}}/{{Router}}/create-course
 Content-Type: application/json
 
@@ -68,6 +68,5 @@ Content-Type: application/json
         {
             "value": "토익"
         }
-    ],
-    "sample": "Hello"
+    ]
 }
