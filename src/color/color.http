@@ -1,25 +1,20 @@
-@Host = http://localhost:3000
-@Router = example-lower
+@Host = http://localhost:3003
+@Router = color
 
-### example-lower 1개 이상 조회
+### color 1개 이상 조회
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 
 # 여러 json 객체를 입력하는 경우 OR 형태로 검색이 된다.
 # 검색을 원하는 값과 컬럼명이 한 치의 오차도 없이 정확해야 한다.
-# 아래의 예시는 (name === "test name" AND exampleUpperId === 1) OR (exampleUpperId === 1)
+# 아래의 예시는 (name === "test name" AND exampleUpperID === 1) OR (exampleUpperID === 1)
 
 [
     {
-        "name": "test name",
-        "exampleUpperId": 1
-    },
-    {
-        "exampleUpperId": 1
     }
 ]
 
-### example-lower 1개 이상 생성
+### color 1개 이상 생성
 POST {{Host}}/{{Router}}
 Content-Type: application/json
 
@@ -29,16 +24,16 @@ Content-Type: application/json
 [
     {
         "name": "This is name 1 from http",
-        "exampleUpperId": 1
+        "exampleUpperID": 1
     },
     {
         "name": "This is name 2 from http",
-        "exampleUpperId": 2
+        "exampleUpperID": 2
     }
 ]
 
 
-### example-lower 1개 이상 수정
+### color 1개 이상 수정
 PUT {{Host}}/{{Router}}
 Content-Type: application/json
 
@@ -63,7 +58,7 @@ Content-Type: application/json
 }
 
 
-### example-lower 1개 이상 삭제
+### color 1개 이상 삭제
 DELETE   {{Host}}/{{Router}}
 Content-Type: application/json
 
@@ -79,3 +74,7 @@ Content-Type: application/json
         "name": "test name2"
     }
 ]
+
+### color 정보 전체 조회
+GET {{Host}}/{{Router}}/get-all-colors
+Content-Type: application/json

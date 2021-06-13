@@ -29,14 +29,14 @@ export class CRUDService<T> {
   async update(crudEntitySearchFilters: T[], crudEntityChangeResult: T): Promise<void> {
     // 컬럼명 및 컬럼에 해당되는 데이터에 오류가 있는 경우 예외가 발생
     const findResult = await this.find(crudEntitySearchFilters);
-    const findResultIDs = [];
+    const findResultIds = [];
 
-    // ID 값들을 가져와 배열에 저장하기
+    // Id 값들을 가져와 배열에 저장하기
     for (const item of findResult) {
-      findResultIDs.push(item["id"]);
+      findResultIds.push(item["id"]);
     }
 
-    await this.crudRepository.update(findResultIDs, crudEntityChangeResult);
+    await this.crudRepository.update(findResultIds, crudEntityChangeResult);
   }
 
   // 1개 이상의 행 Delete

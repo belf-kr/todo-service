@@ -5,10 +5,16 @@ import { Tag } from "./tag.entity";
 
 @Entity({})
 export class CourseTag {
+  constructor(courseId: number, tagId: number) {
+    this.courseId = courseId;
+    this.tagId = tagId;
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => Course, (course) => course.id, {
+    nullable: false,
     onDelete: "CASCADE",
     eager: true,
   })
@@ -16,6 +22,7 @@ export class CourseTag {
   courseId: number;
 
   @ManyToOne(() => Tag, (tag) => tag.id, {
+    nullable: false,
     onDelete: "CASCADE",
     eager: true,
   })
