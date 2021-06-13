@@ -33,7 +33,7 @@ export class CourseController extends CRUDController<Course> {
 
       const existTags = await this.tagService.find(inputTags);
       const newTags = Array<Tag>();
-      // 입력한 Tag값이 존재하지 않던 경우 검색
+      // 입력한 Tag값이 존재하지 않던 경우 판별
       inputTags.forEach((inputTag) => {
         if (!existTags.find((existTag) => existTag.value === inputTag.value)) {
           newTags.push(inputTag);
@@ -45,12 +45,13 @@ export class CourseController extends CRUDController<Course> {
       inputTags = await this.tagService.find(inputTags);
 
       // 코스의 Id 값 알아오기
-      // TODO: 중복되는 검색 조건 인 경우 방금 추가한 코스의 id 값 알아오는 방법 알아내기
       let courses = new Array<Course>();
       const course = new Course(
         coursesInput.originalCourseId,
         coursesInput.color,
         coursesInput.creatorId,
+        coursesInput.startDate,
+        coursesInput.endDate,
         coursesInput.explanation,
         coursesInput.title,
         coursesInput.likeCount
@@ -61,6 +62,7 @@ export class CourseController extends CRUDController<Course> {
       // courseTag 관련 삽입 메소드 호출
       const courseTags = new Array<CourseTag>();
       inputTags.forEach((tag) => {
+        // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
         courseTags.push(new CourseTag(courses[0].id, tag.id));
       });
       this.courseTagService.create(courseTags);

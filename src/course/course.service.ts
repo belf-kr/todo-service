@@ -21,6 +21,8 @@ export class CourseService extends CRUDService<Course> {
         coursesInput.originalCourseId,
         coursesInput.color,
         coursesInput.creatorId,
+        coursesInput.startDate,
+        coursesInput.endDate,
         coursesInput.explanation,
         coursesInput.title,
         coursesInput.likeCount
