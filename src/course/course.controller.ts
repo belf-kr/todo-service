@@ -1,4 +1,4 @@
-import { Body, Controller, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
 
@@ -73,6 +73,34 @@ export class CourseController extends CRUDController<Course> {
         msg: `create successfully`,
       });
     } catch (error) {
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+      throw new HttpException(message, httpStatusCode);
+    }
+  }
+
+  @Get("get-all-courses")
+  async getAllCourses(): Promise<HttpStatus> {
+    try {
+      // 코스 리스트 저장
+      const serviceResult: Course[] = await this.courseService.getAllCourses();
+
+      if (!serviceResult.length) {
+        throw new Error("코스가 존재하지 않습니다.");
+      }
+
+      // 결과값 반환 위한 리스트
+      const courseResult = Array<Course>();
+
+      for (const course of serviceResult) {
+        courseResult.push(course);
+      }
+
+      return Object.assign({
+        course_list: courseResult,
+      });
+    } catch (error) {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
       throw new HttpException(message, httpStatusCode);

@@ -32,4 +32,11 @@ export class CourseService extends CRUDService<Course> {
 
     return this.create(courseEntities);
   }
+
+  async getAllCourses(): Promise<Course[]> {
+    const blankCourses: Course[] = new Array<Course>();
+    const res = this.find(blankCourses);
+
+    return res;
+  }
 }
