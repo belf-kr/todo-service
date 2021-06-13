@@ -8,7 +8,7 @@ import { CourseTag } from "src/entity/course-tag.entity";
 
 @Module({
   imports: [TypeOrmModule.forFeature([CourseTag])],
-  providers: [CourseTagService],
   controllers: [CourseTagController],
+  providers: [CourseTagService],
 })
 export class CourseTagModule {}
