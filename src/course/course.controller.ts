@@ -5,13 +5,14 @@ import { CourseService } from "./course.service";
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
 
-import { CourseType } from "src/type/course.type";
+import { CourseType } from "src/course/course.type";
 
 import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
+
 import { TagService } from "src/tag/tag.service";
 
 @Controller("course")

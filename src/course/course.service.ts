@@ -2,9 +2,10 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { CourseType } from "src/type/course.type";
-
 import { CRUDService } from "src/common/crud.service";
+
+import { CourseType } from "src/course/course.type";
+
 import { Course } from "src/entity/course.entity";
 
 @Injectable()
