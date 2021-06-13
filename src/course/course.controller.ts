@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
+import { CourseTypeDto } from "./course.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -90,10 +91,23 @@ export class CourseController extends CRUDController<Course> {
       }
 
       // 결과값 반환 위한 리스트
-      const courseResult = Array<Course>();
+      const courseResult = Array<CourseTypeDto>();
 
+      // TODO: 코스의 정보와 코스에 대한 태그 정보를 입력한다.
       for (const course of serviceResult) {
-        courseResult.push(course);
+        courseResult.push(
+          new CourseTypeDto(
+            course.originalCourseId,
+            course.color["id"],
+            course.creatorId,
+            course.startDate,
+            course.endDate,
+            course.explanation,
+            course.title,
+            course.likeCount,
+            new Array<Tag>()
+          )
+        );
       }
 
       return Object.assign({
