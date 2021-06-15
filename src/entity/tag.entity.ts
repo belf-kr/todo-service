@@ -2,9 +2,13 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({})
 export class Tag {
-  constructor(value: string) {
+  constructor(value: string, id?: number) {
     this.value = value;
+    if (id) {
+      this.id = id;
+    }
   }
+
   @PrimaryGeneratedColumn({})
   id: number;
 

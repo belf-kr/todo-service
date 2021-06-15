@@ -4,6 +4,18 @@ import { Course } from "./course.entity";
 
 @Entity({})
 export class WorkTodo {
+  constructor(courseId: number, recurringCycleDate: number, title: string, explanation: string, passedDay: number, addDate: Date, id?: number) {
+    this.courseId = courseId;
+    this.recurringCycleDate = recurringCycleDate;
+    this.title = title;
+    this.explanation = explanation;
+    this.passedDay = passedDay;
+    this.addDate = addDate;
+    if (id) {
+      this.id = id;
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -5,6 +5,15 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class CoursePriority {
+  constructor(userId: number, courseId: number, priority: number, id?: number) {
+    this.userId = userId;
+    this.courseId = courseId;
+    this.priority = priority;
+    if (id) {
+      this.id = id;
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

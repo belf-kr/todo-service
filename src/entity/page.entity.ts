@@ -2,6 +2,14 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({})
 export class Page {
+  constructor(title: string, content: string, id?: number) {
+    this.title = title;
+    this.content = content;
+    if (id) {
+      this.id = id;
+    }
+  }
+
   @PrimaryGeneratedColumn({})
   id: number;
 

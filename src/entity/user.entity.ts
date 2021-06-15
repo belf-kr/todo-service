@@ -4,6 +4,32 @@ import { File } from "./file.entity";
 
 @Entity({})
 export class User {
+  constructor(
+    profilePicture: number,
+    email: string,
+    nickname: string,
+    introduction: string,
+    lastConnectedIp: string,
+    lastConnectedTime: Date,
+    password: string,
+    isAuth: boolean,
+    isUsingOAuth: boolean,
+    id?: number
+  ) {
+    this.profilePicture = profilePicture;
+    this.email = email;
+    this.nickname = nickname;
+    this.introduction = introduction;
+    this.lastConnectedIp = lastConnectedIp;
+    this.lastConnectedTime = lastConnectedTime;
+    this.password = password;
+    this.isAuth = isAuth;
+    this.isUsingOAuth = isUsingOAuth;
+    if (id) {
+      this.id = id;
+    }
+  }
+
   @PrimaryGeneratedColumn({})
   id: number;
 

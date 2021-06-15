@@ -13,7 +13,8 @@ export class Course {
     endDate: Date = null,
     explanation: string,
     title: string,
-    likeCount = 0
+    likeCount = 0,
+    id?: number
   ) {
     this.originalCourseId = originalCourseId;
     this.color = color;
@@ -23,6 +24,9 @@ export class Course {
     this.explanation = explanation;
     this.title = title;
     this.likeCount = likeCount;
+    if (id) {
+      this.id = id;
+    }
   }
 
   @PrimaryGeneratedColumn()
