@@ -45,7 +45,9 @@ export class CourseController extends CRUDController<Course> {
       await this.tagService.create(newTags);
 
       // Tag 들의 Id 값 찾기
-      inputTags = await this.tagService.find(inputTags);
+      if (inputTags.length) {
+        inputTags = await this.tagService.find(inputTags);
+      }
 
       // 코스의 Id 값 알아오기
       let courses = new Array<Course>();
