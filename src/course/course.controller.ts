@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { getRepository } from "typeorm";
 
 import { CourseService } from "./course.service";
 import { CourseTypeDto } from "./course.dto";
@@ -93,8 +94,29 @@ export class CourseController extends CRUDController<Course> {
       // 결과값 반환 위한 리스트
       const courseResult = Array<CourseTypeDto>();
 
-      // TODO: 코스의 정보와 코스에 대한 태그 정보를 입력한다.
+      // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
       for (const course of serviceResult) {
+        // course 상수에 대한 tag 값을 join 해서 가져온다
+        /*
+          SELECT *
+          FROM course
+          INNER JOIN course_tag ct on course.id = ct.course_id
+          INNER JOIN tag t on ct.tag_id = t.id
+          WHERE ct.course_id = ?
+        */
+        const joinResult = await getRepository(CourseTag)
+          .createQueryBuilder("ct")
+          .innerJoinAndMapMany("ct", Course, "c", "ct.course_id = c.id")
+          .innerJoinAndMapMany("ct", Tag, "t", "ct.tag_id = t.id")
+          .where("ct.course_id = :courseId", { courseId: course.id })
+          .getRawMany();
+
+        // 태그 배열을 생성하기
+        const tagsResult = new Array<Tag>();
+        joinResult.forEach((joinItem) => {
+          tagsResult.push(new Tag(joinItem["t_value"]));
+        });
+
         courseResult.push(
           new CourseTypeDto(
             course.originalCourseId,
@@ -105,7 +127,7 @@ export class CourseController extends CRUDController<Course> {
             course.explanation,
             course.title,
             course.likeCount,
-            new Array<Tag>()
+            tagsResult
           )
         );
       }
