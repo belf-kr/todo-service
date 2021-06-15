@@ -11,7 +11,8 @@ export class CourseTypeDto implements CourseType {
     explanation: string,
     title: string,
     likeCount = 0,
-    tags: TagType[]
+    tags: TagType[],
+    id?: number
   ) {
     this.originalCourseId = originalCourseId;
     this.color = color;
@@ -22,7 +23,12 @@ export class CourseTypeDto implements CourseType {
     this.title = title;
     this.likeCount = likeCount;
     this.tags = tags;
+    if (id) {
+      this.id = id;
+    }
   }
+
+  id: number;
   originalCourseId: number;
   color: string;
   creatorId: number;
