@@ -31,7 +31,9 @@ export class CourseController extends CRUDController<Course> {
       // JSON 형태의 입력 값을 Tag entity 배열 객체로 생성
       let inputTags = new Array<Tag>();
       coursesInput.tags.forEach((tag) => {
-        inputTags.push(new Tag(tag.value));
+        const tagEntity = new Tag();
+        tagEntity.value = tag.value;
+        inputTags.push(tagEntity);
       });
 
       const existTags = await this.tagService.find(inputTags);
@@ -68,7 +70,10 @@ export class CourseController extends CRUDController<Course> {
       const courseTags = new Array<CourseTag>();
       inputTags.forEach((tag) => {
         // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
-        courseTags.push(new CourseTag(courses[0].id, tag.id));
+        const courseTagEntity = new CourseTag();
+        courseTagEntity.id = courses[0].id;
+        courseTagEntity.tagId = tag.id;
+        courseTags.push(courseTagEntity);
       });
       await this.courseTagService.create(courseTags);
 
@@ -116,7 +121,9 @@ export class CourseController extends CRUDController<Course> {
         // 태그 배열을 생성하기
         const tagsResult = new Array<Tag>();
         joinResult.forEach((joinItem) => {
-          tagsResult.push(new Tag(joinItem["t_value"]));
+          const tagEntity = new Tag();
+          tagEntity.value = joinItem["t_value"];
+          tagsResult.push(tagEntity);
         });
 
         courseResult.push(

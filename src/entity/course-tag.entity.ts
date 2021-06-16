@@ -5,14 +5,6 @@ import { Tag } from "./tag.entity";
 
 @Entity({})
 export class CourseTag {
-  constructor(courseId: number, tagId: number, id?: number) {
-    this.courseId = courseId;
-    this.tagId = tagId;
-    if (id) {
-      this.id = id;
-    }
-  }
-
   @PrimaryGeneratedColumn()
   id: number;
 

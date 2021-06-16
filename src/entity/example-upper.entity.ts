@@ -4,18 +4,6 @@ import { Column, CreateDateColumn, Double, Entity, PrimaryGeneratedColumn, Updat
   name: "example_upper",
 })
 export class ExampleUpper {
-  constructor(creationDate: Date, updateDate: Date, title: string, content: string, defaultDouble: Double, nullableInt: number, id?: number) {
-    this.creationDate = creationDate;
-    this.updateDate = updateDate;
-    this.title = title;
-    this.content = content;
-    this.defaultDouble = defaultDouble;
-    this.nullableInt = nullableInt;
-    if (id) {
-      this.id = id;
-    }
-  }
-
   // 기본적으로 생성되는 컬럼으로, 숫자값이 자동 증가됨
   @PrimaryGeneratedColumn()
   id: number;

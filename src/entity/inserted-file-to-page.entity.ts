@@ -5,14 +5,6 @@ import { Page } from "./page.entity";
 
 @Entity({})
 export class InsertedFileToPage {
-  constructor(pageId: number, fileId: number, id?: number) {
-    this.pageId = pageId;
-    this.fileId = fileId;
-    if (id) {
-      this.id = id;
-    }
-  }
-
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -2,16 +2,6 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity({})
 export class File {
-  constructor(fileName: string, originalFileName: string, directoryPath: string, extension: string, id?: number) {
-    this.file_name = fileName;
-    this.original_file_name = originalFileName;
-    this.directory_path = directoryPath;
-    this.extension = extension;
-    if (id) {
-      this.id = id;
-    }
-  }
-
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -5,15 +5,6 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class CourseImportation {
-  constructor(userId: number, courseId: number, originalCourseId: number, id?: number) {
-    this.userId = userId;
-    this.courseId = courseId;
-    this.originalCourseId = originalCourseId;
-    if (id) {
-      this.id = id;
-    }
-  }
-
   @PrimaryGeneratedColumn()
   id: number;
 
