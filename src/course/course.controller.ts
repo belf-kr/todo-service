@@ -51,17 +51,17 @@ export class CourseController extends CRUDController<Course> {
 
       // 코스의 Id 값 알아오기
       let courses = new Array<Course>();
-      const course = new Course(
-        coursesInput.originalCourseId,
-        coursesInput.color,
-        coursesInput.creatorId,
-        coursesInput.startDate,
-        coursesInput.endDate,
-        coursesInput.explanation,
-        coursesInput.title,
-        coursesInput.likeCount
-      );
-      courses.push(course);
+      const courseEntity = new Course();
+      if (coursesInput.title) courseEntity.title = coursesInput.title;
+      if (coursesInput.explanation) courseEntity.explanation = coursesInput.explanation;
+      if (coursesInput.color) courseEntity.color = coursesInput.color;
+      if (coursesInput.creatorId) courseEntity.creatorId = coursesInput.creatorId;
+      if (coursesInput.endDate) courseEntity.endDate = coursesInput.endDate;
+      if (coursesInput.startDate) courseEntity.startDate = coursesInput.startDate;
+      if (coursesInput.likeCount) courseEntity.likeCount = courseEntity.likeCount;
+      else coursesInput.likeCount = 0;
+
+      courses.push(courseEntity);
       courses = await this.courseService.find(courses);
 
       // courseTag 관련 삽입 메소드 호출
@@ -70,7 +70,7 @@ export class CourseController extends CRUDController<Course> {
         // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
         courseTags.push(new CourseTag(courses[0].id, tag.id));
       });
-      this.courseTagService.create(courseTags);
+      await this.courseTagService.create(courseTags);
 
       return Object.assign({
         status: HttpStatus.CREATED,
@@ -146,9 +146,9 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Delete("delete-courses")
-  async deleteCourses(@Body() coursesInput: Course[]): Promise<HttpStatus> {
+  async deleteCourses(@Body() courseInput: CourseType): Promise<HttpStatus> {
     try {
-      await this.courseService.delete(coursesInput);
+      await this.courseService.deleteCourse(courseInput);
 
       return Object.assign({
         msg: `delete successfully`,

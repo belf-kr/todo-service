@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -17,18 +17,16 @@ export class CourseService extends CRUDService<Course> {
   async createCourse(coursesInput: CourseType): Promise<void> {
     // Course 객체를 생성해 코스를 생성한다.
     const courseEntities = new Array<Course>();
-    courseEntities.push(
-      new Course(
-        coursesInput.originalCourseId,
-        coursesInput.color,
-        coursesInput.creatorId,
-        coursesInput.startDate,
-        coursesInput.endDate,
-        coursesInput.explanation,
-        coursesInput.title,
-        coursesInput.likeCount
-      )
-    );
+    const courseEntity = new Course();
+
+    courseEntity.title = coursesInput.title;
+    courseEntity.explanation = coursesInput.explanation;
+    courseEntity.color = coursesInput.color;
+    courseEntity.creatorId = coursesInput.creatorId;
+    courseEntity.endDate = coursesInput.endDate;
+    courseEntity.startDate = coursesInput.startDate;
+    courseEntity.likeCount = 0;
+    courseEntities.push(courseEntity);
 
     return this.create(courseEntities);
   }
@@ -38,5 +36,16 @@ export class CourseService extends CRUDService<Course> {
     const res = this.find(blankCourses);
 
     return res;
+  }
+
+  async deleteCourse(courseInput: CourseType): Promise<void> {
+    const selectResult = await getRepository(Course).createQueryBuilder("c").where("c.id = :courseId", { courseId: courseInput.id }).getMany();
+
+    selectResult.forEach((coruseItem) => {
+      const courseEntity = new Course();
+      courseEntity.id = coruseItem.id;
+    });
+    console.log(selectResult);
+    return this.delete(selectResult);
   }
 }
