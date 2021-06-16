@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
 import { getRepository } from "typeorm";
 
 import { CourseService } from "./course.service";
@@ -136,6 +136,22 @@ export class CourseController extends CRUDController<Course> {
 
       return Object.assign({
         course_list: courseResult,
+      });
+    } catch (error) {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+      throw new HttpException(message, httpStatusCode);
+    }
+  }
+
+  @Delete("delete-course")
+  async deleteCourse(@Body() coursesInput: Course[]): Promise<HttpStatus> {
+    try {
+      await this.courseService.delete(coursesInput);
+
+      return Object.assign({
+        msg: `delete successfully`,
       });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김

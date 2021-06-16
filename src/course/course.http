@@ -75,3 +75,13 @@ Content-Type: application/json
         }
     ]
 }
+
+### course 삭제
+DELETE {{Host}}/{{Router}}/delete-course
+Content-Type: application/json
+
+[
+    {
+        "id": 171
+    }
+]
