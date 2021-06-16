@@ -145,8 +145,8 @@ export class CourseController extends CRUDController<Course> {
     }
   }
 
-  @Delete("delete-course")
-  async deleteCourse(@Body() coursesInput: Course[]): Promise<HttpStatus> {
+  @Delete("delete-courses")
+  async deleteCourses(@Body() coursesInput: Course[]): Promise<HttpStatus> {
     try {
       await this.courseService.delete(coursesInput);
 

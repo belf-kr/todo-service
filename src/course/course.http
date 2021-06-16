@@ -64,7 +64,7 @@ Content-Type: application/json
 
 {
     "color": "#FF8484",
-    "title": "영어공부하기1",
+    "title": "영어공부하기10",
     "explanation": "토익 ...",
     "tags": [
         {
@@ -77,11 +77,11 @@ Content-Type: application/json
 }
 
 ### course 삭제
-DELETE {{Host}}/{{Router}}/delete-course
+DELETE {{Host}}/{{Router}}/delete-courses
 Content-Type: application/json
 
 [
     {
-        "id": 171
+        "id": 51
     }
 ]
