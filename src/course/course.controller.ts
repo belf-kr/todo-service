@@ -129,7 +129,8 @@ export class CourseController extends CRUDController<Course> {
             course.explanation,
             course.title,
             course.likeCount,
-            tagsResult
+            tagsResult,
+            course.id
           )
         );
       }

@@ -33,7 +33,7 @@ export class CourseService extends CRUDService<Course> {
 
   async getAllCourses(): Promise<Course[]> {
     const blankCourses: Course[] = new Array<Course>();
-    const res = this.find(blankCourses);
+    const res = await this.find(blankCourses);
 
     return res;
   }
