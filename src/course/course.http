@@ -81,5 +81,5 @@ DELETE {{Host}}/{{Router}}/delete-courses
 Content-Type: application/json
 
 {
-    "id": 184
+    "id": 6555
 }

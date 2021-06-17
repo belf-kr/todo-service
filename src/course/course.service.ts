@@ -45,6 +45,8 @@ export class CourseService extends CRUDService<Course> {
   async deleteCourse(courseInput: CourseType): Promise<void> {
     const selectResult = await getRepository(Course).createQueryBuilder("c").where("c.id = :courseId", { courseId: courseInput.id }).getMany();
 
+    if (selectResult.length === 0) throw new Error("조건을 만족하는 데이터가 없습니다.");
+
     selectResult.forEach((coruseItem) => {
       const courseEntity = new Course();
       courseEntity.id = coruseItem.id;
