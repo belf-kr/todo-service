@@ -13,6 +13,8 @@ import { ColorModule } from "./color/color.module";
 import { CourseModule } from "./course/course.module";
 import { TagModule } from "./tag/tag.module";
 import { CourseTagModule } from "./course-tag/course-tag.module";
+import { WorkTodoModule } from "./work-todo/work-todo.module";
+import { RepeatedDaysOfTheWeekModule } from "./repeated-days-of-the-week/repeated-days-of-the-week.module";
 
 import AppConfig from "./config/app.config";
 
@@ -52,6 +54,8 @@ import AppConfig from "./config/app.config";
     CourseModule,
     TagModule,
     CourseTagModule,
+    WorkTodoModule,
+    RepeatedDaysOfTheWeekModule,
   ],
   controllers: [AppController],
   providers: [AppService],
