@@ -64,17 +64,14 @@ Content-Type: application/json
 
 {
     "color": "#FF8484",
-    "title": "영어공부하기22",
+    "title": "영어공부하기2",
     "explanation": "토익 ...",
     "tags": [
         {
-            "value": "영어"
-        },
-        {
-            "value": "토익"
-        },
-        {
             "value": "자동차"
+        },
+        {
+            "value": "차차차"
         }
     ]
 }

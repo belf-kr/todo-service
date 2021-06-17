@@ -27,28 +27,21 @@ export class CourseController extends CRUDController<Course> {
   async createCourse(@Body() coursesInput: CourseType): Promise<void> {
     try {
       await this.courseService.createCourse(coursesInput);
+      await this.courseService.createNewTags(coursesInput.tags);
 
-      // JSON 형태의 입력 값을 Tag entity 배열 객체로 생성
-      let inputTags = new Array<Tag>();
+      const inputTagEntities = new Array<Tag>();
+      let tagEntities = new Array<Tag>();
+
       coursesInput.tags.forEach((tag) => {
         const tagEntity = new Tag();
-        tagEntity.value = tag.value;
-        inputTags.push(tagEntity);
-      });
 
-      const existTags = await this.tagService.find(inputTags);
-      const newTags = Array<Tag>();
-      // 입력한 Tag값이 존재하지 않던 경우 판별
-      inputTags.forEach((inputTag) => {
-        if (!existTags.find((existTag) => existTag.value === inputTag.value)) {
-          newTags.push(inputTag);
-        }
+        tagEntity.value = tag.value;
+        inputTagEntities.push(tagEntity);
       });
-      await this.tagService.create(newTags);
 
       // Tag 들의 Id 값 찾기
-      if (inputTags.length) {
-        inputTags = await this.tagService.find(inputTags);
+      if (inputTagEntities.length) {
+        tagEntities = await this.tagService.find(inputTagEntities);
       }
 
       // 코스의 Id 값 알아오기
@@ -67,15 +60,15 @@ export class CourseController extends CRUDController<Course> {
       courses = await this.courseService.find(courses);
 
       // courseTag 관련 삽입 메소드 호출
-      const courseTags = new Array<CourseTag>();
-      inputTags.forEach((tag) => {
+      const courseTagEntities = new Array<CourseTag>();
+      tagEntities.forEach((tag) => {
         // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
         const courseTagEntity = new CourseTag();
-        courseTagEntity.id = courses[0].id;
+        courseTagEntity.courseId = courses[0].id;
         courseTagEntity.tagId = tag.id;
-        courseTags.push(courseTagEntity);
+        courseTagEntities.push(courseTagEntity);
       });
-      await this.courseTagService.create(courseTags);
+      await this.courseTagService.create(courseTagEntities);
 
       return Object.assign({
         status: HttpStatus.CREATED,
