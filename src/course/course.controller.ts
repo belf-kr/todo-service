@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
 import { getRepository } from "typeorm";
 
 import { CourseService } from "./course.service";
@@ -77,7 +77,12 @@ export class CourseController extends CRUDController<Course> {
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
-      throw new HttpException(message, httpStatusCode);
+
+      // API에 에러를 토스
+      return Object.assign({
+        httpStatusCode: httpStatusCode,
+        message: message,
+      });
     }
   }
 
@@ -142,7 +147,12 @@ export class CourseController extends CRUDController<Course> {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
-      throw new HttpException(message, httpStatusCode);
+
+      // API에 에러를 토스
+      return Object.assign({
+        httpStatusCode: httpStatusCode,
+        message: message,
+      });
     }
   }
 
@@ -158,7 +168,12 @@ export class CourseController extends CRUDController<Course> {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
-      throw new HttpException(message, httpStatusCode);
+
+      // API에 에러를 토스
+      return Object.assign({
+        httpStatusCode: httpStatusCode,
+        message: message,
+      });
     }
   }
 }

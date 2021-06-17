@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus } from "@nestjs/common";
+import { Controller, Get, HttpStatus } from "@nestjs/common";
 
 import { ColorService } from "./color.service";
 
@@ -22,7 +22,7 @@ export class ColorController extends CRUDController<Color> {
 
       // ORM 리턴 값이 비어있는 경우
       if (!serviceResult.length) {
-        throw new Error("Call HttpException on catch");
+        throw new Error("색상 테이블이 비어있습니다.");
       }
 
       // 결과값 반환
@@ -40,7 +40,12 @@ export class ColorController extends CRUDController<Color> {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
-      throw new HttpException(message, httpStatusCode);
+
+      // API에 에러를 토스
+      return Object.assign({
+        httpStatusCode: httpStatusCode,
+        message: message,
+      });
     }
   }
 }
