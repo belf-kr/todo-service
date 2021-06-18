@@ -44,4 +44,11 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
     return this.create(workTodoEntities);
   }
+
+  async getAllWorkTodos(): Promise<WorkTodo[]> {
+    const blankWorkTodos: WorkTodo[] = new Array<WorkTodo>();
+    const res = await this.find(blankWorkTodos);
+
+    return res;
+  }
 }
