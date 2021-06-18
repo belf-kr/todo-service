@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
 
 import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
@@ -47,6 +47,26 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
 
       return Object.assign({
         todo_list: workTodoServiceResult,
+      });
+    } catch (error) {
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+
+      // API에 에러를 토스
+      return Object.assign({
+        httpStatusCode: httpStatusCode,
+        message: message,
+      });
+    }
+  }
+
+  @Delete("delete-work-todo")
+  async deleteWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
+    try {
+      await this.workTodoService.deleteWorkTodo(workTodoInput);
+
+      return Object.assign({
+        msg: `delete successfully`,
       });
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);

@@ -31,7 +31,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const workTodoEntities = new Array<WorkTodo>();
     const workTodoEntity = new WorkTodo();
 
-    // 생성 시입력된 key value를 사용해 객체를 생성한다.
+    // 생성시 입력된 key value를 사용해 객체를 생성한다.
     if (workTodoInput.title) workTodoEntity.title = workTodoInput.title;
     if (workTodoInput.explanation) workTodoEntity.explanation = workTodoInput.explanation;
     if (workTodoInput.courseId) workTodoEntity.courseId = workTodoInput.courseId;
@@ -50,5 +50,29 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const res = await this.find(blankWorkTodos);
 
     return res;
+  }
+
+  async deleteWorkTodo(workTodoInput: WorkTodoType): Promise<void> {
+    // 검색 조건이 없는경우
+    if (!Object.keys(workTodoInput).length) {
+      throw new Error("검색 조건이 존재하지 않습니다.");
+    }
+
+    // 검색을 위한 객체
+    const workTodoEntities = new Array<WorkTodo>();
+    const workTodoEntity = new WorkTodo();
+
+    // 생성시 입력된 key value를 사용해 객체를 생성한다.
+    if (workTodoInput.id) workTodoEntity.id = workTodoInput.id;
+    if (workTodoInput.title) workTodoEntity.title = workTodoInput.title;
+    if (workTodoInput.explanation) workTodoEntity.explanation = workTodoInput.explanation;
+    if (workTodoInput.courseId) workTodoEntity.courseId = workTodoInput.courseId;
+
+    workTodoEntities.push(workTodoEntity);
+    const workTodoFindResult = await this.find(workTodoEntities);
+
+    if (workTodoFindResult.length === 0) throw new Error("조건을 만족하는 데이터가 없습니다.");
+
+    return this.delete(workTodoEntities);
   }
 }

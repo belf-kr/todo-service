@@ -16,3 +16,14 @@ Content-Type: application/json
 ### work_todo 전체 리스트 가져오기
 GET {{Host}}/{{Router}}/get-all-work-todos
 Content-Type: application/json
+
+### work_todo 삭제
+DELETE {{Host}}/{{Router}}/delete-work-todo
+Content-Type: application/json
+
+{
+    "id": 1,
+    "title": "나만의 할 일3",
+    "explanation": "설명입니다.",
+    "courseId": 3
+}
