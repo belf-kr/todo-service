@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
 
 import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
@@ -16,6 +16,12 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   @Post("create-work-todo")
   async createWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<void> {
     try {
+      await this.workTodoService.createWorkTodo(workTodoInput);
+
+      return Object.assign({
+        status: HttpStatus.CREATED,
+        msg: `create successfully`,
+      });
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);

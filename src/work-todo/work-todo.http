@@ -10,6 +10,5 @@ Content-Type: application/json
     "recurringCycleDate": 1,
     "title": "나만의 할 일",
     "explanation": "나만의 할 일 설명",
-    "passedDay": 5,
-    "addDate": "2021-06-18"
+    "passedDay": 5
 }
