@@ -1,8 +1,9 @@
 import { TagType } from "src/tag/tag.type";
 import { CourseType } from "./course.type";
 
-export class CourseTypeDto implements CourseType {
+export class CourseDto implements CourseType {
   constructor(
+    id: number,
     originalCourseId: number = null,
     color: string,
     creatorId: number = null,
@@ -11,9 +12,9 @@ export class CourseTypeDto implements CourseType {
     explanation: string,
     title: string,
     likeCount = 0,
-    tags: TagType[],
-    id?: number
+    tags: TagType[]
   ) {
+    this.id = id;
     this.originalCourseId = originalCourseId;
     this.color = color;
     this.creatorId = creatorId;
@@ -23,9 +24,6 @@ export class CourseTypeDto implements CourseType {
     this.title = title;
     this.likeCount = likeCount;
     this.tags = tags;
-    if (id) {
-      this.id = id;
-    }
   }
 
   id: number;

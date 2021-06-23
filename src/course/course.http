@@ -64,7 +64,7 @@ Content-Type: application/json
 
 {
     "color": "#FF8484",
-    "title": "영어공부하기2",
+    "title": "영어공부하기3",
     "explanation": "토익 ...",
     "tags": [
         {

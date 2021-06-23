@@ -1,8 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
-import { getRepository } from "typeorm";
 
 import { CourseService } from "./course.service";
-import { CourseTypeDto } from "./course.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -92,56 +90,8 @@ export class CourseController extends CRUDController<Course> {
       // 코스 리스트 저장
       const serviceResult: Course[] = await this.courseService.getAllCourses();
 
-      if (!serviceResult.length) {
-        throw new Error("코스가 존재하지 않습니다.");
-      }
-
-      // 결과값 반환 위한 리스트
-      const courseResult = Array<CourseTypeDto>();
-
-      // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
-      for (const course of serviceResult) {
-        // course 상수에 대한 tag 값을 join 해서 가져온다
-        /*
-          SELECT *
-          FROM course
-          INNER JOIN course_tag ct on course.id = ct.course_id
-          INNER JOIN tag t on ct.tag_id = t.id
-          WHERE ct.course_id = ?
-        */
-        const joinResult = await getRepository(CourseTag)
-          .createQueryBuilder("ct")
-          .innerJoinAndMapMany("ct", Course, "c", "ct.course_id = c.id")
-          .innerJoinAndMapMany("ct", Tag, "t", "ct.tag_id = t.id")
-          .where("ct.course_id = :courseId", { courseId: course.id })
-          .getRawMany();
-
-        // 태그 배열을 생성하기
-        const tagsResult = new Array<Tag>();
-        joinResult.forEach((joinItem) => {
-          const tagEntity = new Tag();
-          tagEntity.value = joinItem["t_value"];
-          tagsResult.push(tagEntity);
-        });
-
-        courseResult.push(
-          new CourseTypeDto(
-            course.originalCourseId,
-            course.color["id"],
-            course.creatorId,
-            course.startDate,
-            course.endDate,
-            course.explanation,
-            course.title,
-            course.likeCount,
-            tagsResult,
-            course.id
-          )
-        );
-      }
-
       return Object.assign({
-        course_list: courseResult,
+        course_list: serviceResult,
       });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김

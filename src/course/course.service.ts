@@ -10,6 +10,8 @@ import { Course } from "src/entity/course.entity";
 import { TagType } from "src/tag/tag.type";
 import { Tag } from "src/entity/tag.entity";
 import { TagService } from "src/tag/tag.service";
+import { CourseTag } from "src/entity/course-tag.entity";
+import { CourseDto } from "./course.dto";
 
 @Injectable()
 export class CourseService extends CRUDService<Course> {
@@ -36,10 +38,55 @@ export class CourseService extends CRUDService<Course> {
   }
 
   async getAllCourses(): Promise<Course[]> {
-    const blankCourses: Course[] = new Array<Course>();
-    const res = await this.find(blankCourses);
+    const blankCourseEntities: Course[] = new Array<Course>();
+    const courseEntitiesResult = await this.find(blankCourseEntities);
+    const courseArrayResult = new Array<CourseDto>();
 
-    return res;
+    if (!courseEntitiesResult.length) throw new Error("코스가 존재하지 않습니다.");
+
+    // course 테이블과 course-tag 테이블의 조인 처리
+    // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
+    for (const courseEntity of courseEntitiesResult) {
+      // course에 대한 tag 값을 join 해서 가져온다
+      /*
+          SELECT *
+          FROM course
+          INNER JOIN course_tag ct on course.id = ct.course_id
+          INNER JOIN tag t on ct.tag_id = t.id
+          WHERE ct.course_id = ?
+        */
+      const joinResult = await getRepository(CourseTag)
+        .createQueryBuilder("ct")
+        .innerJoinAndMapMany("ct", Course, "c", "ct.course_id = c.id")
+        .innerJoinAndMapMany("ct", Tag, "t", "ct.tag_id = t.id")
+        .where("ct.course_id = :courseId", { courseId: courseEntity.id })
+        .getRawMany();
+
+      // 태그 배열을 생성하기
+      const tagEntitiesResult = new Array<Tag>();
+      for (const joinItem of joinResult) {
+        const tagEntity = new Tag();
+        tagEntity.value = joinItem["t_value"];
+        tagEntitiesResult.push(tagEntity);
+      }
+
+      courseArrayResult.push(
+        new CourseDto(
+          courseEntity.id,
+          courseEntity.originalCourseId,
+          courseEntity.color["id"],
+          courseEntity.creatorId,
+          courseEntity.startDate,
+          courseEntity.endDate,
+          courseEntity.explanation,
+          courseEntity.title,
+          courseEntity.likeCount,
+          tagEntitiesResult
+        )
+      );
+    }
+
+    return courseArrayResult;
   }
 
   async deleteCourse(courseInput: CourseType): Promise<void> {
