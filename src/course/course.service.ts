@@ -98,16 +98,17 @@ export class CourseService extends CRUDService<Course> {
   }
 
   async deleteCourse(courseInput: CourseType): Promise<void> {
-    const selectResult = await getRepository(Course).createQueryBuilder("c").where("c.id = :courseId", { courseId: courseInput.id }).getMany();
+    const courseEntities = new Array<Course>();
+    const courseEntity = new Course();
+
+    courseEntity.id = courseInput.id;
+    courseEntities.push(courseEntity);
+
+    const selectResult = await this.find(courseEntities);
 
     if (selectResult.length === 0) throw new Error("조건을 만족하는 데이터가 없습니다.");
 
-    selectResult.forEach((coruseItem) => {
-      const courseEntity = new Course();
-      courseEntity.id = coruseItem.id;
-    });
-    console.log(selectResult);
-    return this.delete(selectResult);
+    await this.delete(selectResult);
   }
 
   // 코스 생성 시 입력된 태그가 존재하지 않는 경우 생성한다.
