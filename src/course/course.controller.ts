@@ -8,65 +8,19 @@ import { CRUDController } from "src/common/crud.controller";
 import { CourseType } from "src/course/course.type";
 
 import { Course } from "src/entity/course.entity";
-import { Tag } from "src/entity/tag.entity";
-import { CourseTag } from "src/entity/course-tag.entity";
-
-import { CourseTagService } from "src/course-tag/course-tag.service";
-
-import { TagService } from "src/tag/tag.service";
 
 @Controller("course")
 export class CourseController extends CRUDController<Course> {
-  constructor(private readonly courseService: CourseService, private readonly tagService: TagService, private readonly courseTagService: CourseTagService) {
+  constructor(private readonly courseService: CourseService) {
     super(courseService);
   }
 
   @Post("create-course")
-  async createCourse(@Body() coursesInput: CourseType): Promise<void> {
+  async createCourse(@Body() courseInput: CourseType): Promise<void> {
     try {
-      await this.courseService.createCourse(coursesInput);
-      await this.courseService.createNewTags(coursesInput.tags);
-
-      const inputTagEntities = new Array<Tag>();
-      let tagEntities = new Array<Tag>();
-
-      coursesInput.tags.forEach((tag) => {
-        const tagEntity = new Tag();
-
-        tagEntity.value = tag.value;
-        inputTagEntities.push(tagEntity);
-      });
-
-      // Tag 들의 Id 값 찾기
-      if (inputTagEntities.length) {
-        tagEntities = await this.tagService.find(inputTagEntities);
-      }
-
-      // 코스의 Id 값 알아오기
-      let courses = new Array<Course>();
-      const courseEntity = new Course();
-      if (coursesInput.title) courseEntity.title = coursesInput.title;
-      if (coursesInput.explanation) courseEntity.explanation = coursesInput.explanation;
-      if (coursesInput.color) courseEntity.color = coursesInput.color;
-      if (coursesInput.creatorId) courseEntity.creatorId = coursesInput.creatorId;
-      if (coursesInput.endDate) courseEntity.endDate = coursesInput.endDate;
-      if (coursesInput.startDate) courseEntity.startDate = coursesInput.startDate;
-      if (coursesInput.likeCount) courseEntity.likeCount = courseEntity.likeCount;
-      else coursesInput.likeCount = 0;
-
-      courses.push(courseEntity);
-      courses = await this.courseService.find(courses);
-
-      // courseTag 관련 삽입 메소드 호출
-      const courseTagEntities = new Array<CourseTag>();
-      tagEntities.forEach((tag) => {
-        // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
-        const courseTagEntity = new CourseTag();
-        courseTagEntity.courseId = courses[0].id;
-        courseTagEntity.tagId = tag.id;
-        courseTagEntities.push(courseTagEntity);
-      });
-      await this.courseTagService.create(courseTagEntities);
+      await this.courseService.createCourse(courseInput);
+      await this.courseService.createNewTags(courseInput.tags);
+      await this.courseService.createCourseTag(courseInput);
 
       return Object.assign({
         status: HttpStatus.CREATED,
