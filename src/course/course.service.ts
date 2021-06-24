@@ -140,12 +140,12 @@ export class CourseService extends CRUDService<Course> {
     const inputTagEntities = new Array<Tag>();
     let tagEntities = new Array<Tag>();
 
-    courseInput.tags.forEach((tag) => {
+    for (const tag of courseInput.tags) {
       const tagEntity = new Tag();
 
       tagEntity.value = tag.value;
       inputTagEntities.push(tagEntity);
-    });
+    }
 
     // Tag 들의 Id 값 찾기
     if (inputTagEntities.length) {
@@ -169,13 +169,13 @@ export class CourseService extends CRUDService<Course> {
 
     // courseTag 관련 삽입 메소드 호출
     const courseTagEntities = new Array<CourseTag>();
-    tagEntities.forEach((tag) => {
+    for (const tag of tagEntities) {
       // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
       const courseTagEntity = new CourseTag();
       courseTagEntity.courseId = courses[0].id;
       courseTagEntity.tagId = tag.id;
       courseTagEntities.push(courseTagEntity);
-    });
+    }
     await this.courseTagService.create(courseTagEntities);
   }
 }
