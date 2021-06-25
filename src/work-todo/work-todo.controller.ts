@@ -39,7 +39,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   async getAllWorkTodos(): Promise<HttpStatus> {
     try {
       // 할일 리스트 저장
-      const workTodoServiceResult: WorkTodo[] = await this.workTodoService.getAllWorkTodos();
+      const workTodoServiceResult = await this.workTodoService.getAllWorkTodos();
 
       if (!workTodoServiceResult.length) {
         throw new Error("할일이 존재하지 않습니다.");

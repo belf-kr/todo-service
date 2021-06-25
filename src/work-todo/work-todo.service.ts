@@ -1,13 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
+
+import { WorkTodoType } from "./work-todo.type";
 
 import { CRUDService } from "src/common/crud.service";
 
 import { WorkTodo } from "src/entity/work-todo.entity";
-import { WorkTodoType } from "./work-todo.type";
 import { Course } from "src/entity/course.entity";
+
 import { CourseService } from "src/course/course.service";
+import { WorkTodoDto } from "./work-todo.dto";
 
 @Injectable()
 export class WorkTodoService extends CRUDService<WorkTodo> {
@@ -45,11 +48,40 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     return this.create(workTodoEntities);
   }
 
-  async getAllWorkTodos(): Promise<WorkTodo[]> {
-    const blankWorkTodos: WorkTodo[] = new Array<WorkTodo>();
-    const res = await this.find(blankWorkTodos);
+  async getAllWorkTodos(): Promise<WorkTodoDto[]> {
+    const blankWorkTodoEntities: WorkTodo[] = new Array<WorkTodo>();
+    const workTodoEntitiesResult = await this.find(blankWorkTodoEntities);
+    const workTodoDtoArrayResult = new Array<WorkTodoDto>();
 
-    return res;
+    if (!workTodoEntitiesResult.length) throw new Error("할 일 정보가 존재하지 않습니다.");
+
+    // DTO 객체에 삽입
+    /*
+      SELECT *
+      FROM work_todo
+      INNER JOIN course c on work_todo.course_id = c.id
+    */
+    const joinResult = await getRepository(WorkTodo).createQueryBuilder("wt").innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id").getRawMany();
+
+    for (const joinItem of joinResult) {
+      // 반환을 위한 배열에 요소를 넣어주기 위한 DTO 객체
+      const workTodoDto = new WorkTodoDto();
+
+      workTodoDto.id = joinItem["wt_id"];
+      workTodoDto.recurrintCycleDate = joinItem["wt_recurring_cycle_date"];
+      workTodoDto.title = joinItem["wt_title"];
+      workTodoDto.explanation = joinItem["wt_explanation"];
+      workTodoDto.passedDay = joinItem["wt_passed_day"];
+      workTodoDto.addDate = joinItem["wt_add_date"];
+      workTodoDto.courseId = joinItem["c_id"];
+      workTodoDto.courseTitle = joinItem["c_title"];
+      workTodoDto.color = joinItem["c_color"];
+      // TODO: 반복 요일에 대한 정보 리스트로 추가 하기
+
+      workTodoDtoArrayResult.push(workTodoDto);
+    }
+
+    return workTodoDtoArrayResult;
   }
 
   async deleteWorkTodo(workTodoInput: WorkTodoType): Promise<void> {

@@ -48,6 +48,7 @@ export class CourseService extends CRUDService<Course> {
   async getAllCourses(): Promise<Course[]> {
     const blankCourseEntities: Course[] = new Array<Course>();
     const courseEntitiesResult = await this.find(blankCourseEntities);
+    // TODO: courseArrayResult 변수명 courseDtoArrayResult 로 변경
     const courseArrayResult = new Array<CourseDto>();
 
     if (!courseEntitiesResult.length) throw new Error("코스가 존재하지 않습니다.");
