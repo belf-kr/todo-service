@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
 import { WorkTodoType } from "./work-todo.type";
+import { WorkTodoDto } from "./work-todo.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -10,7 +11,6 @@ import { WorkTodo } from "src/entity/work-todo.entity";
 import { Course } from "src/entity/course.entity";
 
 import { CourseService } from "src/course/course.service";
-import { WorkTodoDto } from "./work-todo.dto";
 
 @Injectable()
 export class WorkTodoService extends CRUDService<WorkTodo> {

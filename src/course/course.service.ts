@@ -45,7 +45,7 @@ export class CourseService extends CRUDService<Course> {
     return this.create(courseEntities);
   }
 
-  async getAllCourses(): Promise<Course[]> {
+  async getAllCourses(): Promise<CourseDto[]> {
     const blankCourseEntities: Course[] = new Array<Course>();
     const courseEntitiesResult = await this.find(blankCourseEntities);
     const courseDtoArrayResult = new Array<CourseDto>();
@@ -98,6 +98,11 @@ export class CourseService extends CRUDService<Course> {
   }
 
   async deleteCourse(courseInput: CourseType): Promise<void> {
+    // 검색 조건이 없는경우
+    if (!Object.keys(courseInput).length) {
+      throw new Error("검색 조건이 존재하지 않습니다.");
+    }
+
     const courseEntities = new Array<Course>();
     const courseEntity = new Course();
 

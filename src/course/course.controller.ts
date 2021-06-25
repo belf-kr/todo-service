@@ -42,7 +42,7 @@ export class CourseController extends CRUDController<Course> {
   async getAllCourses(): Promise<HttpStatus> {
     try {
       // 코스 리스트 저장
-      const serviceResult: Course[] = await this.courseService.getAllCourses();
+      const serviceResult = await this.courseService.getAllCourses();
 
       return Object.assign({
         course_list: serviceResult,
