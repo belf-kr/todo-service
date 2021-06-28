@@ -14,7 +14,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     super(workTodoService);
   }
 
-  @Post("create-work-todo")
+  @Post()
   async createWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);

@@ -2,7 +2,7 @@
 @Router = work-todos
 
 ### work_todo 추가
-POST {{Host}}/{{Router}}/create-work-todo
+POST {{Host}}/{{Router}}
 Content-Type: application/json
 
 {

@@ -15,7 +15,7 @@ export class CourseController extends CRUDController<Course> {
     super(courseService);
   }
 
-  @Post("create-course")
+  @Post()
   async createCourse(@Body() courseInput: CourseType): Promise<void> {
     try {
       await this.courseService.createCourse(courseInput);
