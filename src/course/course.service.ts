@@ -97,16 +97,16 @@ export class CourseService extends CRUDService<Course> {
     return courseDtoArrayResult;
   }
 
-  async deleteCourse(courseInput: CourseType): Promise<void> {
+  async deleteCourse(id: number): Promise<void> {
     // 검색 조건이 없는경우
-    if (!Object.keys(courseInput).length) {
+    if (!id) {
       throw new Error("검색 조건이 존재하지 않습니다.");
     }
 
     const courseEntities = new Array<Course>();
     const courseEntity = new Course();
 
-    courseEntity.id = courseInput.id;
+    courseEntity.id = id;
     courseEntities.push(courseEntity);
 
     const selectResult = await this.find(courseEntities);

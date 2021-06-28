@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
 
@@ -60,10 +60,10 @@ export class CourseController extends CRUDController<Course> {
     }
   }
 
-  @Delete("delete-courses")
-  async deleteCourses(@Body() courseInput: CourseType): Promise<HttpStatus> {
+  @Delete(":id")
+  async deleteCourses(@Param() params: any): Promise<HttpStatus> {
     try {
-      await this.courseService.deleteCourse(courseInput);
+      await this.courseService.deleteCourse(params.id);
 
       return Object.assign({
         msg: `delete successfully`,

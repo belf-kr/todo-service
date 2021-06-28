@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from "@nestjs/common";
 
 import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
@@ -60,10 +60,10 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     }
   }
 
-  @Delete("delete-work-todo")
-  async deleteWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
+  @Delete(":id")
+  async deleteWorkTodo(@Param() params: any): Promise<HttpStatus> {
     try {
-      await this.workTodoService.deleteWorkTodo(workTodoInput);
+      await this.workTodoService.deleteWorkTodo(params.id);
 
       return Object.assign({
         msg: `delete successfully`,
