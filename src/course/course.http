@@ -1,7 +1,7 @@
 @Host = http://localhost:3003
-@Router = course
+@Router = courses
 
-### course 1개 이상 조회
+### 전체 course 조회
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 

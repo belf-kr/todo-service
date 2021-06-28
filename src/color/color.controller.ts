@@ -7,14 +7,14 @@ import { Color } from "src/entity/color.entity";
 import { CRUDController } from "src/common/crud.controller";
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 
-@Controller("color")
+@Controller("colors")
 export class ColorController extends CRUDController<Color> {
   constructor(private readonly colorService: ColorService) {
     super(colorService);
   }
 
   // 색상 리스트 전체 Read
-  @Get("get-all-colors")
+  @Get()
   async getAllColors(): Promise<HttpStatus> {
     try {
       // 서비스 결과 저장

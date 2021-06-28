@@ -9,7 +9,7 @@ import { CourseType } from "src/course/course.type";
 
 import { Course } from "src/entity/course.entity";
 
-@Controller("course")
+@Controller("courses")
 export class CourseController extends CRUDController<Course> {
   constructor(private readonly courseService: CourseService) {
     super(courseService);
@@ -38,7 +38,7 @@ export class CourseController extends CRUDController<Course> {
     }
   }
 
-  @Get("get-all-courses")
+  @Get()
   async getAllCourses(): Promise<HttpStatus> {
     try {
       // 코스 리스트 저장

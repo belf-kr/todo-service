@@ -8,7 +8,7 @@ import { CRUDController } from "src/common/crud.controller";
 
 import { WorkTodo } from "src/entity/work-todo.entity";
 
-@Controller("work-todo")
+@Controller("work-todos")
 export class WorkTodoController extends CRUDController<WorkTodo> {
   constructor(private readonly workTodoService: WorkTodoService) {
     super(workTodoService);
@@ -35,7 +35,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     }
   }
 
-  @Get("get-all-work-todos")
+  @Get()
   async getAllWorkTodos(): Promise<HttpStatus> {
     try {
       // 할일 리스트 저장
