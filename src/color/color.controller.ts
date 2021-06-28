@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus } from "@nestjs/common";
+import { Controller, Get, HttpStatus } from "@nestjs/common";
 
 import { ColorService } from "./color.service";
 
@@ -18,29 +18,26 @@ export class ColorController extends CRUDController<Color> {
   async getAllColors(): Promise<HttpStatus> {
     try {
       // 서비스 결과 저장
-      const serviceResult: Color[] = await this.colorService.getAllColors();
+      const serviceResult = await this.colorService.getAllColors();
 
-      // ORM 리턴 값이 비어있는 경우
+      // 색상 정보가 없는 경우
       if (!serviceResult.length) {
-        throw new Error("Call HttpException on catch");
-      }
-
-      // 결과값 반환
-      const colorResult = Array<string>();
-
-      for (const color of serviceResult) {
-        // 해당 객체에서 가져올 스키마의 이름을 key 형식으로 접근
-        colorResult.push(color["id"]);
+        throw new Error("색상 정보가 비어있습니다.");
       }
 
       return Object.assign({
-        color_list: colorResult,
+        color_list: serviceResult,
       });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
-      throw new HttpException(message, httpStatusCode);
+
+      // API에 에러를 토스
+      return Object.assign({
+        httpStatusCode: httpStatusCode,
+        message: message,
+      });
     }
   }
 }

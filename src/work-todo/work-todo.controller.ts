@@ -1,26 +1,23 @@
 import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
 
-import { CourseService } from "./course.service";
+import { WorkTodoType } from "./work-todo.type";
+import { WorkTodoService } from "./work-todo.service";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
 
-import { CourseType } from "src/course/course.type";
+import { WorkTodo } from "src/entity/work-todo.entity";
 
-import { Course } from "src/entity/course.entity";
-
-@Controller("course")
-export class CourseController extends CRUDController<Course> {
-  constructor(private readonly courseService: CourseService) {
-    super(courseService);
+@Controller("work-todo")
+export class WorkTodoController extends CRUDController<WorkTodo> {
+  constructor(private readonly workTodoService: WorkTodoService) {
+    super(workTodoService);
   }
 
-  @Post("create-course")
-  async createCourse(@Body() courseInput: CourseType): Promise<void> {
+  @Post("create-work-todo")
+  async createWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
     try {
-      await this.courseService.createCourse(courseInput);
-      await this.courseService.createNewTags(courseInput.tags);
-      await this.courseService.createCourseTag(courseInput);
+      await this.workTodoService.createWorkTodo(workTodoInput);
 
       return Object.assign({
         status: HttpStatus.CREATED,
@@ -38,17 +35,20 @@ export class CourseController extends CRUDController<Course> {
     }
   }
 
-  @Get("get-all-courses")
-  async getAllCourses(): Promise<HttpStatus> {
+  @Get("get-all-work-todos")
+  async getAllWorkTodos(): Promise<HttpStatus> {
     try {
-      // 코스 리스트 저장
-      const serviceResult = await this.courseService.getAllCourses();
+      // 할일 리스트 저장
+      const workTodoServiceResult = await this.workTodoService.getAllWorkTodos();
+
+      if (!workTodoServiceResult.length) {
+        throw new Error("할일이 존재하지 않습니다.");
+      }
 
       return Object.assign({
-        course_list: serviceResult,
+        todo_list: workTodoServiceResult,
       });
     } catch (error) {
-      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
@@ -60,16 +60,15 @@ export class CourseController extends CRUDController<Course> {
     }
   }
 
-  @Delete("delete-courses")
-  async deleteCourses(@Body() courseInput: CourseType): Promise<HttpStatus> {
+  @Delete("delete-work-todo")
+  async deleteWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
     try {
-      await this.courseService.deleteCourse(courseInput);
+      await this.workTodoService.deleteWorkTodo(workTodoInput);
 
       return Object.assign({
         msg: `delete successfully`,
       });
     } catch (error) {
-      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
