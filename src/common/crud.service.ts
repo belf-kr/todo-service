@@ -47,7 +47,7 @@ export class CRUDService<T> {
     const findResult = await this.find(crudEntities);
 
     if (findResult.length === 0) {
-      throw "질의 결과를 만족하지 못 했으므로 HTTP 예외를 발생한다.";
+      throw new Error("질의 결과를 만족하지 못했습니다.");
     }
     await this.crudRepository.remove(findResult);
   }

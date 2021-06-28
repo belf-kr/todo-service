@@ -10,5 +10,6 @@ import { CourseTag } from "src/entity/course-tag.entity";
   imports: [TypeOrmModule.forFeature([CourseTag])],
   controllers: [CourseTagController],
   providers: [CourseTagService],
+  exports: [CourseTagService],
 })
 export class CourseTagModule {}
