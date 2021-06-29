@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Res } from "@nestjs/common";
+import { Response } from "express";
 
 import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
@@ -15,22 +16,20 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Post()
-  async createWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
+  async createWorkTodo(@Res() res: Response, @Body() workTodoInput: WorkTodoType) {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);
 
-      return Object.assign({
-        status: HttpStatus.CREATED,
-        msg: `create successfully`,
+      res.status(HttpStatus.CREATED).send({
+        message: "할 일이 정상적으로 생성되었습니다.",
       });
     } catch (error) {
+      // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
-      // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
+      res.status(httpStatusCode).send({
+        message,
       });
     }
   }
