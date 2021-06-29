@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Res } from "@nestjs/common";
+import { Controller, Get, HttpException, HttpStatus, Res } from "@nestjs/common";
 import { Response } from "express";
 
 import { ColorService } from "./color.service";
@@ -23,9 +23,9 @@ export class ColorController extends CRUDController<Color> {
 
       // 색상 정보가 없는 경우
       if (!serviceResult.length) {
-        res.status(HttpStatus.ACCEPTED).send({
-          message: "색상 정보가 비어있습니다.",
-        });
+        const message = "색상 정보가 비어있습니다.";
+
+        throw new HttpException({ data: message, status: HttpStatus.ACCEPTED }, HttpStatus.ACCEPTED);
       }
 
       res.status(HttpStatus.OK).send({
@@ -37,10 +37,7 @@ export class ColorController extends CRUDController<Color> {
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 }
