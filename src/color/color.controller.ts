@@ -1,4 +1,5 @@
-import { Controller, Get, HttpStatus } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Res } from "@nestjs/common";
+import { Response } from "express";
 
 import { ColorService } from "./color.service";
 
@@ -15,17 +16,19 @@ export class ColorController extends CRUDController<Color> {
 
   // 색상 리스트 전체 Read
   @Get()
-  async getAllColors(): Promise<HttpStatus> {
+  async getAllColors(@Res() res: Response) {
     try {
       // 서비스 결과 저장
       const serviceResult = await this.colorService.getAllColors();
 
       // 색상 정보가 없는 경우
       if (!serviceResult.length) {
-        throw new Error("색상 정보가 비어있습니다.");
+        res.status(HttpStatus.ACCEPTED).send({
+          message: "색상 정보가 비어있습니다.",
+        });
       }
 
-      return Object.assign({
+      res.status(HttpStatus.OK).send({
         color_list: serviceResult,
       });
     } catch (error) {
