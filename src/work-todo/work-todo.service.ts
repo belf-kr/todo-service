@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
@@ -24,11 +24,12 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const courseEntity = new Course();
 
     if (workTodoInput.courseId) courseEntity.id = workTodoInput.courseId;
-    else throw new Error("코스의 id 값이 비어있습니다.");
+    else throw new HttpException({ data: "코스의 id값이 비어있습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
 
     courseEntities.push(courseEntity);
     const courseSearchResult = await this.courseService.find(courseEntities);
-    if (courseSearchResult.length === 0) throw new Error("코스의 id값을 만족하는 데이터가 없습니다.");
+    if (courseSearchResult.length === 0)
+      throw new HttpException({ data: "코스의 id값을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
 
     //  WorkTodo 객체를 생성해 할일을 생성한다.
     const workTodoEntities = new Array<WorkTodo>();
@@ -53,7 +54,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const workTodoEntitiesResult = await this.find(blankWorkTodoEntities);
     const workTodoDtoArrayResult = new Array<WorkTodoDto>();
 
-    if (!workTodoEntitiesResult.length) throw new Error("할 일 정보가 존재하지 않습니다.");
+    if (!workTodoEntitiesResult.length)
+      throw new HttpException({ data: "할 일 정보가 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
 
     // DTO 객체에 삽입
     /*
@@ -87,7 +89,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   async deleteWorkTodo(id: number): Promise<void> {
     // 검색 조건이 없는경우
     if (!id) {
-      throw new Error("검색 조건이 존재하지 않습니다.");
+      throw new HttpException({ data: "검색 조건이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
     // 검색을 위한 객체
@@ -100,7 +102,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     workTodoEntities.push(workTodoEntity);
     const workTodoFindResult = await this.find(workTodoEntities);
 
-    if (workTodoFindResult.length === 0) throw new Error("조건을 만족하는 데이터가 없습니다.");
+    if (workTodoFindResult.length === 0)
+      throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
 
     return this.delete(workTodoEntities);
   }

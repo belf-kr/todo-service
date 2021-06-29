@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Res } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res } from "@nestjs/common";
 import { Response } from "express";
 
 import { WorkTodoType } from "./work-todo.type";
@@ -28,23 +28,22 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
-      res.status(httpStatusCode).send({
-        message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
   @Get()
-  async getAllWorkTodos(): Promise<HttpStatus> {
+  async getAllWorkTodos(@Res() res: Response) {
     try {
       // 할일 리스트 저장
       const workTodoServiceResult = await this.workTodoService.getAllWorkTodos();
 
+      // TODO: 예외 처리를 서비스로 이관
       if (!workTodoServiceResult.length) {
-        throw new Error("할일이 존재하지 않습니다.");
+        throw new HttpException({ data: "할일이 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
       }
 
-      return Object.assign({
+      res.status(HttpStatus.OK).send({
         todo_list: workTodoServiceResult,
       });
     } catch (error) {
@@ -52,30 +51,24 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
   @Delete(":id")
-  async deleteWorkTodo(@Param() params: any): Promise<HttpStatus> {
+  async deleteWorkTodo(@Res() res: Response, @Param() params: any) {
     try {
       await this.workTodoService.deleteWorkTodo(params.id);
 
-      return Object.assign({
-        msg: `delete successfully`,
+      res.status(HttpStatus.OK).send({
+        message: "할 일이 삭제 되었습니다.",
       });
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 }

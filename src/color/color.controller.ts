@@ -22,6 +22,7 @@ export class ColorController extends CRUDController<Color> {
       const serviceResult = await this.colorService.getAllColors();
 
       // 색상 정보가 없는 경우
+      // TODO:예외 처리르 서비스로 이관
       if (!serviceResult.length) {
         const message = "색상 정보가 비어있습니다.";
 
