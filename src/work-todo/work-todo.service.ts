@@ -37,7 +37,9 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
     // 생성시 입력된 key value를 사용해 객체를 생성한다.
     if (workTodoInput.title) workTodoEntity.title = workTodoInput.title;
+    else throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     if (workTodoInput.explanation) workTodoEntity.explanation = workTodoInput.explanation;
+    else throw new HttpException({ data: "explanation에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     if (workTodoInput.courseId) workTodoEntity.courseId = workTodoInput.courseId;
     else workTodoEntity.courseId = null;
     if (workTodoInput.passedDay) workTodoEntity.passedDay = workTodoInput.passedDay;

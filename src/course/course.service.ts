@@ -6,8 +6,6 @@ import { CourseDto } from "./course.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
-import { CourseType } from "src/course/course.type";
-
 import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
@@ -15,6 +13,8 @@ import { Color } from "src/entity/color.entity";
 
 import { TagType } from "src/tag/tag.type";
 import { TagService } from "src/tag/tag.service";
+
+import { CourseType } from "src/course/course.type";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
 
@@ -47,6 +47,7 @@ export class CourseService extends CRUDService<Course> {
 
     // 생성 시 입력된 key value를 사용해 객체에 값을 입력한다.
     if (coursesInput.title) courseEntity.title = coursesInput.title;
+    else throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     if (coursesInput.explanation) courseEntity.explanation = coursesInput.explanation;
     if (coursesInput.color) courseEntity.color = coursesInput.color;
     if (coursesInput.creatorId) courseEntity.creatorId = coursesInput.creatorId;
