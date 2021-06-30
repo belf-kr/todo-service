@@ -18,5 +18,5 @@ GET {{Host}}/{{Router}}
 Content-Type: application/json
 
 ### work_todo 삭제
-DELETE {{Host}}/{{Router}}/work-todos/1
+DELETE {{Host}}/{{Router}}/1
 Content-Type: application/json

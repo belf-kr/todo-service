@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
@@ -50,7 +50,7 @@ export class CourseService extends CRUDService<Course> {
     const courseEntitiesResult = await this.find(blankCourseEntities);
     const courseDtoArrayResult = new Array<CourseDto>();
 
-    if (!courseEntitiesResult.length) throw new Error("코스가 존재하지 않습니다.");
+    if (!courseEntitiesResult.length) throw new HttpException({ data: "코스가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
 
     // course 테이블과 course-tag 테이블의 조인 처리
     // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
@@ -100,7 +100,7 @@ export class CourseService extends CRUDService<Course> {
   async deleteCourse(id: number): Promise<void> {
     // 검색 조건이 없는경우
     if (!id) {
-      throw new Error("검색 조건이 존재하지 않습니다.");
+      throw new HttpException({ data: "검색 조건이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
     const courseEntities = new Array<Course>();
@@ -111,7 +111,8 @@ export class CourseService extends CRUDService<Course> {
 
     const selectResult = await this.find(courseEntities);
 
-    if (selectResult.length === 0) throw new Error("조건을 만족하는 데이터가 없습니다.");
+    if (selectResult.length === 0)
+      throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
 
     await this.delete(selectResult);
   }
