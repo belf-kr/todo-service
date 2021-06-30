@@ -38,11 +38,6 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
       // 할일 리스트 저장
       const workTodoServiceResult = await this.workTodoService.getAllWorkTodos();
 
-      // TODO: 예외 처리를 서비스로 이관
-      if (!workTodoServiceResult.length) {
-        throw new HttpException({ data: "할일이 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
-      }
-
       res.status(HttpStatus.OK).send({
         todo_list: workTodoServiceResult,
       });

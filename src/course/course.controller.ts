@@ -41,11 +41,6 @@ export class CourseController extends CRUDController<Course> {
       // 코스 리스트 저장
       const courseServiceResult = await this.courseService.getAllCourses();
 
-      // TODO: 예외 처리를 서비스로 이관
-      if (!courseServiceResult.length) {
-        throw new HttpException({ data: "코스가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
-      }
-
       res.status(HttpStatus.OK).send({
         course_list: courseServiceResult,
       });
