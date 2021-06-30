@@ -11,23 +11,36 @@ import { CourseType } from "src/course/course.type";
 import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
+import { Color } from "src/entity/color.entity";
 
 import { TagType } from "src/tag/tag.type";
 import { TagService } from "src/tag/tag.service";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
 
+import { ColorService } from "src/color/color.service";
+
 @Injectable()
 export class CourseService extends CRUDService<Course> {
   constructor(
     @InjectRepository(Course) courseRepository: Repository<Course>,
     private readonly tagService: TagService,
-    private readonly courseTagService: CourseTagService
+    private readonly courseTagService: CourseTagService,
+    private readonly colorService: ColorService
   ) {
     super(courseRepository);
   }
 
   async createCourse(coursesInput: CourseType): Promise<void> {
+    // 입력한 외래키의 존재 여부를 검증한다.
+    const colorEntities = new Array<Color>();
+    const colorEntity = new Color();
+
+    colorEntity.id = coursesInput.color;
+    const colorEntitiesResult = await this.colorService.find(colorEntities);
+    if (!colorEntitiesResult.length)
+      throw new HttpException({ data: "존재하지 않는 색상의 id값 입니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+
     // Course 객체를 생성해 코스를 생성한다.
     const courseEntities = new Array<Course>();
     const courseEntity = new Course();
