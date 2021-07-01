@@ -19,7 +19,9 @@ export class ColorService extends CRUDService<Color> {
     // Color entity class 형태에 맞추어 ORM 결과를 저장
     const colorDtoResult: ColorDto[] = new Array<ColorDto>();
     const colorEntitiesResult = await this.find(blankColorEntities);
-    if (!colorEntitiesResult.length) throw new HttpException({ data: "색상 테이블이 비어있습니다.", status: HttpStatus.OK }, HttpStatus.OK);
+    if (!colorEntitiesResult.length) {
+      throw new HttpException({ status: HttpStatus.OK }, HttpStatus.OK);
+    }
 
     // DTO 객체에 삽입
     for (const colorEntity of colorEntitiesResult) {

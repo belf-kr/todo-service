@@ -20,9 +20,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);
 
-      res.status(HttpStatus.CREATED).send({
-        message: "할 일이 정상적으로 생성되었습니다.",
-      });
+      res.status(HttpStatus.CREATED).send();
     } catch (error) {
       // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);
@@ -55,9 +53,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     try {
       await this.workTodoService.deleteWorkTodo(params.id);
 
-      res.status(HttpStatus.OK).send({
-        message: "할 일이 삭제 되었습니다.",
-      });
+      res.status(HttpStatus.OK).send();
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);

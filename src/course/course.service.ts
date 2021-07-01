@@ -38,22 +38,38 @@ export class CourseService extends CRUDService<Course> {
 
     colorEntity.id = coursesInput.color;
     const colorEntitiesResult = await this.colorService.find(colorEntities);
-    if (!colorEntitiesResult.length)
+    if (!colorEntitiesResult.length) {
       throw new HttpException({ data: "존재하지 않는 색상의 id값 입니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
     // Course 객체를 생성해 코스를 생성한다.
     const courseEntities = new Array<Course>();
     const courseEntity = new Course();
 
     // 생성 시 입력된 key value를 사용해 객체에 값을 입력한다.
-    if (coursesInput.title) courseEntity.title = coursesInput.title;
-    else throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    if (coursesInput.explanation) courseEntity.explanation = coursesInput.explanation;
-    if (coursesInput.color) courseEntity.color = coursesInput.color;
-    if (coursesInput.creatorId) courseEntity.creatorId = coursesInput.creatorId;
-    if (coursesInput.endDate) courseEntity.endDate = coursesInput.endDate;
-    if (coursesInput.startDate) courseEntity.startDate = coursesInput.startDate;
-    if (coursesInput.likeCount) courseEntity.likeCount = 0;
+    if (coursesInput.title) {
+      courseEntity.title = coursesInput.title;
+    } else {
+      throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
+    if (coursesInput.explanation) {
+      courseEntity.explanation = coursesInput.explanation;
+    }
+    if (coursesInput.color) {
+      courseEntity.color = coursesInput.color;
+    }
+    if (coursesInput.creatorId) {
+      courseEntity.creatorId = coursesInput.creatorId;
+    }
+    if (coursesInput.endDate) {
+      courseEntity.endDate = coursesInput.endDate;
+    }
+    if (coursesInput.startDate) {
+      courseEntity.startDate = coursesInput.startDate;
+    }
+    if (coursesInput.likeCount) {
+      courseEntity.likeCount = 0;
+    }
     courseEntities.push(courseEntity);
 
     return this.create(courseEntities);
@@ -64,7 +80,9 @@ export class CourseService extends CRUDService<Course> {
     const courseEntitiesResult = await this.find(blankCourseEntities);
     const courseDtoArrayResult = new Array<CourseDto>();
 
-    if (!courseEntitiesResult.length) throw new HttpException({ data: "코스가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
+    if (!courseEntitiesResult.length) {
+      throw new HttpException({ data: "코스가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
+    }
 
     // course 테이블과 course-tag 테이블의 조인 처리
     // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
@@ -125,8 +143,9 @@ export class CourseService extends CRUDService<Course> {
 
     const selectResult = await this.find(courseEntities);
 
-    if (selectResult.length === 0)
+    if (selectResult.length === 0) {
       throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
     await this.delete(selectResult);
   }
@@ -175,14 +194,29 @@ export class CourseService extends CRUDService<Course> {
     // 코스의 Id 값 알아오기
     let courses = new Array<Course>();
     const courseEntity = new Course();
-    if (courseInput.title) courseEntity.title = courseInput.title;
-    if (courseInput.explanation) courseEntity.explanation = courseInput.explanation;
-    if (courseInput.color) courseEntity.color = courseInput.color;
-    if (courseInput.creatorId) courseEntity.creatorId = courseInput.creatorId;
-    if (courseInput.endDate) courseEntity.endDate = courseInput.endDate;
-    if (courseInput.startDate) courseEntity.startDate = courseInput.startDate;
-    if (courseInput.likeCount) courseEntity.likeCount = courseEntity.likeCount;
-    else courseInput.likeCount = 0;
+    if (courseInput.title) {
+      courseEntity.title = courseInput.title;
+    }
+    if (courseInput.explanation) {
+      courseEntity.explanation = courseInput.explanation;
+    }
+    if (courseInput.color) {
+      courseEntity.color = courseInput.color;
+    }
+    if (courseInput.creatorId) {
+      courseEntity.creatorId = courseInput.creatorId;
+    }
+    if (courseInput.endDate) {
+      courseEntity.endDate = courseInput.endDate;
+    }
+    if (courseInput.startDate) {
+      courseEntity.startDate = courseInput.startDate;
+    }
+    if (courseInput.likeCount) {
+      courseEntity.likeCount = courseEntity.likeCount;
+    } else {
+      courseInput.likeCount = 0;
+    }
 
     courses.push(courseEntity);
     courses = await this.find(courses);

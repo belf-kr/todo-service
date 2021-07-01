@@ -23,27 +23,44 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const courseEntities = new Array<Course>();
     const courseEntity = new Course();
 
-    if (workTodoInput.courseId) courseEntity.id = workTodoInput.courseId;
-    else throw new HttpException({ data: "코스의 id값이 비어있습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    if (workTodoInput.courseId) {
+      courseEntity.id = workTodoInput.courseId;
+    } else {
+      throw new HttpException({ data: "코스의 id값이 비어있습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
     courseEntities.push(courseEntity);
     const courseSearchResult = await this.courseService.find(courseEntities);
-    if (courseSearchResult.length === 0)
+    if (courseSearchResult.length === 0) {
       throw new HttpException({ data: "코스의 id값을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
     //  WorkTodo 객체를 생성해 할일을 생성한다.
     const workTodoEntities = new Array<WorkTodo>();
     const workTodoEntity = new WorkTodo();
 
     // 생성시 입력된 key value를 사용해 객체를 생성한다.
-    if (workTodoInput.title) workTodoEntity.title = workTodoInput.title;
-    else throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    if (workTodoInput.explanation) workTodoEntity.explanation = workTodoInput.explanation;
-    else throw new HttpException({ data: "explanation에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    if (workTodoInput.courseId) workTodoEntity.courseId = workTodoInput.courseId;
-    else workTodoEntity.courseId = null;
-    if (workTodoInput.passedDay) workTodoEntity.passedDay = workTodoInput.passedDay;
-    if (workTodoInput.recurrintCycleDate) workTodoEntity.recurringCycleDate = workTodoInput.recurrintCycleDate;
+    if (workTodoInput.title) {
+      workTodoEntity.title = workTodoInput.title;
+    } else {
+      throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
+    if (workTodoInput.explanation) {
+      workTodoEntity.explanation = workTodoInput.explanation;
+    } else {
+      throw new HttpException({ data: "explanation에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
+    if (workTodoInput.courseId) {
+      workTodoEntity.courseId = workTodoInput.courseId;
+    } else {
+      workTodoEntity.courseId = null;
+    }
+    if (workTodoInput.passedDay) {
+      workTodoEntity.passedDay = workTodoInput.passedDay;
+    }
+    if (workTodoInput.recurrintCycleDate) {
+      workTodoEntity.recurringCycleDate = workTodoInput.recurrintCycleDate;
+    }
     // 기본값 입력
     workTodoEntity.addDate = new Date();
     workTodoEntities.push(workTodoEntity);
@@ -56,7 +73,9 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const workTodoEntitiesResult = await this.find(blankWorkTodoEntities);
     const workTodoDtoArrayResult = new Array<WorkTodoDto>();
 
-    if (!workTodoEntitiesResult.length) throw new HttpException({ data: "할 일 정보가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
+    if (!workTodoEntitiesResult.length) {
+      throw new HttpException({ data: "할 일 정보가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
+    }
 
     // DTO 객체에 삽입
     /*
@@ -103,8 +122,9 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     workTodoEntities.push(workTodoEntity);
     const workTodoFindResult = await this.find(workTodoEntities);
 
-    if (workTodoFindResult.length === 0)
+    if (workTodoFindResult.length === 0) {
       throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
     return this.delete(workTodoEntities);
   }

@@ -23,9 +23,7 @@ export class CourseController extends CRUDController<Course> {
       await this.courseService.createNewTags(courseInput.tags);
       await this.courseService.createCourseTag(courseInput);
 
-      res.status(HttpStatus.CREATED).send({
-        message: "코스가 정상적으로 생성되었습니다.",
-      });
+      res.status(HttpStatus.CREATED).send();
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -59,9 +57,7 @@ export class CourseController extends CRUDController<Course> {
     try {
       await this.courseService.deleteCourse(params.id);
 
-      res.status(HttpStatus.OK).send({
-        message: "코스가 삭제 되었습니다.",
-      });
+      res.status(HttpStatus.OK).send();
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
