@@ -1,7 +1,7 @@
-import { RepeatedDaysOfTheWeekType } from "./repeated-days-of-the-week.type";
+import { RepeatedDaysOfTheWeekType } from "src/repeated-days-of-the-week/repeated-days-of-the-week.type";
 
 export class RepeatedDaysOfTheWeek implements RepeatedDaysOfTheWeekType {
-  id?: number;
+  id: number;
   workTodoId: number;
   dayOfTheWeek: number;
 }

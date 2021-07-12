@@ -1,5 +1,5 @@
 export type RepeatedDaysOfTheWeekType = {
-  id?: number;
+  id: number;
   workTodoId: number;
   dayOfTheWeek: number;
 };

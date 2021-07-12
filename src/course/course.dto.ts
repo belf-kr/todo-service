@@ -1,5 +1,6 @@
-import { TagType } from "src/tag/tag.type";
 import { CourseType } from "./course.type";
+
+import { TagType } from "src/tag/tag.type";
 
 export class CourseDto implements CourseType {
   constructor(
