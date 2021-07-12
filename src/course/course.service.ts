@@ -80,10 +80,6 @@ export class CourseService extends CRUDService<Course> {
     const courseEntitiesResult = await this.find(blankCourseEntities);
     const courseDtoArrayResult = new Array<CourseDto>();
 
-    if (!courseEntitiesResult.length) {
-      throw new HttpException({ data: "코스가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
-    }
-
     // course 테이블과 course-tag 테이블의 조인 처리
     // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
     for (const courseEntity of courseEntitiesResult) {

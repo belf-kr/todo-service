@@ -69,13 +69,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   }
 
   async getAllWorkTodos(): Promise<WorkTodoDto[]> {
-    const blankWorkTodoEntities: WorkTodo[] = new Array<WorkTodo>();
-    const workTodoEntitiesResult = await this.find(blankWorkTodoEntities);
     const workTodoDtoArrayResult = new Array<WorkTodoDto>();
-
-    if (!workTodoEntitiesResult.length) {
-      throw new HttpException({ data: "할 일 정보가 존재하지 않습니다.", status: HttpStatus.OK }, HttpStatus.OK);
-    }
 
     // DTO 객체에 삽입
     /*
