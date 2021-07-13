@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
 import { CourseDto } from "./course.dto";
+import { CourseType } from "./course.type";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -11,10 +12,8 @@ import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
 import { Color } from "src/entity/color.entity";
 
-import { TagType } from "src/tag/tag.type";
 import { TagService } from "src/tag/tag.service";
-
-import { CourseType } from "src/course/course.type";
+import { TagType } from "src/tag/tag.type";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
 

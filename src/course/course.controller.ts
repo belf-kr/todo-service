@@ -1,12 +1,10 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res } from "@nestjs/common";
-import { Response } from "express";
+import { Body, Controller, Delete, Get, HttpException, Param, Post } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
+import { CourseType } from "./course.type";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
-
-import { CourseType } from "src/course/course.type";
 
 import { Course } from "src/entity/course.entity";
 
@@ -17,13 +15,13 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Post()
-  async createCourse(@Res() res: Response, @Body() courseInput: CourseType) {
+  async createCourse(@Body() courseInput: CourseType) {
     try {
       await this.courseService.createCourse(courseInput);
       await this.courseService.createNewTags(courseInput.tags);
       await this.courseService.createCourseTag(courseInput);
 
-      res.status(HttpStatus.CREATED).send();
+      return;
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -34,12 +32,12 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Get()
-  async getAllCourses(@Res() res: Response) {
+  async getAllCourses() {
     try {
       // 코스 리스트 저장
       const courseServiceResult = await this.courseService.getAllCourses();
 
-      res.status(HttpStatus.OK).send({
+      return Object.assign({
         course_list: courseServiceResult,
       });
     } catch (error) {
@@ -53,11 +51,11 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Delete(":id")
-  async deleteCourses(@Res() res: Response, @Param() params: any) {
+  async deleteCourses(@Param() params: any) {
     try {
       await this.courseService.deleteCourse(params.id);
 
-      res.status(HttpStatus.OK).send();
+      return;
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);

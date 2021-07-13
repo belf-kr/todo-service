@@ -1,5 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus, Res } from "@nestjs/common";
-import { Response } from "express";
+import { Controller, Get, HttpException } from "@nestjs/common";
 
 import { ColorService } from "./color.service";
 
@@ -16,12 +15,12 @@ export class ColorController extends CRUDController<Color> {
 
   // 색상 리스트 전체 Read
   @Get()
-  async getAllColors(@Res() res: Response) {
+  async getAllColors() {
     try {
       // 서비스 결과 저장
       const serviceResult = await this.colorService.getAllColors();
 
-      res.status(HttpStatus.OK).send({
+      return Object.assign({
         color_list: serviceResult,
       });
     } catch (error) {

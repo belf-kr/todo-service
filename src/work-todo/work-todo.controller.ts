@@ -1,5 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Res } from "@nestjs/common";
-import { Response } from "express";
+import { Body, Controller, Delete, Get, HttpException, Param, Post } from "@nestjs/common";
 
 import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
@@ -16,11 +15,11 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Post()
-  async createWorkTodo(@Res() res: Response, @Body() workTodoInput: WorkTodoType) {
+  async createWorkTodo(@Body() workTodoInput: WorkTodoType) {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);
 
-      res.status(HttpStatus.CREATED).send();
+      return;
     } catch (error) {
       // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);
@@ -31,12 +30,12 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Get()
-  async getAllWorkTodos(@Res() res: Response) {
+  async getAllWorkTodos() {
     try {
       // 할일 리스트 저장
       const workTodoServiceResult = await this.workTodoService.getAllWorkTodos();
 
-      res.status(HttpStatus.OK).send({
+      return Object.assign({
         todo_list: workTodoServiceResult,
       });
     } catch (error) {
@@ -49,11 +48,11 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Delete(":id")
-  async deleteWorkTodo(@Res() res: Response, @Param() params: any) {
+  async deleteWorkTodo(@Param() params: any) {
     try {
       await this.workTodoService.deleteWorkTodo(params.id);
 
-      res.status(HttpStatus.OK).send();
+      return;
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
