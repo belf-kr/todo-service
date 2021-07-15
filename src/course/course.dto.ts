@@ -1,6 +1,9 @@
+import { IsArray, IsDate, IsInt, IsNotEmpty, IsString, Length } from "class-validator";
+
 import { CourseType } from "./course.type";
 
 import { TagType } from "src/tag/tag.type";
+import { TagDto } from "src/tag/tag.dto";
 
 export class CourseDto implements CourseType {
   constructor(
@@ -27,14 +30,37 @@ export class CourseDto implements CourseType {
     this.tags = tags;
   }
 
+  @IsInt({ groups: ["generated"] })
   id: number;
+
+  @IsInt()
   originalCourseId: number;
+
+  @Length(7, 7, { always: true })
+  @IsNotEmpty({ always: true })
   color: string;
+
+  @IsInt()
   creatorId: number;
+
+  @IsDate({ groups: ["userUpdate"] })
   startDate: Date;
+
+  @IsDate({ groups: ["userUpdate"] })
   endDate: Date;
+
+  @IsString({ always: true })
   explanation: string;
+
+  @IsString({ always: true })
+  @IsNotEmpty({ always: true, message: "title에 해당되는 값이 존재하지 않습니다." })
   title: string;
+
+  @IsInt({ groups: ["userUpdate"] })
   likeCount: number;
-  tags: TagType[];
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  tags: TagDto[];
 }

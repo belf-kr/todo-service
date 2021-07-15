@@ -46,11 +46,7 @@ export class CourseService extends CRUDService<Course> {
     const courseEntity = new Course();
 
     // 생성 시 입력된 key value를 사용해 객체에 값을 입력한다.
-    if (coursesInput.title) {
-      courseEntity.title = coursesInput.title;
-    } else {
-      throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    }
+    courseEntity.title = coursesInput.title;
     if (coursesInput.explanation) {
       courseEntity.explanation = coursesInput.explanation;
     }
@@ -125,11 +121,6 @@ export class CourseService extends CRUDService<Course> {
   }
 
   async deleteCourse(id: number): Promise<void> {
-    // 검색 조건이 없는경우
-    if (!id) {
-      throw new HttpException({ data: "검색 조건이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    }
-
     const courseEntities = new Array<Course>();
     const courseEntity = new Course();
 

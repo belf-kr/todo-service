@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
-import { CourseType } from "./course.type";
+import { CourseDto } from "./course.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -15,7 +15,7 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Post()
-  async createCourse(@Body() courseInput: CourseType) {
+  async createCourse(@Body(new ValidationPipe({ groups: ["userCreate"] })) courseInput: CourseDto) {
     try {
       await this.courseService.createCourse(courseInput);
       await this.courseService.createNewTags(courseInput.tags);
@@ -51,9 +51,9 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Delete(":id")
-  async deleteCourses(@Param() params: any) {
+  async deleteCourses(@Param("id", ParseIntPipe) id: number) {
     try {
-      await this.courseService.deleteCourse(params.id);
+      await this.courseService.deleteCourse(id);
 
       return;
     } catch (error) {

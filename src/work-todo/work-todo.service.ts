@@ -23,11 +23,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const courseEntities = new Array<Course>();
     const courseEntity = new Course();
 
-    if (workTodoInput.courseId) {
-      courseEntity.id = workTodoInput.courseId;
-    } else {
-      throw new HttpException({ data: "코스의 id값이 비어있습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    }
+    courseEntity.id = workTodoInput.courseId;
 
     courseEntities.push(courseEntity);
     const courseSearchResult = await this.courseService.find(courseEntities);
@@ -40,16 +36,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const workTodoEntity = new WorkTodo();
 
     // 생성시 입력된 key value를 사용해 객체를 생성한다.
-    if (workTodoInput.title) {
-      workTodoEntity.title = workTodoInput.title;
-    } else {
-      throw new HttpException({ data: "title에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    }
-    if (workTodoInput.explanation) {
-      workTodoEntity.explanation = workTodoInput.explanation;
-    } else {
-      throw new HttpException({ data: "explanation에 해당되는 값이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    }
+    workTodoEntity.title = workTodoInput.title;
+    workTodoEntity.explanation = workTodoInput.explanation;
     if (workTodoInput.courseId) {
       workTodoEntity.courseId = workTodoInput.courseId;
     } else {
@@ -101,11 +89,6 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   }
 
   async deleteWorkTodo(id: number): Promise<void> {
-    // 검색 조건이 없는경우
-    if (!id) {
-      throw new HttpException({ data: "검색 조건이 존재하지 않습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    }
-
     // 검색을 위한 객체
     const workTodoEntities = new Array<WorkTodo>();
     const workTodoEntity = new WorkTodo();

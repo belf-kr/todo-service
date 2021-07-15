@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
 
 import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
@@ -15,7 +15,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Post()
-  async createWorkTodo(@Body() workTodoInput: WorkTodoType) {
+  async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoInput: WorkTodoType) {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);
 
@@ -48,9 +48,9 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Delete(":id")
-  async deleteWorkTodo(@Param() params: any) {
+  async deleteWorkTodo(@Param("id", ParseIntPipe) id: number) {
     try {
-      await this.workTodoService.deleteWorkTodo(params.id);
+      await this.workTodoService.deleteWorkTodo(id);
 
       return;
     } catch (error) {
