@@ -1,6 +1,5 @@
-import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { Page } from "./page.entity";
 import { User } from "./user.entity";
 import { WorkTodo } from "./work-todo.entity";
 
@@ -8,6 +7,19 @@ import { WorkTodo } from "./work-todo.entity";
 export class WorkDone {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column({
+    length: 50,
+    type: "nvarchar",
+    charset: "utf8mb4",
+  })
+  title: string;
+
+  @Column({
+    type: "text",
+    charset: "utf8mb4",
+  })
+  content: string;
 
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: "SET NULL",
@@ -22,13 +34,6 @@ export class WorkDone {
   })
   @JoinColumn({ name: "work_todo_id" })
   workTodoId: number;
-
-  @ManyToOne(() => Page, (page) => page.id, {
-    onDelete: "CASCADE",
-    eager: true,
-  })
-  @JoinColumn({ name: "page_id" })
-  pageId: number;
 
   @CreateDateColumn({
     type: "datetime",

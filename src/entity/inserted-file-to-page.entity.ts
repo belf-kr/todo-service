@@ -1,14 +1,14 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { File } from "./file.entity";
-import { Page } from "./page.entity";
+import { WorkDone } from "./work-done.entity";
 
 @Entity({})
 export class InsertedFileToPage {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Page, (page) => page.id, {
+  @ManyToOne(() => WorkDone, (workDone) => workDone.id, {
     onDelete: "CASCADE",
     eager: true,
   })
