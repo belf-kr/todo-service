@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
 
-import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
+import { WorkTodoDto } from "./work-todo.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -15,7 +15,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Post()
-  async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoInput: WorkTodoType) {
+  async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoInput: WorkTodoDto) {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);
 

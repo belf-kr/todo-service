@@ -29,13 +29,13 @@ export class WorkTodoDto implements WorkTodoType {
   @IsNotEmpty({ always: true, message: "코스의 id값이 비어있습니다." })
   courseId: number;
 
-  @IsString({ always: true })
-  @IsNotEmpty({ always: true })
+  @IsString({ groups: ["generated"] })
+  @IsNotEmpty({ groups: ["generated"] })
   courseTitle: string;
 
-  @IsString({ always: true })
-  @IsNotEmpty({ always: true })
-  @Length(7, 7, { always: true })
+  @IsString({ groups: ["generated"] })
+  @IsNotEmpty({ groups: ["generated"] })
+  @Length(7, 7, { groups: ["generated"] })
   color: string;
 
   @IsArray()
