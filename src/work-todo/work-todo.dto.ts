@@ -2,7 +2,7 @@ import { IsArray, IsDate, IsInt, IsNotEmpty, IsString, Length } from "class-vali
 
 import { WorkTodoType } from "./work-todo.type";
 
-import { RepeatedDaysOfTheWeekType } from "src/repeated-days-of-the-week/repeated-days-of-the-week.type";
+import { RepeatedDaysOfTheWeekDto } from "src/repeated-days-of-the-week/repeated-days-of-the-week.dto";
 
 export class WorkTodoDto implements WorkTodoType {
   @IsInt({ groups: ["generated"] })
@@ -39,5 +39,5 @@ export class WorkTodoDto implements WorkTodoType {
   color: string;
 
   @IsArray()
-  repeatedDaysOfTheWeek: RepeatedDaysOfTheWeekType[];
+  repeatedDaysOfTheWeek: RepeatedDaysOfTheWeekDto[];
 }

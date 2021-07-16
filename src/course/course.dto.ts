@@ -2,7 +2,6 @@ import { IsArray, IsDate, IsInt, IsNotEmpty, IsString, Length } from "class-vali
 
 import { CourseType } from "./course.type";
 
-import { TagType } from "src/tag/tag.type";
 import { TagDto } from "src/tag/tag.dto";
 
 export class CourseDto implements CourseType {
@@ -16,7 +15,7 @@ export class CourseDto implements CourseType {
     explanation: string,
     title: string,
     likeCount = 0,
-    tags: TagType[]
+    tags: TagDto[]
   ) {
     this.id = id;
     this.originalCourseId = originalCourseId;
