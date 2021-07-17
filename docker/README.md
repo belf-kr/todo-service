@@ -54,7 +54,7 @@ docker images
 
 ### Docker container(MySQL) 생성
 
-아래 명령어를 **/docker/mysql/masterr** 디렉토리로 이동하신 다음 입력하시면 됩니다.
+아래 명령어를 **/docker/mysql/master** 디렉토리로 이동하신 다음 입력하시면 됩니다.
 
 ```shell
     docker-compose up -d
