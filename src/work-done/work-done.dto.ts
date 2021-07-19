@@ -20,6 +20,6 @@ export class WorkDoneDto implements WorkDoneType {
   @IsInt({ groups: ["userInput"] })
   workTodoId: number;
 
-  @IsDate({ always: true })
+  @IsDate({ groups: ["userUpdate"] })
   actionDate: Date;
 }
