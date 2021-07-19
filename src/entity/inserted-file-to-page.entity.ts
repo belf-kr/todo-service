@@ -12,8 +12,8 @@ export class InsertedFileToPage {
     onDelete: "CASCADE",
     eager: true,
   })
-  @JoinColumn({ name: "page_id" })
-  pageId: number;
+  @JoinColumn({ name: "work_done_id" })
+  workDoneId: number;
 
   @ManyToOne(() => File, (file) => file.id, {
     onDelete: "CASCADE",

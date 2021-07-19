@@ -4,6 +4,5 @@ export type WorkDoneType = {
   content: string;
   userId: number;
   workTodoId: number;
-  pageId: number;
   actionDate: Date;
 };
