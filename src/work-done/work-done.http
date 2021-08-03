@@ -15,6 +15,9 @@ Content-Type: application/json
 GET {{Host}}/{{Router}}
 Content-Type: application/json
 
+### work_done 1개 가져오기
+GET {{Host}}/{{Router}}/1
+
 ### work_done 삭제
 DELETE {{Host}}/{{Router}}/1
 Content-Type: application/json

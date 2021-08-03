@@ -33,7 +33,7 @@ export class WorkDone {
     eager: true,
   })
   @JoinColumn({ name: "work_todo_id" })
-  workTodoId: number;
+  workTodoId: WorkTodo;
 
   @CreateDateColumn({
     type: "datetime",

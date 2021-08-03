@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import { WorkDoneType } from "./work-done.type";
+import { WorkDoneDto } from "./work-done.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -35,7 +36,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     const workDoneEntity = new WorkDone();
 
     // 생성시 입력된 key value를 사용해 객체를 생성한다.
-    workDoneEntity.workTodoId = workDoneInput.workTodoId;
+    workDoneEntity.workTodoId.id = workDoneInput.workTodoId;
     workDoneEntity.title = workDoneInput.title;
     if (workDoneInput.userId) {
       workDoneEntity.userId = workDoneEntity.userId;
@@ -49,5 +50,33 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     workDoneEntities.push(workDoneEntity);
 
     return await this.create(workDoneEntities);
+  }
+
+  async getWorkDone(id: number) {
+    // 검색을 위한 객체
+    const workDoneEntities = new Array<WorkDone>();
+    const workDoneEntity = new WorkDone();
+    const workDoneDto = new WorkDoneDto();
+
+    workDoneEntity.id = id;
+    workDoneEntities.push(workDoneEntity);
+
+    const workDoneFindResult = await this.find(workDoneEntities);
+
+    if (workDoneFindResult.length === 0) {
+      throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
+
+    // DTO 객체에 값 입력
+    for (const workDoneEntity of workDoneFindResult) {
+      workDoneDto.id = workDoneEntity.id;
+      workDoneDto.title = workDoneEntity.title;
+      workDoneDto.content = workDoneEntity.content;
+      workDoneDto.userId = workDoneEntity.userId;
+      workDoneDto.workTodoId = workDoneEntity.workTodoId.id;
+      workDoneDto.actionDate = workDoneEntity.actionDate;
+    }
+
+    return workDoneDto;
   }
 }
