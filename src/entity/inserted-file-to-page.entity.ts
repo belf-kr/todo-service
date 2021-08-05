@@ -13,12 +13,12 @@ export class InsertedFileToPage {
     eager: true,
   })
   @JoinColumn({ name: "work_done_id" })
-  workDoneId: number;
+  workDoneId: WorkDone;
 
   @ManyToOne(() => File, (file) => file.id, {
     onDelete: "CASCADE",
     eager: true,
   })
   @JoinColumn({ name: "file_id" })
-  fileId: number;
+  fileId: File;
 }

@@ -5,11 +5,35 @@ import { WorkTodoType } from "./work-todo.type";
 import { RepeatedDaysOfTheWeekDto } from "src/repeated-days-of-the-week/repeated-days-of-the-week.dto";
 
 export class WorkTodoDto implements WorkTodoType {
+  constructor(
+    id?: number,
+    recurringCycleDate?: number,
+    title?: string,
+    explanation?: string,
+    passedDay?: number,
+    addDate?: Date,
+    courseId?: number,
+    courseTitle?: string,
+    color?: string,
+    repeatedDaysOfTheWeek?: RepeatedDaysOfTheWeekDto[]
+  ) {
+    this.id = id;
+    this.recurringCycleDate = recurringCycleDate;
+    this.title = title;
+    this.explanation = explanation;
+    this.passedDay = passedDay;
+    this.addDate = addDate;
+    this.courseId = courseId;
+    this.courseTitle = courseTitle;
+    this.color = color;
+    this.repeatedDaysOfTheWeek = repeatedDaysOfTheWeek;
+  }
+
   @IsInt({ groups: ["generated"] })
   id: number;
 
   @IsInt({ groups: ["userUpdate"] })
-  recurrintCycleDate: number;
+  recurringCycleDate: number;
 
   @IsString({ always: true })
   @IsNotEmpty({ always: true, message: "title에 해당되는 값이 존재하지 않습니다." })

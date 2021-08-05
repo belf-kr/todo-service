@@ -39,15 +39,15 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     workTodoEntity.title = workTodoInput.title;
     workTodoEntity.explanation = workTodoInput.explanation;
     if (workTodoInput.courseId) {
-      workTodoEntity.courseId = workTodoInput.courseId;
+      workTodoEntity.courseId.id = workTodoInput.courseId;
     } else {
       workTodoEntity.courseId = null;
     }
     if (workTodoInput.passedDay) {
       workTodoEntity.passedDay = workTodoInput.passedDay;
     }
-    if (workTodoInput.recurrintCycleDate) {
-      workTodoEntity.recurringCycleDate = workTodoInput.recurrintCycleDate;
+    if (workTodoInput.recurringCycleDate) {
+      workTodoEntity.recurringCycleDate = workTodoInput.recurringCycleDate;
     }
     // 기본값 입력
     workTodoEntity.addDate = new Date();
@@ -69,17 +69,18 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
     for (const joinItem of joinResult) {
       // 반환을 위한 배열에 요소를 넣어주기 위한 DTO 객체
-      const workTodoDto = new WorkTodoDto();
+      const workTodoDto = new WorkTodoDto(
+        joinItem["wt_id"],
+        joinItem["wt_recurring_cycle_date"],
+        joinItem["wt_title"],
+        joinItem["wt_explanation"],
+        joinItem["wt_passed_day"],
+        joinItem["wt_add_date"],
+        joinItem["c_id"],
+        joinItem["c_title"],
+        joinItem["c_color"]
+      );
 
-      workTodoDto.id = joinItem["wt_id"];
-      workTodoDto.recurrintCycleDate = joinItem["wt_recurring_cycle_date"];
-      workTodoDto.title = joinItem["wt_title"];
-      workTodoDto.explanation = joinItem["wt_explanation"];
-      workTodoDto.passedDay = joinItem["wt_passed_day"];
-      workTodoDto.addDate = joinItem["wt_add_date"];
-      workTodoDto.courseId = joinItem["c_id"];
-      workTodoDto.courseTitle = joinItem["c_title"];
-      workTodoDto.color = joinItem["c_color"];
       // TODO: 반복 요일에 대한 정보 리스트로 추가 하기
 
       workTodoDtoArrayResult.push(workTodoDto);

@@ -13,14 +13,14 @@ export class CoursePriority {
     eager: true,
   })
   @JoinColumn({ name: "user_id" })
-  userId: number;
+  userId: User;
 
   @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "CASCADE",
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
-  courseId: number;
+  courseId: Course;
 
   @Column({})
   priority: number;

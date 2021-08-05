@@ -2,7 +2,7 @@ import { RepeatedDaysOfTheWeekType } from "src/repeated-days-of-the-week/repeate
 
 export type WorkTodoType = {
   id: number;
-  recurrintCycleDate: number;
+  recurringCycleDate: number;
   title: string;
   explanation: string;
   passedDay: number;

@@ -56,7 +56,6 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     // 검색을 위한 객체
     const workDoneEntities = new Array<WorkDone>();
     const workDoneEntity = new WorkDone();
-    const workDoneDto = new WorkDoneDto();
 
     workDoneEntity.id = id;
     workDoneEntities.push(workDoneEntity);
@@ -69,14 +68,16 @@ export class WorkDoneService extends CRUDService<WorkDone> {
 
     // DTO 객체에 값 입력
     for (const workDoneEntity of workDoneFindResult) {
-      workDoneDto.id = workDoneEntity.id;
-      workDoneDto.title = workDoneEntity.title;
-      workDoneDto.content = workDoneEntity.content;
-      workDoneDto.userId = workDoneEntity.userId;
-      workDoneDto.workTodoId = workDoneEntity.workTodoId.id;
-      workDoneDto.actionDate = workDoneEntity.actionDate;
-    }
+      const workDoneDto = new WorkDoneDto(
+        workDoneEntity.id,
+        workDoneEntity.title,
+        workDoneEntity.content,
+        workDoneEntity.userId.id,
+        workDoneEntity.workTodoId.id,
+        workDoneEntity.actionDate
+      );
 
-    return workDoneDto;
+      return workDoneDto;
+    }
   }
 }

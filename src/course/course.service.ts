@@ -51,10 +51,10 @@ export class CourseService extends CRUDService<Course> {
       courseEntity.explanation = coursesInput.explanation;
     }
     if (coursesInput.color) {
-      courseEntity.color = coursesInput.color;
+      courseEntity.color.id = coursesInput.color;
     }
     if (coursesInput.creatorId) {
-      courseEntity.creatorId = coursesInput.creatorId;
+      courseEntity.creatorId.id = coursesInput.creatorId;
     }
     if (coursesInput.endDate) {
       courseEntity.endDate = coursesInput.endDate;
@@ -104,9 +104,9 @@ export class CourseService extends CRUDService<Course> {
       courseDtoArrayResult.push(
         new CourseDto(
           courseEntity.id,
-          courseEntity.originalCourseId,
+          courseEntity.originalCourseId.id,
           courseEntity.color["id"],
-          courseEntity.creatorId,
+          courseEntity.creatorId.id,
           courseEntity.startDate,
           courseEntity.endDate,
           courseEntity.explanation,
@@ -187,10 +187,10 @@ export class CourseService extends CRUDService<Course> {
       courseEntity.explanation = courseInput.explanation;
     }
     if (courseInput.color) {
-      courseEntity.color = courseInput.color;
+      courseEntity.color.id = courseInput.color;
     }
     if (courseInput.creatorId) {
-      courseEntity.creatorId = courseInput.creatorId;
+      courseEntity.creatorId.id = courseInput.creatorId;
     }
     if (courseInput.endDate) {
       courseEntity.endDate = courseInput.endDate;
@@ -212,8 +212,8 @@ export class CourseService extends CRUDService<Course> {
     for (const tag of tagEntities) {
       // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
       const courseTagEntity = new CourseTag();
-      courseTagEntity.courseId = courses[0].id;
-      courseTagEntity.tagId = tag.id;
+      courseTagEntity.courseId.id = courses[0].id;
+      courseTagEntity.tagId.id = tag.id;
       courseTagEntities.push(courseTagEntity);
     }
     await this.courseTagService.create(courseTagEntities);

@@ -14,7 +14,7 @@ export class CourseTag {
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
-  courseId: number;
+  courseId: Course;
 
   @ManyToOne(() => Tag, (tag) => tag.id, {
     nullable: false,
@@ -22,5 +22,5 @@ export class CourseTag {
     eager: true,
   })
   @JoinColumn({ name: "tag_id" })
-  tagId: number;
+  tagId: Tag;
 }

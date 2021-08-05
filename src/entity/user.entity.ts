@@ -13,7 +13,7 @@ export class User {
     eager: true,
   })
   @JoinColumn({ name: "profile_picture" })
-  profilePicture: number;
+  profilePicture: File;
 
   @Column({
     length: 100,

@@ -13,7 +13,7 @@ export class Course {
     nullable: true,
   })
   @JoinColumn({ name: "original_course_id" })
-  originalCourseId: number;
+  originalCourseId: Course;
 
   @ManyToOne(() => Color, (color) => color.id, {
     onDelete: "SET NULL",
@@ -21,14 +21,14 @@ export class Course {
     eager: true,
   })
   @JoinColumn({ name: "color" })
-  color: string;
+  color: Color;
 
   @ManyToOne(() => User, (user) => user.id, {
     onDelete: "SET NULL",
     eager: true,
   })
   @JoinColumn({ name: "creator_id" })
-  creatorId: number;
+  creatorId: User;
 
   @Column({
     type: "date",

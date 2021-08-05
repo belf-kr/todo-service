@@ -12,7 +12,7 @@ export class WorkTodo {
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
-  courseId: number;
+  courseId: Course;
 
   @Column({
     nullable: true,

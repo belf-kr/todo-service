@@ -12,7 +12,7 @@ export class RepeatedDaysOfTheWeek {
     eager: true,
   })
   @JoinColumn({ name: "work_todo_id" })
-  workTodoId: number;
+  workTodoId: WorkTodo;
 
   @Column({
     name: "day_of_the_week",

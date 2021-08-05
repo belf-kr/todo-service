@@ -26,7 +26,7 @@ export class WorkDone {
     eager: true,
   })
   @JoinColumn({ name: "user_id" })
-  userId: number;
+  userId: User;
 
   @ManyToOne(() => WorkTodo, (workToDo) => workToDo.id, {
     onDelete: "CASCADE",

@@ -13,14 +13,14 @@ export class CourseImportation {
     eager: true,
   })
   @JoinColumn({ name: "user_id" })
-  userId: number;
+  userId: User;
 
   @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "CASCADE",
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
-  courseId: number;
+  courseId: Course;
 
   @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "SET NULL",
@@ -30,5 +30,5 @@ export class CourseImportation {
   @JoinColumn({
     name: "original_course_id",
   })
-  originalCourseId: number;
+  originalCourseId: Course;
 }

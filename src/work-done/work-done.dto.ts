@@ -3,6 +3,15 @@ import { IsDate, IsInt, IsNotEmpty, IsString } from "class-validator";
 import { WorkDoneType } from "./work-done.type";
 
 export class WorkDoneDto implements WorkDoneType {
+  constructor(id?: number, title?: string, content?: string, userId?: number, workTodoId?: number, actionDate?: Date) {
+    this.id = id;
+    this.title = title;
+    this.content = content;
+    this.userId = userId;
+    this.workTodoId = workTodoId;
+    this.actionDate = actionDate;
+  }
+
   @IsInt({ groups: ["generated"] })
   id: number;
 

@@ -28,5 +28,5 @@ export class ExampleLower {
     // FK 컬럼명
     name: "example_upper_id",
   })
-  exampleUpperId: number;
+  exampleUpperId: ExampleUpper;
 }
