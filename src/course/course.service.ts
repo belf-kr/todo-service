@@ -51,7 +51,9 @@ export class CourseService extends CRUDService<Course> {
       courseEntity.explanation = coursesInput.explanation;
     }
     if (coursesInput.color) {
-      courseEntity.color.id = coursesInput.color;
+      const colorEntity = new Color();
+      colorEntity.id = coursesInput.color;
+      courseEntity.color = colorEntity;
     }
     if (coursesInput.creatorId) {
       courseEntity.creatorId.id = coursesInput.creatorId;
@@ -187,7 +189,9 @@ export class CourseService extends CRUDService<Course> {
       courseEntity.explanation = courseInput.explanation;
     }
     if (courseInput.color) {
-      courseEntity.color.id = courseInput.color;
+      const colorEntity = new Color();
+      colorEntity.id = courseInput.color;
+      courseEntity.color = colorEntity;
     }
     if (courseInput.creatorId) {
       courseEntity.creatorId.id = courseInput.creatorId;
@@ -212,8 +216,15 @@ export class CourseService extends CRUDService<Course> {
     for (const tag of tagEntities) {
       // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
       const courseTagEntity = new CourseTag();
-      courseTagEntity.courseId.id = courses[0].id;
-      courseTagEntity.tagId.id = tag.id;
+
+      const courseEntity = new Course();
+      courseEntity.id = courses[0].id;
+      courseTagEntity.courseId = courseEntity;
+
+      const tagEntity = new Tag();
+      tagEntity.id = tag.id;
+      courseTagEntity.tagId = tagEntity;
+
       courseTagEntities.push(courseTagEntity);
     }
     await this.courseTagService.create(courseTagEntities);
