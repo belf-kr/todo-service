@@ -2,31 +2,60 @@ import { IsArray, IsDate, IsInt, IsNotEmpty, IsString, Length } from "class-vali
 
 import { CourseType } from "./course.type";
 
+import { Course } from "src/entity/course.entity";
+import { Tag } from "src/entity/tag.entity";
+
 import { TagDto } from "src/tag/tag.dto";
 
 export class CourseDto implements CourseType {
-  constructor(
-    id?: number,
-    originalCourseId?: number,
-    color?: string,
-    creatorId?: number,
-    startDate?: Date,
-    endDate?: Date,
-    explanation?: string,
-    title?: string,
-    likeCount?: number,
-    tags?: TagDto[]
-  ) {
-    this.id = id;
-    this.originalCourseId = originalCourseId;
-    this.color = color;
-    this.creatorId = creatorId;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.explanation = explanation;
-    this.title = title;
-    this.likeCount = likeCount;
-    this.tags = tags;
+  static entityConstructor(courseEntity?: Course, tagEntities?: Tag[]): CourseDto {
+    const courseDto = new CourseDto();
+    courseDto.tags = new Array<TagDto>();
+
+    if (courseEntity.id) {
+      courseDto.id = courseEntity.id;
+    }
+    if (courseEntity.originalCourseId) {
+      courseDto.originalCourseId = courseEntity.originalCourseId.id;
+    }
+    if (courseEntity.color) {
+      courseDto.color = courseEntity.color.id;
+    }
+    if (courseEntity.creatorId) {
+      courseDto.creatorId = courseEntity.creatorId.id;
+    }
+    if (courseEntity.startDate) {
+      courseDto.startDate = courseEntity.startDate;
+    }
+    if (courseEntity.endDate) {
+      courseDto.endDate = courseEntity.endDate;
+    }
+    if (courseEntity.explanation) {
+      courseDto.explanation = courseEntity.explanation;
+    }
+    if (courseEntity.title) {
+      courseDto.title = courseEntity.title;
+    }
+    if (courseEntity.likeCount) {
+      courseDto.likeCount = courseEntity.likeCount;
+    }
+
+    // Tag entity 값을 입력 한 경우
+    if (tagEntities) {
+      for (const tagEntity of tagEntities) {
+        const tagDto = new TagDto();
+
+        if (tagEntity.id) {
+          tagDto.id = tagEntity.id;
+        }
+        if (tagEntity.value) {
+          tagDto.value = tagEntity.value;
+        }
+        courseDto.tags.push(tagDto);
+      }
+    }
+
+    return courseDto;
   }
 
   @IsInt({ groups: ["generated"] })

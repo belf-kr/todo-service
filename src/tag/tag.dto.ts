@@ -2,10 +2,20 @@ import { IsInt, IsNotEmpty, IsString } from "class-validator";
 
 import { TagType } from "./tag.type";
 
+import { Tag } from "src/entity/tag.entity";
+
 export class TagDto implements TagType {
-  constructor(id?: number, value?: string) {
-    this.id = id;
-    this.value = value;
+  static entityConstructor(tag?: Tag): TagDto {
+    const tagDto = new TagDto();
+
+    if (tag.id) {
+      tagDto.id = tag.id;
+    }
+    if (tag.value) {
+      tagDto.value = tag.value;
+    }
+
+    return tagDto;
   }
 
   @IsInt({

@@ -2,14 +2,32 @@ import { IsDate, IsInt, IsNotEmpty, IsString } from "class-validator";
 
 import { WorkDoneType } from "./work-done.type";
 
+import { WorkDone } from "src/entity/work-done.entity";
+
 export class WorkDoneDto implements WorkDoneType {
-  constructor(id?: number, title?: string, content?: string, userId?: number, workTodoId?: number, actionDate?: Date) {
-    this.id = id;
-    this.title = title;
-    this.content = content;
-    this.userId = userId;
-    this.workTodoId = workTodoId;
-    this.actionDate = actionDate;
+  static entityConstructor(workDoneEntity?: WorkDone): WorkDoneDto {
+    const workDoneDto = new WorkDoneDto();
+
+    if (workDoneEntity.id) {
+      workDoneDto.id = workDoneEntity.id;
+    }
+    if (workDoneEntity.title) {
+      workDoneDto.title = workDoneEntity.title;
+    }
+    if (workDoneEntity.content) {
+      workDoneDto.content = workDoneEntity.content;
+    }
+    if (workDoneEntity.userId) {
+      workDoneDto.userId = workDoneEntity.userId.id;
+    }
+    if (workDoneEntity.workTodoId) {
+      workDoneDto.workTodoId = workDoneEntity.workTodoId.id;
+    }
+    if (workDoneEntity.actionDate) {
+      workDoneDto.actionDate = workDoneEntity.actionDate;
+    }
+
+    return workDoneDto;
   }
 
   @IsInt({ groups: ["generated"] })

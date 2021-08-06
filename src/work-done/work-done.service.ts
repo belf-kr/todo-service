@@ -68,16 +68,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
 
     // DTO 객체에 값 입력
     for (const workDoneEntity of workDoneFindResult) {
-      const workDoneDto = new WorkDoneDto(
-        workDoneEntity.id,
-        workDoneEntity.title,
-        workDoneEntity.content,
-        workDoneEntity.userId.id,
-        workDoneEntity.workTodoId.id,
-        workDoneEntity.actionDate
-      );
-
-      return workDoneDto;
+      return WorkDoneDto.entityConstructor(workDoneEntity);
     }
   }
 }

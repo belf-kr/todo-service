@@ -14,6 +14,7 @@ import { Color } from "src/entity/color.entity";
 
 import { TagService } from "src/tag/tag.service";
 import { TagType } from "src/tag/tag.type";
+import { TagDto } from "src/tag/tag.dto";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
 
@@ -103,20 +104,13 @@ export class CourseService extends CRUDService<Course> {
         tagEntitiesResult.push(tagEntity);
       }
 
-      courseDtoArrayResult.push(
-        new CourseDto(
-          courseEntity.id,
-          courseEntity.originalCourseId.id,
-          courseEntity.color["id"],
-          courseEntity.creatorId.id,
-          courseEntity.startDate,
-          courseEntity.endDate,
-          courseEntity.explanation,
-          courseEntity.title,
-          courseEntity.likeCount,
-          tagEntitiesResult
-        )
-      );
+      // 태그 DTO 배열을 생성하기
+      const tagDtos = new Array<TagDto>();
+      for (const tagEntity of tagEntitiesResult) {
+        tagDtos.push(TagDto.entityConstructor(tagEntity));
+      }
+
+      courseDtoArrayResult.push(CourseDto.entityConstructor(courseEntity, tagEntitiesResult));
     }
 
     return courseDtoArrayResult;
