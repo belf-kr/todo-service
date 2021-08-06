@@ -22,9 +22,7 @@ export class ColorService extends CRUDService<Color> {
 
     // DTO 객체에 삽입
     for (const colorEntity of colorEntitiesResult) {
-      const colorDto = new ColorDto();
-      colorDto.id = colorEntity.id;
-      colorDtoResult.push(colorDto);
+      colorDtoResult.push(ColorDto.entityConstructor(colorEntity));
     }
 
     // API 스펙에 맞추어 Array 형태를 반환 해 준다.
