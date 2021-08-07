@@ -5,6 +5,50 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class Course {
+  static courseConstructor(
+    id?: number,
+    originalCourseId?: Course,
+    color?: Color,
+    creatorId?: User,
+    startDate?: Date,
+    endDate?: Date,
+    explanation?: string,
+    title?: string,
+    likeCount?: number
+  ): Course {
+    const courseEntity = new Course();
+
+    if (id) {
+      courseEntity.id = id;
+    }
+    if (originalCourseId) {
+      courseEntity.originalCourseId = originalCourseId;
+    }
+    if (color) {
+      courseEntity.color = color;
+    }
+    if (creatorId) {
+      courseEntity.creatorId = creatorId;
+    }
+    if (startDate) {
+      courseEntity.startDate = startDate;
+    }
+    if (endDate) {
+      courseEntity.endDate = endDate;
+    }
+    if (explanation) {
+      courseEntity.explanation = explanation;
+    }
+    if (title) {
+      courseEntity.title = title;
+    }
+    if (likeCount) {
+      courseEntity.likeCount = likeCount;
+    }
+
+    return courseEntity;
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

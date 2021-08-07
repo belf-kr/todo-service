@@ -4,6 +4,22 @@ import { WorkTodo } from "./work-todo.entity";
 
 @Entity({})
 export class RepeatedDaysOfTheWeek {
+  static repeatedDaysOfTheWeekConstructor(id?: number, workTodoId?: WorkTodo, dayOfTheWeek?: number): RepeatedDaysOfTheWeek {
+    const repeatedDaysOfTheWeekEntity = new RepeatedDaysOfTheWeek();
+
+    if (id) {
+      repeatedDaysOfTheWeekEntity.id = id;
+    }
+    if (workTodoId) {
+      repeatedDaysOfTheWeekEntity.workTodoId = workTodoId;
+    }
+    if (dayOfTheWeek) {
+      repeatedDaysOfTheWeekEntity.dayOfTheWeek = dayOfTheWeek;
+    }
+
+    return repeatedDaysOfTheWeekEntity;
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

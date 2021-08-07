@@ -4,6 +4,50 @@ import { File } from "./file.entity";
 
 @Entity({})
 export class User {
+  static userConstructor(
+    id?: number,
+    profilePicture?: File,
+    email?: string,
+    introduction?: string,
+    lastConnectedIp?: string,
+    lastConnectedTime?: Date,
+    password?: string,
+    isAuth?: boolean,
+    isUsingOAuth?: boolean
+  ): User {
+    const userEntity = new User();
+
+    if (id) {
+      userEntity.id = id;
+    }
+    if (profilePicture) {
+      userEntity.profilePicture = profilePicture;
+    }
+    if (email) {
+      userEntity.email = email;
+    }
+    if (introduction) {
+      userEntity.introduction = introduction;
+    }
+    if (lastConnectedIp) {
+      userEntity.lastConnectedIp = lastConnectedIp;
+    }
+    if (lastConnectedTime) {
+      userEntity.lastConnectedTime = lastConnectedTime;
+    }
+    if (password) {
+      userEntity.password = password;
+    }
+    if (isAuth) {
+      userEntity.isAuth = isAuth;
+    }
+    if (isUsingOAuth) {
+      userEntity.isUsingOAuth = isUsingOAuth;
+    }
+
+    return userEntity;
+  }
+
   @PrimaryGeneratedColumn({})
   id: number;
 

@@ -5,6 +5,31 @@ import { WorkTodo } from "./work-todo.entity";
 
 @Entity({})
 export class WorkDone {
+  static workDoneConstructor(id?: number, title?: string, content?: string, userId?: User, workTodoId?: WorkTodo, actionDate?: Date): WorkDone {
+    const workDoneEntity = new WorkDone();
+
+    if (id) {
+      workDoneEntity.id = id;
+    }
+    if (title) {
+      workDoneEntity.title = title;
+    }
+    if (content) {
+      workDoneEntity.content = content;
+    }
+    if (userId) {
+      workDoneEntity.userId;
+    }
+    if (workTodoId) {
+      workDoneEntity.workTodoId = workTodoId;
+    }
+    if (actionDate) {
+      workDoneEntity.actionDate = actionDate;
+    }
+
+    return workDoneEntity;
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

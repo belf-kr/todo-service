@@ -4,6 +4,42 @@ import { Column, CreateDateColumn, Double, Entity, PrimaryGeneratedColumn, Updat
   name: "example_upper",
 })
 export class ExampleUpper {
+  static exampleUpperConstructor(
+    id?: number,
+    creationDate?: Date,
+    updateDate?: Date,
+    title?: string,
+    content?: string,
+    defaultDouble?: Double,
+    nullableInt?: number
+  ): ExampleUpper {
+    const exampleUpperEntity = new ExampleUpper();
+
+    if (id) {
+      exampleUpperEntity.id = id;
+    }
+    if (creationDate) {
+      exampleUpperEntity.creationDate = creationDate;
+    }
+    if (updateDate) {
+      exampleUpperEntity.updateDate = updateDate;
+    }
+    if (title) {
+      exampleUpperEntity.title = title;
+    }
+    if (content) {
+      exampleUpperEntity.content;
+    }
+    if (defaultDouble) {
+      exampleUpperEntity.defaultDouble;
+    }
+    if (nullableInt) {
+      exampleUpperEntity.nullableInt = nullableInt;
+    }
+
+    return exampleUpperEntity;
+  }
+
   // 기본적으로 생성되는 컬럼으로, 숫자값이 자동 증가됨
   @PrimaryGeneratedColumn()
   id: number;

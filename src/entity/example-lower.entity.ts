@@ -4,6 +4,22 @@ import { ExampleUpper } from "./example-upper.entity";
 
 @Entity({})
 export class ExampleLower {
+  static exampleLowerConstructor(id?: number, name?: string, exampleUpperId?: ExampleUpper): ExampleLower {
+    const exampleLowerEntity = new ExampleLower();
+
+    if (id) {
+      exampleLowerEntity.id = id;
+    }
+    if (name) {
+      exampleLowerEntity.name = name;
+    }
+    if (exampleUpperId) {
+      exampleLowerEntity.exampleUpperId = exampleUpperId;
+    }
+
+    return exampleLowerEntity;
+  }
+
   // 기본 생성되는 컬럼으로, 숫자값이 자동 증가됨
   @PrimaryGeneratedColumn()
   id: number;

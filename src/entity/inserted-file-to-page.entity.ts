@@ -5,6 +5,22 @@ import { WorkDone } from "./work-done.entity";
 
 @Entity({})
 export class InsertedFileToPage {
+  static insertedFileToPageConstructor(id?: number, workDoneId?: WorkDone, fileId?: File): InsertedFileToPage {
+    const insertedFileToPageEntity = new InsertedFileToPage();
+
+    if (id) {
+      insertedFileToPageEntity.id = id;
+    }
+    if (workDoneId) {
+      insertedFileToPageEntity.workDoneId = workDoneId;
+    }
+    if (fileId) {
+      insertedFileToPageEntity.fileId = fileId;
+    }
+
+    return insertedFileToPageEntity;
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

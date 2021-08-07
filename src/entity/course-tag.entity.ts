@@ -5,6 +5,22 @@ import { Tag } from "./tag.entity";
 
 @Entity({})
 export class CourseTag {
+  static courseTagConstructor(id?: number, courseId?: Course, tagId?: Tag): CourseTag {
+    const courseTagEntity = new CourseTag();
+
+    if (id) {
+      courseTagEntity.id = id;
+    }
+    if (courseId) {
+      courseTagEntity.courseId = courseId;
+    }
+    if (tagId) {
+      courseTagEntity.tagId = tagId;
+    }
+
+    return courseTagEntity;
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 

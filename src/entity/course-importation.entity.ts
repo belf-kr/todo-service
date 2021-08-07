@@ -5,6 +5,25 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class CourseImportation {
+  static courseImportationConstructor(id?: number, userId?: User, courseId?: Course, originalCourseId?: Course): CourseImportation {
+    const courseImportationEntity = new CourseImportation();
+
+    if (id) {
+      courseImportationEntity.id = id;
+    }
+    if (userId) {
+      courseImportationEntity.userId = userId;
+    }
+    if (courseId) {
+      courseImportationEntity.courseId = courseId;
+    }
+    if (originalCourseId) {
+      courseImportationEntity.originalCourseId = originalCourseId;
+    }
+
+    return courseImportationEntity;
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 
