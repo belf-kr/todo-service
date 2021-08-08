@@ -11,6 +11,7 @@ import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
 import { Color } from "src/entity/color.entity";
+import { User } from "src/entity/user.entity";
 
 import { TagService } from "src/tag/tag.service";
 import { TagType } from "src/tag/tag.type";
@@ -34,9 +35,20 @@ export class CourseService extends CRUDService<Course> {
   async createCourse(coursesInput: CourseType): Promise<void> {
     // 입력한 외래키의 존재 여부를 검증한다.
     const colorEntities = new Array<Color>();
-    const colorEntity = new Color();
+    const colorEntity = Color.colorConstructor(coursesInput.color);
+    const creatorIdEntity = User.userConstructor(
+      coursesInput.creatorId,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined
+    );
 
-    colorEntity.id = coursesInput.color;
+    colorEntities.push(colorEntity);
     const colorEntitiesResult = await this.colorService.find(colorEntities);
     if (!colorEntitiesResult.length) {
       throw new HttpException({ data: "존재하지 않는 색상의 id값 입니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
@@ -44,30 +56,19 @@ export class CourseService extends CRUDService<Course> {
 
     // Course 객체를 생성해 코스를 생성한다.
     const courseEntities = new Array<Course>();
-    const courseEntity = new Course();
+    const courseEntity = new Course(
+      undefined,
+      undefined,
+      colorEntity,
+      creatorIdEntity,
+      coursesInput.startDate,
+      coursesInput.endDate,
+      coursesInput.explanation,
+      coursesInput.title,
+      0
+    );
 
     // 생성 시 입력된 key value를 사용해 객체에 값을 입력한다.
-    courseEntity.title = coursesInput.title;
-    if (coursesInput.explanation) {
-      courseEntity.explanation = coursesInput.explanation;
-    }
-    if (coursesInput.color) {
-      const colorEntity = new Color();
-      colorEntity.id = coursesInput.color;
-      courseEntity.color = colorEntity;
-    }
-    if (coursesInput.creatorId) {
-      courseEntity.creatorId.id = coursesInput.creatorId;
-    }
-    if (coursesInput.endDate) {
-      courseEntity.endDate = coursesInput.endDate;
-    }
-    if (coursesInput.startDate) {
-      courseEntity.startDate = coursesInput.startDate;
-    }
-    if (coursesInput.likeCount) {
-      courseEntity.likeCount = 0;
-    }
     courseEntities.push(courseEntity);
 
     return this.create(courseEntities);

@@ -5,7 +5,7 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class Course {
-  static courseConstructor(
+  constructor(
     id?: number,
     originalCourseId?: Course,
     color?: Color,
@@ -15,38 +15,34 @@ export class Course {
     explanation?: string,
     title?: string,
     likeCount?: number
-  ): Course {
-    const courseEntity = new Course();
-
+  ) {
     if (id) {
-      courseEntity.id = id;
+      this.id = id;
     }
-    if (originalCourseId) {
-      courseEntity.originalCourseId = originalCourseId;
+    if (originalCourseId && originalCourseId.id !== undefined) {
+      this.originalCourseId = originalCourseId;
     }
     if (color) {
-      courseEntity.color = color;
+      this.color = color;
     }
-    if (creatorId) {
-      courseEntity.creatorId = creatorId;
+    if (creatorId && creatorId.id !== undefined) {
+      this.creatorId = creatorId;
     }
     if (startDate) {
-      courseEntity.startDate = startDate;
+      this.startDate = startDate;
     }
     if (endDate) {
-      courseEntity.endDate = endDate;
+      this.endDate = endDate;
     }
     if (explanation) {
-      courseEntity.explanation = explanation;
+      this.explanation = explanation;
     }
     if (title) {
-      courseEntity.title = title;
+      this.title = title;
     }
     if (likeCount) {
-      courseEntity.likeCount = likeCount;
+      this.likeCount = likeCount;
     }
-
-    return courseEntity;
   }
 
   @PrimaryGeneratedColumn()
