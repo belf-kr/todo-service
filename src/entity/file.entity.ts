@@ -2,26 +2,22 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity({})
 export class File {
-  static fileConstructor(id?: number, fileName?: string, originalFileName?: string, directoryPath?: string, extension?: string): File {
-    const fileEntity = new File();
-
+  constructor(id?: number, fileName?: string, originalFileName?: string, directoryPath?: string, extension?: string) {
     if (id) {
-      fileEntity.id = id;
+      this.id = id;
     }
     if (fileName) {
-      fileEntity.fileName = fileName;
+      this.fileName = fileName;
     }
     if (originalFileName) {
-      fileEntity.originalFileName = originalFileName;
+      this.originalFileName = originalFileName;
     }
     if (directoryPath) {
-      fileEntity.directoryPath = directoryPath;
+      this.directoryPath = directoryPath;
     }
     if (extension) {
-      fileEntity.extension = extension;
+      this.extension = extension;
     }
-
-    return fileEntity;
   }
 
   @PrimaryGeneratedColumn()

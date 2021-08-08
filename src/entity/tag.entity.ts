@@ -2,17 +2,13 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({})
 export class Tag {
-  static tagConstructor(id?: number, value?: string): Tag {
-    const tagEntity = new Tag();
-
+  constructor(id?: number, value?: string) {
     if (id) {
-      tagEntity.id = id;
+      this.id = id;
     }
     if (value) {
-      tagEntity.value = value;
+      this.value = value;
     }
-
-    return tagEntity;
   }
 
   @PrimaryGeneratedColumn({})

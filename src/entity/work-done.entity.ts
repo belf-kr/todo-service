@@ -5,29 +5,25 @@ import { WorkTodo } from "./work-todo.entity";
 
 @Entity({})
 export class WorkDone {
-  static workDoneConstructor(id?: number, title?: string, content?: string, userId?: User, workTodoId?: WorkTodo, actionDate?: Date): WorkDone {
-    const workDoneEntity = new WorkDone();
-
+  constructor(id?: number, title?: string, content?: string, userId?: User, workTodoId?: WorkTodo, actionDate?: Date) {
     if (id) {
-      workDoneEntity.id = id;
+      this.id = id;
     }
     if (title) {
-      workDoneEntity.title = title;
+      this.title = title;
     }
     if (content) {
-      workDoneEntity.content = content;
+      this.content = content;
     }
-    if (userId) {
-      workDoneEntity.userId;
+    if (userId && userId.id !== undefined) {
+      this.userId;
     }
-    if (workTodoId) {
-      workDoneEntity.workTodoId = workTodoId;
+    if (workTodoId && workTodoId.id !== undefined) {
+      this.workTodoId = workTodoId;
     }
     if (actionDate) {
-      workDoneEntity.actionDate = actionDate;
+      this.actionDate = actionDate;
     }
-
-    return workDoneEntity;
   }
 
   @PrimaryGeneratedColumn()

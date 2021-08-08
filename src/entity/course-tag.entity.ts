@@ -5,20 +5,16 @@ import { Tag } from "./tag.entity";
 
 @Entity({})
 export class CourseTag {
-  static courseTagConstructor(id?: number, courseId?: Course, tagId?: Tag): CourseTag {
-    const courseTagEntity = new CourseTag();
-
+  constructor(id?: number, courseId?: Course, tagId?: Tag) {
     if (id) {
-      courseTagEntity.id = id;
+      this.id = id;
     }
-    if (courseId) {
-      courseTagEntity.courseId = courseId;
+    if (courseId && courseId.id !== undefined) {
+      this.courseId = courseId;
     }
-    if (tagId) {
-      courseTagEntity.tagId = tagId;
+    if (tagId && tagId.id !== undefined) {
+      this.tagId = tagId;
     }
-
-    return courseTagEntity;
   }
 
   @PrimaryGeneratedColumn()

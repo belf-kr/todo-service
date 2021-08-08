@@ -2,14 +2,10 @@ import { Entity, PrimaryColumn } from "typeorm";
 
 @Entity({})
 export class Color {
-  static colorConstructor(id?: string): Color {
-    const colorEntity = new Color();
-
+  constructor(id?: string) {
     if (id) {
-      colorEntity.id = id;
+      this.id = id;
     }
-
-    return colorEntity;
   }
 
   @PrimaryColumn({

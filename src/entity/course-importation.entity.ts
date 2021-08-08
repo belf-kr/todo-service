@@ -5,23 +5,19 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class CourseImportation {
-  static courseImportationConstructor(id?: number, userId?: User, courseId?: Course, originalCourseId?: Course): CourseImportation {
-    const courseImportationEntity = new CourseImportation();
-
+  constructor(id?: number, userId?: User, courseId?: Course, originalCourseId?: Course) {
     if (id) {
-      courseImportationEntity.id = id;
+      this.id = id;
     }
-    if (userId) {
-      courseImportationEntity.userId = userId;
+    if (userId && userId.id !== undefined) {
+      this.userId = userId;
     }
-    if (courseId) {
-      courseImportationEntity.courseId = courseId;
+    if (courseId && courseId.id !== undefined) {
+      this.courseId = courseId;
     }
-    if (originalCourseId) {
-      courseImportationEntity.originalCourseId = originalCourseId;
+    if (originalCourseId && originalCourseId.id !== undefined) {
+      this.originalCourseId = originalCourseId;
     }
-
-    return courseImportationEntity;
   }
 
   @PrimaryGeneratedColumn()

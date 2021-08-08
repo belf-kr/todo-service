@@ -5,23 +5,19 @@ import { User } from "./user.entity";
 
 @Entity({})
 export class CoursePriority {
-  static coursePriorityConstructor(id?: number, userId?: User, courseId?: Course, priority?: number): CoursePriority {
-    const coursePriorityEntity = new CoursePriority();
-
+  constructor(id?: number, userId?: User, courseId?: Course, priority?: number) {
     if (id) {
-      coursePriorityEntity.id = id;
+      this.id = id;
     }
-    if (userId) {
-      coursePriorityEntity.userId = userId;
+    if (userId && userId.id !== undefined) {
+      this.userId = userId;
     }
-    if (courseId) {
-      coursePriorityEntity.courseId = courseId;
+    if (courseId && courseId.id !== undefined) {
+      this.courseId = courseId;
     }
     if (priority) {
-      coursePriorityEntity.priority = priority;
+      this.priority = priority;
     }
-
-    return coursePriorityEntity;
   }
 
   @PrimaryGeneratedColumn()

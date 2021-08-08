@@ -35,18 +35,8 @@ export class CourseService extends CRUDService<Course> {
   async createCourse(coursesInput: CourseType): Promise<void> {
     // 입력한 외래키의 존재 여부를 검증한다.
     const colorEntities = new Array<Color>();
-    const colorEntity = Color.colorConstructor(coursesInput.color);
-    const creatorIdEntity = User.userConstructor(
-      coursesInput.creatorId,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined
-    );
+    const colorEntity = new Color(coursesInput.color);
+    const creatorIdEntity = new User(coursesInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
     colorEntities.push(colorEntity);
     const colorEntitiesResult = await this.colorService.find(colorEntities);

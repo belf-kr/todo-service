@@ -4,7 +4,7 @@ import { File } from "./file.entity";
 
 @Entity({})
 export class User {
-  static userConstructor(
+  constructor(
     id?: number,
     profilePicture?: File,
     email?: string,
@@ -14,38 +14,34 @@ export class User {
     password?: string,
     isAuth?: boolean,
     isUsingOAuth?: boolean
-  ): User {
-    const userEntity = new User();
-
+  ) {
     if (id) {
-      userEntity.id = id;
+      this.id = id;
     }
-    if (profilePicture) {
-      userEntity.profilePicture = profilePicture;
+    if (profilePicture && profilePicture.id !== undefined) {
+      this.profilePicture = profilePicture;
     }
     if (email) {
-      userEntity.email = email;
+      this.email = email;
     }
     if (introduction) {
-      userEntity.introduction = introduction;
+      this.introduction = introduction;
     }
     if (lastConnectedIp) {
-      userEntity.lastConnectedIp = lastConnectedIp;
+      this.lastConnectedIp = lastConnectedIp;
     }
     if (lastConnectedTime) {
-      userEntity.lastConnectedTime = lastConnectedTime;
+      this.lastConnectedTime = lastConnectedTime;
     }
     if (password) {
-      userEntity.password = password;
+      this.password = password;
     }
     if (isAuth) {
-      userEntity.isAuth = isAuth;
+      this.isAuth = isAuth;
     }
     if (isUsingOAuth) {
-      userEntity.isUsingOAuth = isUsingOAuth;
+      this.isUsingOAuth = isUsingOAuth;
     }
-
-    return userEntity;
   }
 
   @PrimaryGeneratedColumn({})

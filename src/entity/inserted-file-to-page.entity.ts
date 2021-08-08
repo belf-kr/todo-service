@@ -5,20 +5,16 @@ import { WorkDone } from "./work-done.entity";
 
 @Entity({})
 export class InsertedFileToPage {
-  static insertedFileToPageConstructor(id?: number, workDoneId?: WorkDone, fileId?: File): InsertedFileToPage {
-    const insertedFileToPageEntity = new InsertedFileToPage();
-
+  constructor(id?: number, workDoneId?: WorkDone, fileId?: File) {
     if (id) {
-      insertedFileToPageEntity.id = id;
+      this.id = id;
     }
-    if (workDoneId) {
-      insertedFileToPageEntity.workDoneId = workDoneId;
+    if (workDoneId && workDoneId.id !== undefined) {
+      this.workDoneId = workDoneId;
     }
-    if (fileId) {
-      insertedFileToPageEntity.fileId = fileId;
+    if (fileId && fileId.id !== undefined) {
+      this.fileId = fileId;
     }
-
-    return insertedFileToPageEntity;
   }
 
   @PrimaryGeneratedColumn()

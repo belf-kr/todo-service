@@ -4,40 +4,28 @@ import { Course } from "./course.entity";
 
 @Entity({})
 export class WorkTodo {
-  static workTodoConstructor(
-    id?: number,
-    courseId?: Course,
-    recurringCycleDate?: number,
-    title?: string,
-    explanation?: string,
-    passedDay?: number,
-    addDate?: Date
-  ): WorkTodo {
-    const workTodoEntity = new WorkTodo();
-
+  constructor(id?: number, courseId?: Course, recurringCycleDate?: number, title?: string, explanation?: string, passedDay?: number, addDate?: Date) {
     if (id) {
-      workTodoEntity.id = id;
+      this.id = id;
     }
-    if (courseId) {
-      workTodoEntity.courseId = courseId;
+    if (courseId && courseId.id !== undefined) {
+      this.courseId = courseId;
     }
     if (recurringCycleDate) {
-      workTodoEntity.recurringCycleDate = recurringCycleDate;
+      this.recurringCycleDate = recurringCycleDate;
     }
     if (title) {
-      workTodoEntity.title = title;
+      this.title = title;
     }
     if (explanation) {
-      workTodoEntity.explanation = explanation;
+      this.explanation = explanation;
     }
     if (passedDay) {
-      workTodoEntity.passedDay = passedDay;
+      this.passedDay = passedDay;
     }
     if (addDate) {
-      workTodoEntity.addDate = addDate;
+      this.addDate = addDate;
     }
-
-    return workTodoEntity;
   }
 
   @PrimaryGeneratedColumn()
