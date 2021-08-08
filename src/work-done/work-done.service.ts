@@ -11,6 +11,7 @@ import { WorkDone } from "src/entity/work-done.entity";
 import { WorkTodo } from "src/entity/work-todo.entity";
 
 import { WorkTodoService } from "src/work-todo/work-todo.service";
+import { User } from "src/entity/user.entity";
 
 @Injectable()
 export class WorkDoneService extends CRUDService<WorkDone> {
@@ -21,9 +22,8 @@ export class WorkDoneService extends CRUDService<WorkDone> {
   async createWorkDone(workDoneInput: WorkDoneType): Promise<void> {
     //   올바른 FK인지 검증한다.
     const workTodoEntities = new Array<WorkTodo>();
-    const workTodoEntity = new WorkTodo();
-
-    workTodoEntity.id = workDoneInput.workTodoId;
+    const workTodoEntity = new WorkTodo(workDoneInput.workTodoId, undefined, undefined, undefined, undefined, undefined, undefined);
+    const workDoneUserIdEntity = new User(workDoneInput.userId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
     workTodoEntities.push(workTodoEntity);
     const workTodoSearchResult = await this.workTodoService.find(workTodoEntities);
@@ -33,20 +33,8 @@ export class WorkDoneService extends CRUDService<WorkDone> {
 
     // WorkDone 객체를 생성해 한일을 생성한다.
     const workDoneEntities = new Array<WorkDone>();
-    const workDoneEntity = new WorkDone();
+    const workDoneEntity = new WorkDone(undefined, workDoneInput.title, workDoneInput.content, workDoneUserIdEntity, workTodoEntity, workDoneInput.actionDate);
 
-    // 생성시 입력된 key value를 사용해 객체를 생성한다.
-    workDoneEntity.workTodoId.id = workDoneInput.workTodoId;
-    workDoneEntity.title = workDoneInput.title;
-    if (workDoneInput.userId) {
-      workDoneEntity.userId = workDoneEntity.userId;
-    }
-    if (workDoneInput.content) {
-      workDoneEntity.content = workDoneInput.content;
-    }
-    if (workDoneInput.actionDate) {
-      workDoneEntity.actionDate = workDoneInput.actionDate;
-    }
     workDoneEntities.push(workDoneEntity);
 
     return await this.create(workDoneEntities);
@@ -55,9 +43,8 @@ export class WorkDoneService extends CRUDService<WorkDone> {
   async getWorkDone(id: number) {
     // 검색을 위한 객체
     const workDoneEntities = new Array<WorkDone>();
-    const workDoneEntity = new WorkDone();
+    const workDoneEntity = new WorkDone(id, undefined, undefined, undefined, undefined, undefined);
 
-    workDoneEntity.id = id;
     workDoneEntities.push(workDoneEntity);
 
     const workDoneFindResult = await this.find(workDoneEntities);
@@ -68,7 +55,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
 
     // DTO 객체에 값 입력
     for (const workDoneEntity of workDoneFindResult) {
-      return WorkDoneDto.entityConstructor(workDoneEntity);
+      return new WorkDoneDto(workDoneEntity);
     }
   }
 }

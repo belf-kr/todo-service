@@ -5,17 +5,13 @@ import { TagType } from "./tag.type";
 import { Tag } from "src/entity/tag.entity";
 
 export class TagDto implements TagType {
-  static entityConstructor(tag?: Tag): TagDto {
-    const tagDto = new TagDto();
-
+  constructor(tag?: Tag) {
     if (tag.id) {
-      tagDto.id = tag.id;
+      this.id = tag.id;
     }
     if (tag.value) {
-      tagDto.value = tag.value;
+      this.value = tag.value;
     }
-
-    return tagDto;
   }
 
   @IsInt({

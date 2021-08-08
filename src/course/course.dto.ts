@@ -8,49 +8,43 @@ import { Tag } from "src/entity/tag.entity";
 import { TagDto } from "src/tag/tag.dto";
 
 export class CourseDto implements CourseType {
-  static entityConstructor(courseEntity?: Course, tagEntities?: Tag[]): CourseDto {
+  static courseDtoConstructor(courseEntity?: Course, tagEntities?: Tag[]) {
     const courseDto = new CourseDto();
+
     courseDto.tags = new Array<TagDto>();
 
-    if (courseEntity.id) {
+    if (courseEntity.id !== undefined) {
       courseDto.id = courseEntity.id;
     }
-    if (courseEntity.originalCourseId) {
+    if (courseEntity.originalCourseId !== undefined && courseEntity.originalCourseId.id !== undefined) {
       courseDto.originalCourseId = courseEntity.originalCourseId.id;
     }
-    if (courseEntity.color) {
+    if (courseEntity.color !== undefined && courseEntity.color.id !== undefined) {
       courseDto.color = courseEntity.color.id;
     }
-    if (courseEntity.creatorId) {
+    if (courseEntity.creatorId !== undefined && courseEntity.creatorId.id !== undefined) {
       courseDto.creatorId = courseEntity.creatorId.id;
     }
-    if (courseEntity.startDate) {
+    if (courseEntity.startDate !== undefined) {
       courseDto.startDate = courseEntity.startDate;
     }
-    if (courseEntity.endDate) {
+    if (courseEntity.endDate !== undefined) {
       courseDto.endDate = courseEntity.endDate;
     }
-    if (courseEntity.explanation) {
+    if (courseEntity.explanation !== undefined) {
       courseDto.explanation = courseEntity.explanation;
     }
-    if (courseEntity.title) {
+    if (courseEntity.title !== undefined) {
       courseDto.title = courseEntity.title;
     }
-    if (courseEntity.likeCount) {
+    if (courseEntity.likeCount !== undefined) {
       courseDto.likeCount = courseEntity.likeCount;
     }
 
     // Tag entity 값을 입력 한 경우
     if (tagEntities) {
       for (const tagEntity of tagEntities) {
-        const tagDto = new TagDto();
-
-        if (tagEntity.id) {
-          tagDto.id = tagEntity.id;
-        }
-        if (tagEntity.value) {
-          tagDto.value = tagEntity.value;
-        }
+        const tagDto = new TagDto(tagEntity);
         courseDto.tags.push(tagDto);
       }
     }

@@ -5,14 +5,10 @@ import { ColorType } from "./color.type";
 import { Color } from "src/entity/color.entity";
 
 export class ColorDto implements ColorType {
-  static entityConstructor(colorEntity?: Color): Color {
-    const colorDto = new ColorDto();
-
-    if (colorEntity.id) {
-      colorDto.id = colorEntity.id;
+  constructor(colorEntity?: Color) {
+    if (colorEntity.id && colorEntity.id !== undefined) {
+      this.id = colorEntity.id;
     }
-
-    return colorDto;
   }
 
   @IsString({ always: true })

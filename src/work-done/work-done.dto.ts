@@ -5,29 +5,25 @@ import { WorkDoneType } from "./work-done.type";
 import { WorkDone } from "src/entity/work-done.entity";
 
 export class WorkDoneDto implements WorkDoneType {
-  static entityConstructor(workDoneEntity?: WorkDone): WorkDoneDto {
-    const workDoneDto = new WorkDoneDto();
-
+  constructor(workDoneEntity?: WorkDone) {
     if (workDoneEntity.id) {
-      workDoneDto.id = workDoneEntity.id;
+      this.id = workDoneEntity.id;
     }
     if (workDoneEntity.title) {
-      workDoneDto.title = workDoneEntity.title;
+      this.title = workDoneEntity.title;
     }
     if (workDoneEntity.content) {
-      workDoneDto.content = workDoneEntity.content;
+      this.content = workDoneEntity.content;
     }
-    if (workDoneEntity.userId) {
-      workDoneDto.userId = workDoneEntity.userId.id;
+    if (workDoneEntity.userId && workDoneEntity.userId.id !== undefined) {
+      this.userId = workDoneEntity.userId.id;
     }
-    if (workDoneEntity.workTodoId) {
-      workDoneDto.workTodoId = workDoneEntity.workTodoId.id;
+    if (workDoneEntity.workTodoId && workDoneEntity.workTodoId.id !== undefined) {
+      this.workTodoId = workDoneEntity.workTodoId.id;
     }
     if (workDoneEntity.actionDate) {
-      workDoneDto.actionDate = workDoneEntity.actionDate;
+      this.actionDate = workDoneEntity.actionDate;
     }
-
-    return workDoneDto;
   }
 
   @IsInt({ groups: ["generated"] })

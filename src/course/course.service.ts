@@ -98,10 +98,11 @@ export class CourseService extends CRUDService<Course> {
       // 태그 DTO 배열을 생성하기
       const tagDtos = new Array<TagDto>();
       for (const tagEntity of tagEntitiesResult) {
-        tagDtos.push(TagDto.entityConstructor(tagEntity));
+        tagDtos.push(new TagDto(tagEntity));
       }
 
-      courseDtoArrayResult.push(CourseDto.entityConstructor(courseEntity, tagEntitiesResult));
+      const courseDto = CourseDto.courseDtoConstructor(courseEntity, tagEntitiesResult);
+      courseDtoArrayResult.push(courseDto);
     }
 
     return courseDtoArrayResult;
@@ -109,9 +110,8 @@ export class CourseService extends CRUDService<Course> {
 
   async deleteCourse(id: number): Promise<void> {
     const courseEntities = new Array<Course>();
-    const courseEntity = new Course();
+    const courseEntity = new Course(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
-    courseEntity.id = id;
     courseEntities.push(courseEntity);
 
     const selectResult = await this.find(courseEntities);
@@ -129,8 +129,7 @@ export class CourseService extends CRUDService<Course> {
     const tagEntities = new Array<Tag>();
     for (const tag of tagsInput) {
       // 태그 객체를 생성 한 다음 값을 입력한다.
-      const tagEntity = new Tag();
-      tagEntity.value = tag.value;
+      const tagEntity = new Tag(undefined, tag.value);
       tagEntities.push(tagEntity);
     }
 
@@ -150,12 +149,12 @@ export class CourseService extends CRUDService<Course> {
   // 코스와 태그의 관계를 삽입 해 주기 위한 메소드
   async createCourseTag(courseInput: CourseType): Promise<void> {
     const inputTagEntities = new Array<Tag>();
+    const creatorIdEntity = new User(courseInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+    const colorEntity = new Color(courseInput.color);
     let tagEntities = new Array<Tag>();
 
     for (const tag of courseInput.tags) {
-      const tagEntity = new Tag();
-
-      tagEntity.value = tag.value;
+      const tagEntity = new Tag(undefined, tag.value);
       inputTagEntities.push(tagEntity);
     }
 
@@ -166,32 +165,17 @@ export class CourseService extends CRUDService<Course> {
 
     // 코스의 Id 값 알아오기
     let courses = new Array<Course>();
-    const courseEntity = new Course();
-    if (courseInput.title) {
-      courseEntity.title = courseInput.title;
-    }
-    if (courseInput.explanation) {
-      courseEntity.explanation = courseInput.explanation;
-    }
-    if (courseInput.color) {
-      const colorEntity = new Color();
-      colorEntity.id = courseInput.color;
-      courseEntity.color = colorEntity;
-    }
-    if (courseInput.creatorId) {
-      courseEntity.creatorId.id = courseInput.creatorId;
-    }
-    if (courseInput.endDate) {
-      courseEntity.endDate = courseInput.endDate;
-    }
-    if (courseInput.startDate) {
-      courseEntity.startDate = courseInput.startDate;
-    }
-    if (courseInput.likeCount) {
-      courseEntity.likeCount = courseEntity.likeCount;
-    } else {
-      courseInput.likeCount = 0;
-    }
+    const courseEntity = new Course(
+      undefined,
+      undefined,
+      colorEntity,
+      creatorIdEntity,
+      courseInput.startDate,
+      courseInput.endDate,
+      courseInput.explanation,
+      courseInput.title,
+      courseInput.likeCount
+    );
 
     courses.push(courseEntity);
     courses = await this.find(courses);
@@ -200,15 +184,9 @@ export class CourseService extends CRUDService<Course> {
     const courseTagEntities = new Array<CourseTag>();
     for (const tag of tagEntities) {
       // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
-      const courseTagEntity = new CourseTag();
-
-      const courseEntity = new Course();
-      courseEntity.id = courses[0].id;
-      courseTagEntity.courseId = courseEntity;
-
-      const tagEntity = new Tag();
-      tagEntity.id = tag.id;
-      courseTagEntity.tagId = tagEntity;
+      const tagEntity = new Tag(tag.id, undefined);
+      const courseEntity = new Course(courses[0].id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+      const courseTagEntity = new CourseTag(undefined, courseEntity, tagEntity);
 
       courseTagEntities.push(courseTagEntity);
     }

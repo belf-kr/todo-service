@@ -5,20 +5,16 @@ import { RepeatedDaysOfTheWeek } from "src/entity/repeated-day-of-the-week.entit
 import { RepeatedDaysOfTheWeekType } from "src/repeated-days-of-the-week/repeated-days-of-the-week.type";
 
 export class RepeatedDaysOfTheWeekDto implements RepeatedDaysOfTheWeekType {
-  static entityConstructor(repeatedDaysOfTheWeekEntity?: RepeatedDaysOfTheWeek): RepeatedDaysOfTheWeekDto {
-    const repeatedDaysOfTheWeekDto = new RepeatedDaysOfTheWeekDto();
-
+  constructor(repeatedDaysOfTheWeekEntity?: RepeatedDaysOfTheWeek) {
     if (repeatedDaysOfTheWeekEntity.id) {
-      repeatedDaysOfTheWeekDto.id = repeatedDaysOfTheWeekEntity.id;
+      this.id = repeatedDaysOfTheWeekEntity.id;
     }
-    if (repeatedDaysOfTheWeekEntity.workTodoId) {
-      repeatedDaysOfTheWeekDto.workTodoId = repeatedDaysOfTheWeekEntity.workTodoId.id;
+    if (repeatedDaysOfTheWeekEntity.workTodoId && repeatedDaysOfTheWeekEntity.workTodoId.id !== undefined) {
+      this.workTodoId = repeatedDaysOfTheWeekEntity.workTodoId.id;
     }
     if (repeatedDaysOfTheWeekEntity.dayOfTheWeek) {
-      repeatedDaysOfTheWeekDto.dayOfTheWeek = repeatedDaysOfTheWeekEntity.dayOfTheWeek;
+      this.dayOfTheWeek = repeatedDaysOfTheWeekEntity.dayOfTheWeek;
     }
-
-    return repeatedDaysOfTheWeekDto;
   }
 
   @IsInt({ groups: ["generated"] })
