@@ -5,25 +5,34 @@ import { WorkDoneType } from "./work-done.type";
 import { WorkDone } from "src/entity/work-done.entity";
 
 export class WorkDoneDto implements WorkDoneType {
-  constructor(workDoneEntity?: WorkDone) {
+  static entityConstroctor(workDoneEntity?: WorkDone) {
+    const workDoneDto = new WorkDoneDto();
+
     if (workDoneEntity.id) {
-      this.id = workDoneEntity.id;
+      workDoneDto.id = workDoneEntity.id;
     }
     if (workDoneEntity.title) {
-      this.title = workDoneEntity.title;
+      workDoneDto.title = workDoneEntity.title;
     }
     if (workDoneEntity.content) {
-      this.content = workDoneEntity.content;
+      workDoneDto.content = workDoneEntity.content;
     }
-    if (workDoneEntity.userId && workDoneEntity.userId.id !== undefined) {
-      this.userId = workDoneEntity.userId.id;
+    if (workDoneEntity.userId !== undefined && workDoneEntity.userId !== null && workDoneEntity.userId.id !== undefined && workDoneEntity.userId.id !== null) {
+      workDoneDto.userId = workDoneEntity.userId.id;
     }
-    if (workDoneEntity.workTodoId && workDoneEntity.workTodoId.id !== undefined) {
-      this.workTodoId = workDoneEntity.workTodoId.id;
+    if (
+      workDoneEntity.workTodoId !== undefined &&
+      workDoneEntity.workTodoId !== null &&
+      workDoneEntity.workTodoId.id !== undefined &&
+      workDoneEntity.workTodoId.id !== null
+    ) {
+      workDoneDto.workTodoId = workDoneEntity.workTodoId.id;
     }
     if (workDoneEntity.actionDate) {
-      this.actionDate = workDoneEntity.actionDate;
+      workDoneDto.actionDate = workDoneEntity.actionDate;
     }
+
+    return workDoneDto;
   }
 
   @IsInt({ groups: ["generated"] })
