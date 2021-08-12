@@ -101,7 +101,7 @@ export class CourseService extends CRUDService<Course> {
         tagDtos.push(new TagDto(tagEntity));
       }
 
-      const courseDto = CourseDto.courseDtoConstructor(courseEntity, tagEntitiesResult);
+      const courseDto = CourseDto.entityConstructor(courseEntity, tagEntitiesResult);
       courseDtoArrayResult.push(courseDto);
     }
 

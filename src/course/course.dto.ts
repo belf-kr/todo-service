@@ -8,7 +8,7 @@ import { Tag } from "src/entity/tag.entity";
 import { TagDto } from "src/tag/tag.dto";
 
 export class CourseDto implements CourseType {
-  static courseDtoConstructor(courseEntity?: Course, tagEntities?: Tag[]) {
+  static entityConstructor(courseEntity?: Course, tagEntities?: Tag[]) {
     const courseDto = new CourseDto();
 
     courseDto.tags = new Array<TagDto>();
@@ -16,13 +16,23 @@ export class CourseDto implements CourseType {
     if (courseEntity.id !== undefined) {
       courseDto.id = courseEntity.id;
     }
-    if (courseEntity.originalCourseId !== undefined && courseEntity.originalCourseId.id !== undefined) {
+    if (
+      courseEntity.originalCourseId !== undefined &&
+      courseEntity.originalCourseId !== null &&
+      courseEntity.originalCourseId.id !== undefined &&
+      courseEntity.originalCourseId.id !== null
+    ) {
       courseDto.originalCourseId = courseEntity.originalCourseId.id;
     }
-    if (courseEntity.color !== undefined && courseEntity.color.id !== undefined) {
+    if (courseEntity.color !== undefined && courseEntity.color !== null && courseEntity.color.id !== undefined && courseEntity.color.id !== null) {
       courseDto.color = courseEntity.color.id;
     }
-    if (courseEntity.creatorId !== undefined && courseEntity.creatorId.id !== undefined) {
+    if (
+      courseEntity.creatorId !== undefined &&
+      courseEntity.creatorId !== null &&
+      courseEntity.creatorId.id !== undefined &&
+      courseEntity.creatorId.id !== null
+    ) {
       courseDto.creatorId = courseEntity.creatorId.id;
     }
     if (courseEntity.startDate !== undefined) {
