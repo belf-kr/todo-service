@@ -5,10 +5,23 @@ import { ColorType } from "./color.type";
 import { Color } from "src/entity/color.entity";
 
 export class ColorDto implements ColorType {
-  constructor(colorEntity?: Color) {
-    if (colorEntity.id && colorEntity.id !== undefined) {
-      this.id = colorEntity.id;
+  constructor(colorTypeInput?: ColorType) {
+    // 입력값이 없는 단순 객체 생성 용도인지 판별
+    if (colorTypeInput !== undefined) {
+      if (colorTypeInput.id !== undefined) {
+        this.id = colorTypeInput.id;
+      }
     }
+  }
+
+  static entityConstructor(colorEntityInput?: Color) {
+    const colorDto = new ColorDto();
+
+    if (colorEntityInput.id !== undefined) {
+      colorDto.id = colorEntityInput.id;
+    }
+
+    return colorDto;
   }
 
   @IsString({ always: true })

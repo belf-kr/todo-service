@@ -16,13 +16,13 @@ export class ColorService extends CRUDService<Color> {
 
   async getAllColors(): Promise<string[]> {
     const blankColorEntities: Color[] = new Array<Color>();
-    // Color entity class 형태에 맞추어 ORM 결과를 저장
+    // Color DTO class 형태에 맞추어 ORM 결과를 저장
     const colorDtoResult: ColorDto[] = new Array<ColorDto>();
     const colorEntitiesResult = await this.find(blankColorEntities);
 
     // DTO 객체에 삽입
     for (const colorEntity of colorEntitiesResult) {
-      colorDtoResult.push(new ColorDto(colorEntity));
+      colorDtoResult.push(ColorDto.entityConstructor(colorEntity));
     }
 
     // API 스펙에 맞추어 Array 형태를 반환 해 준다.
