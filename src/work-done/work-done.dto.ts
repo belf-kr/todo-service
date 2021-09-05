@@ -5,32 +5,26 @@ import { WorkDoneType } from "./work-done.type";
 import { WorkDone } from "src/entity/work-done.entity";
 
 export class WorkDoneDto implements WorkDoneType {
-  static entityConstroctor(workDoneEntity?: WorkDone) {
+  constructor(workDoneTypeInput?: WorkDoneType) {
+    if (workDoneTypeInput !== undefined) {
+      this.actionDate = workDoneTypeInput.actionDate ?? undefined;
+      this.content = workDoneTypeInput.content ?? undefined;
+      this.id = workDoneTypeInput.id ?? undefined;
+      this.title = workDoneTypeInput.title ?? undefined;
+      this.userId = workDoneTypeInput.userId ?? undefined;
+      this.workTodoId = workDoneTypeInput.workTodoId ?? undefined;
+    }
+  }
+
+  static entityConstructor(workDoneEntityInput: WorkDone) {
     const workDoneDto = new WorkDoneDto();
 
-    if (workDoneEntity.id) {
-      workDoneDto.id = workDoneEntity.id;
-    }
-    if (workDoneEntity.title) {
-      workDoneDto.title = workDoneEntity.title;
-    }
-    if (workDoneEntity.content) {
-      workDoneDto.content = workDoneEntity.content;
-    }
-    if (workDoneEntity.userId !== undefined && workDoneEntity.userId !== null && workDoneEntity.userId.id !== undefined && workDoneEntity.userId.id !== null) {
-      workDoneDto.userId = workDoneEntity.userId.id;
-    }
-    if (
-      workDoneEntity.workTodoId !== undefined &&
-      workDoneEntity.workTodoId !== null &&
-      workDoneEntity.workTodoId.id !== undefined &&
-      workDoneEntity.workTodoId.id !== null
-    ) {
-      workDoneDto.workTodoId = workDoneEntity.workTodoId.id;
-    }
-    if (workDoneEntity.actionDate) {
-      workDoneDto.actionDate = workDoneEntity.actionDate;
-    }
+    workDoneDto.id = workDoneEntityInput.id ?? undefined;
+    workDoneDto.title = workDoneEntityInput.title ?? undefined;
+    workDoneDto.content = workDoneEntityInput.content ?? undefined;
+    workDoneDto.userId = workDoneEntityInput.userId?.id ?? undefined;
+    workDoneDto.workTodoId = workDoneEntityInput.workTodoId?.id ?? undefined;
+    workDoneDto.actionDate = workDoneEntityInput.actionDate ?? undefined;
 
     return workDoneDto;
   }

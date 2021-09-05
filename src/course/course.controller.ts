@@ -15,11 +15,11 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Post()
-  async createCourse(@Body(new ValidationPipe({ groups: ["userCreate"] })) courseInput: CourseDto) {
+  async createCourse(@Body(new ValidationPipe({ groups: ["userCreate"] })) courseDTOInput: CourseDto) {
     try {
-      await this.courseService.createCourse(courseInput);
-      await this.courseService.createNewTags(courseInput.tags);
-      await this.courseService.createCourseTag(courseInput);
+      await this.courseService.createCourse(courseDTOInput);
+      await this.courseService.createNewTags(courseDTOInput.tags);
+      await this.courseService.createCourseTag(courseDTOInput);
 
       return;
     } catch (error) {

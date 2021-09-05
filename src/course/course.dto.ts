@@ -8,52 +8,40 @@ import { Tag } from "src/entity/tag.entity";
 import { TagDto } from "src/tag/tag.dto";
 
 export class CourseDto implements CourseType {
-  static entityConstructor(courseEntity?: Course, tagEntities?: Tag[]) {
-    const courseDto = new CourseDto();
+  constructor(courseTypeInput?: CourseType) {
+    if (courseTypeInput !== undefined) {
+      this.color = courseTypeInput.color ?? undefined;
+      this.creatorId = courseTypeInput.creatorId ?? undefined;
+      this.endDate = courseTypeInput.endDate ?? undefined;
+      this.explanation = courseTypeInput.explanation ?? undefined;
+      this.id = courseTypeInput.id ?? undefined;
+      this.likeCount = courseTypeInput.likeCount ?? undefined;
+      this.originalCourseId = courseTypeInput.originalCourseId ?? undefined;
+      this.startDate = courseTypeInput.startDate ?? undefined;
+      this.tags = courseTypeInput.tags ?? undefined;
+      this.title = courseTypeInput.title ?? undefined;
+    }
+  }
 
+  static entityConstructor(courseEntityInput?: Course, tagEntitiesInput?: Tag[]) {
+    const courseDto = new CourseDto();
     courseDto.tags = new Array<TagDto>();
 
-    if (courseEntity.id !== undefined) {
-      courseDto.id = courseEntity.id;
-    }
-    if (
-      courseEntity.originalCourseId !== undefined &&
-      courseEntity.originalCourseId !== null &&
-      courseEntity.originalCourseId.id !== undefined &&
-      courseEntity.originalCourseId.id !== null
-    ) {
-      courseDto.originalCourseId = courseEntity.originalCourseId.id;
-    }
-    if (courseEntity.color !== undefined && courseEntity.color !== null && courseEntity.color.id !== undefined && courseEntity.color.id !== null) {
-      courseDto.color = courseEntity.color.id;
-    }
-    if (
-      courseEntity.creatorId !== undefined &&
-      courseEntity.creatorId !== null &&
-      courseEntity.creatorId.id !== undefined &&
-      courseEntity.creatorId.id !== null
-    ) {
-      courseDto.creatorId = courseEntity.creatorId.id;
-    }
-    if (courseEntity.startDate !== undefined) {
-      courseDto.startDate = courseEntity.startDate;
-    }
-    if (courseEntity.endDate !== undefined) {
-      courseDto.endDate = courseEntity.endDate;
-    }
-    if (courseEntity.explanation !== undefined) {
-      courseDto.explanation = courseEntity.explanation;
-    }
-    if (courseEntity.title !== undefined) {
-      courseDto.title = courseEntity.title;
-    }
-    if (courseEntity.likeCount !== undefined) {
-      courseDto.likeCount = courseEntity.likeCount;
+    if (courseEntityInput !== undefined) {
+      courseDto.color = courseEntityInput.color?.id ?? undefined;
+      courseDto.creatorId = courseEntityInput.creatorId?.id ?? undefined;
+      courseDto.endDate = courseEntityInput.endDate ?? undefined;
+      courseDto.explanation = courseEntityInput.explanation ?? undefined;
+      courseDto.id = courseEntityInput.id ?? undefined;
+      courseDto.likeCount = courseEntityInput.likeCount ?? undefined;
+      courseDto.originalCourseId = courseEntityInput.originalCourseId?.id ?? undefined;
+      courseDto.startDate = courseEntityInput.startDate ?? undefined;
+      courseDto.title = courseEntityInput.title ?? undefined;
     }
 
     // Tag entity 값을 입력 한 경우
-    if (tagEntities) {
-      for (const tagEntity of tagEntities) {
+    if (tagEntitiesInput !== undefined) {
+      for (const tagEntity of tagEntitiesInput) {
         const tagDto = new TagDto(tagEntity);
         courseDto.tags.push(tagDto);
       }

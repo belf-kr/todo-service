@@ -32,12 +32,11 @@ export class CourseService extends CRUDService<Course> {
     super(courseRepository);
   }
 
-  async createCourse(coursesInput: CourseType): Promise<void> {
-    // 입력한 외래키의 존재 여부를 검증한다.
-    const colorEntities = new Array<Color>();
-    const colorEntity = new Color(coursesInput.color);
-    const creatorIdEntity = new User(coursesInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+  async createCourse(courseTypeInput: CourseType): Promise<void> {
+    const colorEntity = new Color(courseTypeInput.color);
 
+    // 입력한 color 외래키의 존재 여부를 검증한다.
+    const colorEntities = new Array<Color>();
     colorEntities.push(colorEntity);
     const colorEntitiesResult = await this.colorService.find(colorEntities);
     if (!colorEntitiesResult.length) {
@@ -48,25 +47,27 @@ export class CourseService extends CRUDService<Course> {
     const courseEntities = new Array<Course>();
     const courseEntity = new Course(
       undefined,
-      undefined,
+      new Course(courseTypeInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
       colorEntity,
-      creatorIdEntity,
-      coursesInput.startDate,
-      coursesInput.endDate,
-      coursesInput.explanation,
-      coursesInput.title,
+      new User(courseTypeInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      courseTypeInput.startDate,
+      courseTypeInput.endDate,
+      courseTypeInput.explanation,
+      courseTypeInput.title,
       0
     );
 
     // 생성 시 입력된 key value를 사용해 객체에 값을 입력한다.
     courseEntities.push(courseEntity);
 
-    return this.create(courseEntities);
+    await this.create(courseEntities);
   }
 
   async getAllCourses(): Promise<CourseDto[]> {
+    // TypeORM 사용해서 검색을 할 때 조건을 주지 않고 전체 검색을 위한 Course entity 배열
     const blankCourseEntities: Course[] = new Array<Course>();
     const courseEntitiesResult = await this.find(blankCourseEntities);
+    // DTO 형태로 반환하기 위한 CourseDTO 배열
     const courseDtoArrayResult = new Array<CourseDto>();
 
     // course 테이블과 course-tag 테이블의 조인 처리
@@ -87,7 +88,7 @@ export class CourseService extends CRUDService<Course> {
         .where("ct.course_id = :courseId", { courseId: courseEntity.id })
         .getRawMany();
 
-      // 태그 배열을 생성하기
+      // Tag Entity 배열을 생성하기
       const tagEntitiesResult = new Array<Tag>();
       for (const joinItem of joinResult) {
         const tagEntity = new Tag();
@@ -95,10 +96,10 @@ export class CourseService extends CRUDService<Course> {
         tagEntitiesResult.push(tagEntity);
       }
 
-      // 태그 DTO 배열을 생성하기
+      // Tag DTO 배열을 생성하기
       const tagDtos = new Array<TagDto>();
       for (const tagEntity of tagEntitiesResult) {
-        tagDtos.push(new TagDto(tagEntity));
+        tagDtos.push(TagDto.entityConstructor(tagEntity));
       }
 
       const courseDto = CourseDto.entityConstructor(courseEntity, tagEntitiesResult);
@@ -124,20 +125,20 @@ export class CourseService extends CRUDService<Course> {
   }
 
   // 코스 생성 시 입력된 태그가 존재하지 않는 경우 생성한다.
-  async createNewTags(tagsInput: TagType[]): Promise<void> {
+  async createNewTags(tagsTypeInput: TagType[]): Promise<void> {
     // JSON 형태의 입력 값을 Tag entity 배열 객체로 생성
-    const tagEntities = new Array<Tag>();
-    for (const tag of tagsInput) {
+    const tagEntitiesInput = new Array<Tag>();
+    for (const tag of tagsTypeInput) {
       // 태그 객체를 생성 한 다음 값을 입력한다.
       const tagEntity = new Tag(undefined, tag.value);
-      tagEntities.push(tagEntity);
+      tagEntitiesInput.push(tagEntity);
     }
 
-    // 기존에 존재하는 태그들을 알아낸다.
-    const existTagEntities = await this.tagService.find(tagEntities);
     const newTagEntities = Array<Tag>();
+    // 기존에 존재하는 태그들을 알아낸다.
+    const existTagEntities = await this.tagService.find(tagEntitiesInput);
     // 입력한 Tag값이 존재하지 않던 경우 판별
-    for (const tagEntity of tagEntities) {
+    for (const tagEntity of tagEntitiesInput) {
       if (!existTagEntities.find((existTagEntity) => existTagEntity.value === tagEntity.value)) {
         newTagEntities.push(tagEntity);
       }
@@ -147,45 +148,43 @@ export class CourseService extends CRUDService<Course> {
   }
 
   // 코스와 태그의 관계를 삽입 해 주기 위한 메소드
-  async createCourseTag(courseInput: CourseType): Promise<void> {
-    const inputTagEntities = new Array<Tag>();
-    const creatorIdEntity = new User(courseInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
-    const colorEntity = new Color(courseInput.color);
-    let tagEntities = new Array<Tag>();
+  async createCourseTag(courseTypeInput: CourseType): Promise<void> {
+    let tagEntitiesFindResult = new Array<Tag>();
 
-    for (const tag of courseInput.tags) {
-      const tagEntity = new Tag(undefined, tag.value);
+    const inputTagEntities = new Array<Tag>();
+    for (const tagType of courseTypeInput.tags) {
+      const tagEntity = new Tag(undefined, tagType.value);
       inputTagEntities.push(tagEntity);
     }
 
     // Tag 들의 Id 값 찾기
     if (inputTagEntities.length) {
-      tagEntities = await this.tagService.find(inputTagEntities);
+      tagEntitiesFindResult = await this.tagService.find(inputTagEntities);
     }
 
+    let courseEntitiesFindResult = new Array<Course>();
     // 코스의 Id 값 알아오기
-    let courses = new Array<Course>();
     const courseEntity = new Course(
       undefined,
       undefined,
-      colorEntity,
-      creatorIdEntity,
-      courseInput.startDate,
-      courseInput.endDate,
-      courseInput.explanation,
-      courseInput.title,
-      courseInput.likeCount
+      new Color(courseTypeInput.color),
+      new User(courseTypeInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      courseTypeInput.startDate,
+      courseTypeInput.endDate,
+      courseTypeInput.explanation,
+      courseTypeInput.title,
+      courseTypeInput.likeCount
     );
 
-    courses.push(courseEntity);
-    courses = await this.find(courses);
+    courseEntitiesFindResult.push(courseEntity);
+    courseEntitiesFindResult = await this.find(courseEntitiesFindResult);
 
     // courseTag 관련 삽입 메소드 호출
     const courseTagEntities = new Array<CourseTag>();
-    for (const tag of tagEntities) {
+    for (const tag of tagEntitiesFindResult) {
       // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
       const tagEntity = new Tag(tag.id, undefined);
-      const courseEntity = new Course(courses[0].id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+      const courseEntity = new Course(courseEntitiesFindResult[0].id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
       const courseTagEntity = new CourseTag(undefined, courseEntity, tagEntity);
 
       courseTagEntities.push(courseTagEntity);

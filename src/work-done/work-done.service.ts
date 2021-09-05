@@ -19,43 +19,49 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     super(workDoneRepository);
   }
 
-  async createWorkDone(workDoneInput: WorkDoneType): Promise<void> {
-    //   올바른 FK인지 검증한다.
-    const workTodoEntities = new Array<WorkTodo>();
-    const workTodoEntity = new WorkTodo(workDoneInput.workTodoId, undefined, undefined, undefined, undefined, undefined, undefined);
-    const workDoneUserIdEntity = new User(workDoneInput.userId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+  async createWorkDone(workDoneTypeInput: WorkDoneType): Promise<void> {
+    // 올바른 FK인지 검증한다.
+    const workTodoEntitiesInput = new Array<WorkTodo>();
+    const workTodoEntityInput = new WorkTodo(workDoneTypeInput.workTodoId, undefined, undefined, undefined, undefined, undefined, undefined);
 
-    workTodoEntities.push(workTodoEntity);
-    const workTodoSearchResult = await this.workTodoService.find(workTodoEntities);
-    if (workTodoSearchResult.length == 0) {
+    workTodoEntitiesInput.push(workTodoEntityInput);
+    const workTodosSearchResult = await this.workTodoService.find(workTodoEntitiesInput);
+    if (workTodosSearchResult.length == 0) {
       throw new HttpException({ data: "할 일의 id값을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
     // WorkDone 객체를 생성해 한일을 생성한다.
-    const workDoneEntities = new Array<WorkDone>();
-    const workDoneEntity = new WorkDone(undefined, workDoneInput.title, workDoneInput.content, workDoneUserIdEntity, workTodoEntity, workDoneInput.actionDate);
+    const workDoneEntitiesInput = new Array<WorkDone>();
+    const workDoneEntityInput = new WorkDone(
+      undefined,
+      workDoneTypeInput.title,
+      workDoneTypeInput.content,
+      new User(workDoneTypeInput.userId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      workTodoEntityInput,
+      workDoneTypeInput.actionDate
+    );
 
-    workDoneEntities.push(workDoneEntity);
+    workDoneEntitiesInput.push(workDoneEntityInput);
 
-    return await this.create(workDoneEntities);
+    await this.create(workDoneEntitiesInput);
   }
 
   async getWorkDone(id: number) {
     // 검색을 위한 객체
-    const workDoneEntities = new Array<WorkDone>();
-    const workDoneEntity = new WorkDone(id, undefined, undefined, undefined, undefined, undefined);
+    const workDoneEntitiesInput = new Array<WorkDone>();
+    const workDoneEntityInput = new WorkDone(id, undefined, undefined, undefined, undefined, undefined);
 
-    workDoneEntities.push(workDoneEntity);
+    workDoneEntitiesInput.push(workDoneEntityInput);
 
-    const workDoneFindResult = await this.find(workDoneEntities);
+    const workDoneEntityFindResult = await this.find(workDoneEntitiesInput);
 
-    if (workDoneFindResult.length === 0) {
+    if (workDoneEntityFindResult.length === 0) {
       throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
     // DTO 객체에 값 입력
-    for (const workDoneEntity of workDoneFindResult) {
-      return WorkDoneDto.entityConstroctor(workDoneEntity);
+    for (const workDoneEntity of workDoneEntityFindResult) {
+      return WorkDoneDto.entityConstructor(workDoneEntity);
     }
   }
 }

@@ -5,13 +5,19 @@ import { TagType } from "./tag.type";
 import { Tag } from "src/entity/tag.entity";
 
 export class TagDto implements TagType {
-  constructor(tag?: Tag) {
-    if (tag.id) {
-      this.id = tag.id;
+  constructor(tagTypeInput?: TagType) {
+    if (tagTypeInput !== undefined) {
+      this.id = tagTypeInput.id ?? undefined;
+      this.value = tagTypeInput.value ?? undefined;
     }
-    if (tag.value) {
-      this.value = tag.value;
-    }
+  }
+
+  static entityConstructor(tagEntityInput?: Tag) {
+    const tagDto = new TagDto();
+    tagDto.id = tagEntityInput.id ?? undefined;
+    tagDto.value = tagEntityInput.value ?? undefined;
+
+    return tagDto;
   }
 
   @IsInt({

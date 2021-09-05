@@ -8,42 +8,37 @@ import { RepeatedDaysOfTheWeek } from "src/entity/repeated-day-of-the-week.entit
 import { RepeatedDaysOfTheWeekDto } from "src/repeated-days-of-the-week/repeated-days-of-the-week.dto";
 
 export class WorkTodoDto implements WorkTodoType {
-  static entityConstructor(workTodoEntity?: WorkTodo, repeatedDaysOfTheWeekEntities?: RepeatedDaysOfTheWeek[]) {
-    const workTodoDto = new WorkTodoDto();
+  constructor(workTodoTypeInput?: WorkTodoType) {
+    if (workTodoTypeInput !== undefined) {
+      this.addDate = workTodoTypeInput.addDate ?? undefined;
+      this.color = workTodoTypeInput.color ?? undefined;
+      this.courseId = workTodoTypeInput.courseId ?? undefined;
+      this.courseTitle = workTodoTypeInput.courseTitle ?? undefined;
+      this.explanation = workTodoTypeInput.explanation ?? undefined;
+      this.id = workTodoTypeInput.id ?? undefined;
+      this.passedDay = workTodoTypeInput.passedDay ?? undefined;
+      this.recurringCycleDate = workTodoTypeInput.recurringCycleDate ?? undefined;
+      this.repeatedDaysOfTheWeek = workTodoTypeInput.repeatedDaysOfTheWeek ?? undefined;
+      this.title = workTodoTypeInput.title ?? undefined;
+    }
+  }
 
+  static entityConstructor(workTodoEntityInput: WorkTodo, repeatedDaysOfTheWeekEntitiesInput: RepeatedDaysOfTheWeek[]) {
+    const workTodoDto = new WorkTodoDto();
     workTodoDto.repeatedDaysOfTheWeek = new Array<RepeatedDaysOfTheWeekDto>();
 
-    if (workTodoEntity.id) {
-      workTodoDto.id = workTodoEntity.id;
-    }
-    if (workTodoEntity.recurringCycleDate) {
-      workTodoDto.recurringCycleDate = workTodoEntity.recurringCycleDate;
-    }
-    if (workTodoEntity.title) {
-      workTodoDto.title = workTodoEntity.title;
-    }
-    if (workTodoEntity.explanation) {
-      workTodoDto.explanation = workTodoEntity.explanation;
-    }
-    if (workTodoEntity.passedDay) {
-      workTodoDto.passedDay = workTodoEntity.passedDay;
-    }
-    if (workTodoEntity.addDate) {
-      workTodoDto.addDate = workTodoEntity.addDate;
-    }
-    if (
-      workTodoEntity.courseId !== undefined &&
-      workTodoEntity.courseId !== null &&
-      workTodoEntity.courseId.id !== undefined &&
-      workTodoEntity.courseId.id !== null
-    ) {
-      workTodoDto.courseId = workTodoEntity.courseId.id;
-    }
+    workTodoDto.id = workTodoEntityInput.id ?? undefined;
+    workTodoDto.recurringCycleDate = workTodoEntityInput.recurringCycleDate ?? undefined;
+    workTodoDto.title = workTodoEntityInput.title ?? undefined;
+    workTodoDto.explanation = workTodoEntityInput.explanation ?? undefined;
+    workTodoDto.passedDay = workTodoEntityInput.passedDay ?? undefined;
+    workTodoDto.addDate = workTodoEntityInput.addDate ?? undefined;
+    workTodoDto.courseId = workTodoEntityInput.courseId?.id ?? undefined;
 
     // repeatedDaysOfTheWeekEntities 값이 존재 하는 경우
-    if (repeatedDaysOfTheWeekEntities) {
-      for (const repeatedDaysOfTheWeekEntity of repeatedDaysOfTheWeekEntities) {
-        const repeatedDaysOfTheWeekDto = new RepeatedDaysOfTheWeekDto(repeatedDaysOfTheWeekEntity);
+    if (repeatedDaysOfTheWeekEntitiesInput !== undefined) {
+      for (const repeatedDaysOfTheWeekEntityInput of repeatedDaysOfTheWeekEntitiesInput) {
+        const repeatedDaysOfTheWeekDto = RepeatedDaysOfTheWeekDto.entityConstructor(repeatedDaysOfTheWeekEntityInput);
         workTodoDto.repeatedDaysOfTheWeek.push(repeatedDaysOfTheWeekDto);
       }
     }
