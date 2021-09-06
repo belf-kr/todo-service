@@ -29,7 +29,7 @@ export class CourseDto implements CourseType {
 
     if (courseEntityInput !== undefined) {
       courseDto.color = courseEntityInput.color?.id ?? undefined;
-      courseDto.creatorId = courseEntityInput.creatorId?.id ?? undefined;
+      courseDto.creatorId = courseEntityInput.creatorId ?? undefined;
       courseDto.endDate = courseEntityInput.endDate ?? undefined;
       courseDto.explanation = courseEntityInput.explanation ?? undefined;
       courseDto.id = courseEntityInput.id ?? undefined;

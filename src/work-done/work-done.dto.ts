@@ -22,7 +22,7 @@ export class WorkDoneDto implements WorkDoneType {
     workDoneDto.id = workDoneEntityInput.id ?? undefined;
     workDoneDto.title = workDoneEntityInput.title ?? undefined;
     workDoneDto.content = workDoneEntityInput.content ?? undefined;
-    workDoneDto.userId = workDoneEntityInput.userId?.id ?? undefined;
+    workDoneDto.userId = workDoneEntityInput.userId ?? undefined;
     workDoneDto.workTodoId = workDoneEntityInput.workTodoId?.id ?? undefined;
     workDoneDto.actionDate = workDoneEntityInput.actionDate ?? undefined;
 

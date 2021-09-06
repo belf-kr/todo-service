@@ -11,7 +11,6 @@ import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
 import { Color } from "src/entity/color.entity";
-import { User } from "src/entity/user.entity";
 
 import { TagService } from "src/tag/tag.service";
 import { TagType } from "src/tag/tag.type";
@@ -49,7 +48,7 @@ export class CourseService extends CRUDService<Course> {
       undefined,
       new Course(courseTypeInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
       colorEntity,
-      new User(courseTypeInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      courseTypeInput.creatorId,
       courseTypeInput.startDate,
       courseTypeInput.endDate,
       courseTypeInput.explanation,
@@ -168,7 +167,7 @@ export class CourseService extends CRUDService<Course> {
       undefined,
       undefined,
       new Color(courseTypeInput.color),
-      new User(courseTypeInput.creatorId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      courseTypeInput.creatorId,
       courseTypeInput.startDate,
       courseTypeInput.endDate,
       courseTypeInput.explanation,

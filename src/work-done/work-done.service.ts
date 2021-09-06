@@ -11,7 +11,6 @@ import { WorkDone } from "src/entity/work-done.entity";
 import { WorkTodo } from "src/entity/work-todo.entity";
 
 import { WorkTodoService } from "src/work-todo/work-todo.service";
-import { User } from "src/entity/user.entity";
 
 @Injectable()
 export class WorkDoneService extends CRUDService<WorkDone> {
@@ -36,7 +35,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
       undefined,
       workDoneTypeInput.title,
       workDoneTypeInput.content,
-      new User(workDoneTypeInput.userId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      workDoneTypeInput.userId,
       workTodoEntityInput,
       workDoneTypeInput.actionDate
     );

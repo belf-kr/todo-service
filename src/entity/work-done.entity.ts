@@ -1,11 +1,10 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-import { User } from "./user.entity";
 import { WorkTodo } from "./work-todo.entity";
 
 @Entity({})
 export class WorkDone {
-  constructor(id?: number, title?: string, content?: string, userId?: User, workTodoId?: WorkTodo, actionDate?: Date) {
+  constructor(id?: number, title?: string, content?: string, userId?: number, workTodoId?: WorkTodo, actionDate?: Date) {
     if (id) {
       this.id = id;
     }
@@ -15,7 +14,7 @@ export class WorkDone {
     if (content) {
       this.content = content;
     }
-    if (userId && userId.id !== undefined) {
+    if (userId !== undefined) {
       this.userId;
     }
     if (workTodoId && workTodoId.id !== undefined) {
@@ -42,12 +41,8 @@ export class WorkDone {
   })
   content: string;
 
-  @ManyToOne(() => User, (user) => user.id, {
-    onDelete: "SET NULL",
-    eager: true,
-  })
-  @JoinColumn({ name: "user_id" })
-  userId: User;
+  @Column({ nullable: true, name: "user_id" })
+  userId: number;
 
   @ManyToOne(() => WorkTodo, (workToDo) => workToDo.id, {
     onDelete: "CASCADE",

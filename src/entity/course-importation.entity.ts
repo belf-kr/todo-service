@@ -1,15 +1,14 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Course } from "./course.entity";
-import { User } from "./user.entity";
 
 @Entity({})
 export class CourseImportation {
-  constructor(id?: number, userId?: User, courseId?: Course, originalCourseId?: Course) {
+  constructor(id?: number, userId?: number, courseId?: Course, originalCourseId?: Course) {
     if (id) {
       this.id = id;
     }
-    if (userId && userId.id !== undefined) {
+    if (userId !== undefined) {
       this.userId = userId;
     }
     if (courseId && courseId.id !== undefined) {
@@ -23,12 +22,10 @@ export class CourseImportation {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id, {
-    onDelete: "CASCADE",
-    eager: true,
+  @Column({
+    name: "user_id",
   })
-  @JoinColumn({ name: "user_id" })
-  userId: User;
+  userId: number;
 
   @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "CASCADE",

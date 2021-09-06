@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Color } from "./color.entity";
-import { User } from "./user.entity";
 
 @Entity({})
 export class Course {
@@ -9,7 +8,7 @@ export class Course {
     id?: number,
     originalCourseId?: Course,
     color?: Color,
-    creatorId?: User,
+    creatorId?: number,
     startDate?: Date,
     endDate?: Date,
     explanation?: string,
@@ -25,7 +24,7 @@ export class Course {
     if (color) {
       this.color = color;
     }
-    if (creatorId && creatorId.id !== undefined) {
+    if (creatorId !== undefined) {
       this.creatorId = creatorId;
     }
     if (startDate) {
@@ -63,12 +62,8 @@ export class Course {
   @JoinColumn({ name: "color" })
   color: Color;
 
-  @ManyToOne(() => User, (user) => user.id, {
-    onDelete: "SET NULL",
-    eager: true,
-  })
-  @JoinColumn({ name: "creator_id" })
-  creatorId: User;
+  @Column({ nullable: true, name: "creator_id" })
+  creatorId: number;
 
   @Column({
     type: "date",
