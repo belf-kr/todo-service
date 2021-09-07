@@ -38,7 +38,7 @@ import AppConfig from "./config/app.config";
         DB_SLAVE_USERNAME: Joi.string().required(),
         DB_SLAVE_PASSWORD: Joi.string().allow("").required(),
         DB_SLAVE_DATABASE: Joi.string().required(),
-        DB_SYNCHRONIZE: Joi.boolean().default(false),
+        DB_SYNCHRONIZE: Joi.boolean().default(true),
         SERVER_PORT: Joi.number().default(3000),
       }),
     }),
