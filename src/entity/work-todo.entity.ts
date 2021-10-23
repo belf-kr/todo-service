@@ -4,6 +4,30 @@ import { Course } from "./course.entity";
 
 @Entity({})
 export class WorkTodo {
+  constructor(id?: number, courseId?: Course, recurringCycleDate?: number, title?: string, explanation?: string, passedDay?: number, addDate?: Date) {
+    if (id) {
+      this.id = id;
+    }
+    if (courseId && courseId.id !== undefined) {
+      this.courseId = courseId;
+    }
+    if (recurringCycleDate) {
+      this.recurringCycleDate = recurringCycleDate;
+    }
+    if (title) {
+      this.title = title;
+    }
+    if (explanation) {
+      this.explanation = explanation;
+    }
+    if (passedDay) {
+      this.passedDay = passedDay;
+    }
+    if (addDate) {
+      this.addDate = addDate;
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -12,7 +36,7 @@ export class WorkTodo {
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
-  courseId: number;
+  courseId: Course;
 
   @Column({
     nullable: true,

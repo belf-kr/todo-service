@@ -1,49 +1,39 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
 
-import { WorkTodoType } from "./work-todo.type";
 import { WorkTodoService } from "./work-todo.service";
+import { WorkTodoDto } from "./work-todo.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
 
 import { WorkTodo } from "src/entity/work-todo.entity";
 
-@Controller("work-todo")
+@Controller("work-todos")
 export class WorkTodoController extends CRUDController<WorkTodo> {
   constructor(private readonly workTodoService: WorkTodoService) {
     super(workTodoService);
   }
 
-  @Post("create-work-todo")
-  async createWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
+  @Post()
+  async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoInput: WorkTodoDto) {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);
 
-      return Object.assign({
-        status: HttpStatus.CREATED,
-        msg: `create successfully`,
-      });
+      return;
     } catch (error) {
+      // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
-      // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
-  @Get("get-all-work-todos")
-  async getAllWorkTodos(): Promise<HttpStatus> {
+  @Get()
+  async getAllWorkTodos() {
     try {
       // 할일 리스트 저장
       const workTodoServiceResult = await this.workTodoService.getAllWorkTodos();
-
-      if (!workTodoServiceResult.length) {
-        throw new Error("할일이 존재하지 않습니다.");
-      }
 
       return Object.assign({
         todo_list: workTodoServiceResult,
@@ -53,30 +43,22 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
-  @Delete("delete-work-todo")
-  async deleteWorkTodo(@Body() workTodoInput: WorkTodoType): Promise<HttpStatus> {
+  @Delete(":id")
+  async deleteWorkTodo(@Param("id", ParseIntPipe) id: number) {
     try {
-      await this.workTodoService.deleteWorkTodo(workTodoInput);
+      await this.workTodoService.deleteWorkTodo(id);
 
-      return Object.assign({
-        msg: `delete successfully`,
-      });
+      return;
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 }

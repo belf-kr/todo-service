@@ -1,10 +1,49 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Color } from "./color.entity";
-import { User } from "./user.entity";
 
 @Entity({})
 export class Course {
+  constructor(
+    id?: number,
+    originalCourseId?: Course,
+    color?: Color,
+    creatorId?: number,
+    startDate?: Date,
+    endDate?: Date,
+    explanation?: string,
+    title?: string,
+    likeCount?: number
+  ) {
+    if (id) {
+      this.id = id;
+    }
+    if (originalCourseId && originalCourseId.id !== undefined) {
+      this.originalCourseId = originalCourseId;
+    }
+    if (color) {
+      this.color = color;
+    }
+    if (creatorId !== undefined) {
+      this.creatorId = creatorId;
+    }
+    if (startDate) {
+      this.startDate = startDate;
+    }
+    if (endDate) {
+      this.endDate = endDate;
+    }
+    if (explanation) {
+      this.explanation = explanation;
+    }
+    if (title) {
+      this.title = title;
+    }
+    if (likeCount) {
+      this.likeCount = likeCount;
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -13,7 +52,7 @@ export class Course {
     nullable: true,
   })
   @JoinColumn({ name: "original_course_id" })
-  originalCourseId: number;
+  originalCourseId: Course;
 
   @ManyToOne(() => Color, (color) => color.id, {
     onDelete: "SET NULL",
@@ -21,13 +60,9 @@ export class Course {
     eager: true,
   })
   @JoinColumn({ name: "color" })
-  color: string;
+  color: Color;
 
-  @ManyToOne(() => User, (user) => user.id, {
-    onDelete: "SET NULL",
-    eager: true,
-  })
-  @JoinColumn({ name: "creator_id" })
+  @Column({ nullable: true, name: "creator_id" })
   creatorId: number;
 
   @Column({

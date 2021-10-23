@@ -1,4 +1,4 @@
-import { TagType } from "../tag/tag.type";
+import { TagType } from "src/tag/tag.type";
 
 export type CourseType = {
   id: number;

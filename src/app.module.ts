@@ -15,6 +15,7 @@ import { TagModule } from "./tag/tag.module";
 import { CourseTagModule } from "./course-tag/course-tag.module";
 import { WorkTodoModule } from "./work-todo/work-todo.module";
 import { RepeatedDaysOfTheWeekModule } from "./repeated-days-of-the-week/repeated-days-of-the-week.module";
+import { WorkDoneModule } from "./work-done/work-done.module";
 
 import AppConfig from "./config/app.config";
 
@@ -37,7 +38,7 @@ import AppConfig from "./config/app.config";
         DB_SLAVE_USERNAME: Joi.string().required(),
         DB_SLAVE_PASSWORD: Joi.string().allow("").required(),
         DB_SLAVE_DATABASE: Joi.string().required(),
-        DB_SYNCHRONIZE: Joi.boolean().default(false),
+        DB_SYNCHRONIZE: Joi.boolean().default(true),
         SERVER_PORT: Joi.number().default(3000),
       }),
     }),
@@ -56,6 +57,7 @@ import AppConfig from "./config/app.config";
     CourseTagModule,
     WorkTodoModule,
     RepeatedDaysOfTheWeekModule,
+    WorkDoneModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -5,6 +5,18 @@ import { Tag } from "./tag.entity";
 
 @Entity({})
 export class CourseTag {
+  constructor(id?: number, courseId?: Course, tagId?: Tag) {
+    if (id) {
+      this.id = id;
+    }
+    if (courseId && courseId.id !== undefined) {
+      this.courseId = courseId;
+    }
+    if (tagId && tagId.id !== undefined) {
+      this.tagId = tagId;
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,7 +26,7 @@ export class CourseTag {
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
-  courseId: number;
+  courseId: Course;
 
   @ManyToOne(() => Tag, (tag) => tag.id, {
     nullable: false,
@@ -22,5 +34,5 @@ export class CourseTag {
     eager: true,
   })
   @JoinColumn({ name: "tag_id" })
-  tagId: number;
+  tagId: Tag;
 }
