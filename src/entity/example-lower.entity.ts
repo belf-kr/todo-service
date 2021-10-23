@@ -4,6 +4,18 @@ import { ExampleUpper } from "./example-upper.entity";
 
 @Entity({})
 export class ExampleLower {
+  constructor(id?: number, name?: string, exampleUpperId?: ExampleUpper) {
+    if (id) {
+      this.id = id;
+    }
+    if (name) {
+      this.name = name;
+    }
+    if (exampleUpperId && exampleUpperId.id !== undefined) {
+      this.exampleUpperId = exampleUpperId;
+    }
+  }
+
   // 기본 생성되는 컬럼으로, 숫자값이 자동 증가됨
   @PrimaryGeneratedColumn()
   id: number;
@@ -28,5 +40,5 @@ export class ExampleLower {
     // FK 컬럼명
     name: "example_upper_id",
   })
-  exampleUpperId: number;
+  exampleUpperId: ExampleUpper;
 }

@@ -1,56 +1,73 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
 import { CourseDto } from "./course.dto";
+import { CourseType } from "./course.type";
 
 import { CRUDService } from "src/common/crud.service";
-
-import { CourseType } from "src/course/course.type";
 
 import { Course } from "src/entity/course.entity";
 import { Tag } from "src/entity/tag.entity";
 import { CourseTag } from "src/entity/course-tag.entity";
+import { Color } from "src/entity/color.entity";
 
-import { TagType } from "src/tag/tag.type";
 import { TagService } from "src/tag/tag.service";
+import { TagType } from "src/tag/tag.type";
+import { TagDto } from "src/tag/tag.dto";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
+
+import { ColorService } from "src/color/color.service";
 
 @Injectable()
 export class CourseService extends CRUDService<Course> {
   constructor(
     @InjectRepository(Course) courseRepository: Repository<Course>,
     private readonly tagService: TagService,
-    private readonly courseTagService: CourseTagService
+    private readonly courseTagService: CourseTagService,
+    private readonly colorService: ColorService
   ) {
     super(courseRepository);
   }
 
-  async createCourse(coursesInput: CourseType): Promise<void> {
+  async createCourse(courseTypeInput: CourseType): Promise<void> {
+    const colorEntity = new Color(courseTypeInput.color);
+
+    // 입력한 color 외래키의 존재 여부를 검증한다.
+    const colorEntities = new Array<Color>();
+    colorEntities.push(colorEntity);
+    const colorEntitiesResult = await this.colorService.find(colorEntities);
+    if (!colorEntitiesResult.length) {
+      throw new HttpException({ data: "존재하지 않는 색상의 id값 입니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
+
     // Course 객체를 생성해 코스를 생성한다.
     const courseEntities = new Array<Course>();
-    const courseEntity = new Course();
+    const courseEntity = new Course(
+      undefined,
+      new Course(courseTypeInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      colorEntity,
+      courseTypeInput.creatorId,
+      courseTypeInput.startDate,
+      courseTypeInput.endDate,
+      courseTypeInput.explanation,
+      courseTypeInput.title,
+      0
+    );
 
     // 생성 시 입력된 key value를 사용해 객체에 값을 입력한다.
-    if (coursesInput.title) courseEntity.title = coursesInput.title;
-    if (coursesInput.explanation) courseEntity.explanation = coursesInput.explanation;
-    if (coursesInput.color) courseEntity.color = coursesInput.color;
-    if (coursesInput.creatorId) courseEntity.creatorId = coursesInput.creatorId;
-    if (coursesInput.endDate) courseEntity.endDate = coursesInput.endDate;
-    if (coursesInput.startDate) courseEntity.startDate = coursesInput.startDate;
-    if (coursesInput.likeCount) courseEntity.likeCount = 0;
     courseEntities.push(courseEntity);
 
-    return this.create(courseEntities);
+    await this.create(courseEntities);
   }
 
   async getAllCourses(): Promise<CourseDto[]> {
+    // TypeORM 사용해서 검색을 할 때 조건을 주지 않고 전체 검색을 위한 Course entity 배열
     const blankCourseEntities: Course[] = new Array<Course>();
     const courseEntitiesResult = await this.find(blankCourseEntities);
+    // DTO 형태로 반환하기 위한 CourseDTO 배열
     const courseDtoArrayResult = new Array<CourseDto>();
-
-    if (!courseEntitiesResult.length) throw new Error("코스가 존재하지 않습니다.");
 
     // course 테이블과 course-tag 테이블의 조인 처리
     // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
@@ -70,7 +87,7 @@ export class CourseService extends CRUDService<Course> {
         .where("ct.course_id = :courseId", { courseId: courseEntity.id })
         .getRawMany();
 
-      // 태그 배열을 생성하기
+      // Tag Entity 배열을 생성하기
       const tagEntitiesResult = new Array<Tag>();
       for (const joinItem of joinResult) {
         const tagEntity = new Tag();
@@ -78,60 +95,49 @@ export class CourseService extends CRUDService<Course> {
         tagEntitiesResult.push(tagEntity);
       }
 
-      courseDtoArrayResult.push(
-        new CourseDto(
-          courseEntity.id,
-          courseEntity.originalCourseId,
-          courseEntity.color["id"],
-          courseEntity.creatorId,
-          courseEntity.startDate,
-          courseEntity.endDate,
-          courseEntity.explanation,
-          courseEntity.title,
-          courseEntity.likeCount,
-          tagEntitiesResult
-        )
-      );
+      // Tag DTO 배열을 생성하기
+      const tagDtos = new Array<TagDto>();
+      for (const tagEntity of tagEntitiesResult) {
+        tagDtos.push(TagDto.entityConstructor(tagEntity));
+      }
+
+      const courseDto = CourseDto.entityConstructor(courseEntity, tagEntitiesResult);
+      courseDtoArrayResult.push(courseDto);
     }
 
     return courseDtoArrayResult;
   }
 
-  async deleteCourse(courseInput: CourseType): Promise<void> {
-    // 검색 조건이 없는경우
-    if (!Object.keys(courseInput).length) {
-      throw new Error("검색 조건이 존재하지 않습니다.");
-    }
-
+  async deleteCourse(id: number): Promise<void> {
     const courseEntities = new Array<Course>();
-    const courseEntity = new Course();
+    const courseEntity = new Course(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
-    courseEntity.id = courseInput.id;
     courseEntities.push(courseEntity);
 
     const selectResult = await this.find(courseEntities);
 
-    if (selectResult.length === 0) throw new Error("조건을 만족하는 데이터가 없습니다.");
+    if (selectResult.length === 0) {
+      throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
     await this.delete(selectResult);
   }
 
   // 코스 생성 시 입력된 태그가 존재하지 않는 경우 생성한다.
-  async createNewTags(tagsInput: TagType[]): Promise<void> {
+  async createNewTags(tagsTypeInput: TagType[]): Promise<void> {
     // JSON 형태의 입력 값을 Tag entity 배열 객체로 생성
-    const tagEntities = new Array<Tag>();
-    for (const tag of tagsInput) {
+    const tagEntitiesInput = new Array<Tag>();
+    for (const tag of tagsTypeInput) {
       // 태그 객체를 생성 한 다음 값을 입력한다.
-      const tagEntity = new Tag();
-      tagEntity.value = tag.value;
-      tagEntities.push(tagEntity);
+      const tagEntity = new Tag(undefined, tag.value);
+      tagEntitiesInput.push(tagEntity);
     }
 
-    // 기존에 존재하는 태그들을 알아낸다.
-    const existTagEntities = await this.tagService.find(tagEntities);
     const newTagEntities = Array<Tag>();
+    // 기존에 존재하는 태그들을 알아낸다.
+    const existTagEntities = await this.tagService.find(tagEntitiesInput);
     // 입력한 Tag값이 존재하지 않던 경우 판별
-    for (const tagEntity of tagEntities) {
+    for (const tagEntity of tagEntitiesInput) {
       if (!existTagEntities.find((existTagEntity) => existTagEntity.value === tagEntity.value)) {
         newTagEntities.push(tagEntity);
       }
@@ -141,44 +147,45 @@ export class CourseService extends CRUDService<Course> {
   }
 
   // 코스와 태그의 관계를 삽입 해 주기 위한 메소드
-  async createCourseTag(courseInput: CourseType): Promise<void> {
+  async createCourseTag(courseTypeInput: CourseType): Promise<void> {
+    let tagEntitiesFindResult = new Array<Tag>();
+
     const inputTagEntities = new Array<Tag>();
-    let tagEntities = new Array<Tag>();
-
-    for (const tag of courseInput.tags) {
-      const tagEntity = new Tag();
-
-      tagEntity.value = tag.value;
+    for (const tagType of courseTypeInput.tags) {
+      const tagEntity = new Tag(undefined, tagType.value);
       inputTagEntities.push(tagEntity);
     }
 
     // Tag 들의 Id 값 찾기
     if (inputTagEntities.length) {
-      tagEntities = await this.tagService.find(inputTagEntities);
+      tagEntitiesFindResult = await this.tagService.find(inputTagEntities);
     }
 
+    let courseEntitiesFindResult = new Array<Course>();
     // 코스의 Id 값 알아오기
-    let courses = new Array<Course>();
-    const courseEntity = new Course();
-    if (courseInput.title) courseEntity.title = courseInput.title;
-    if (courseInput.explanation) courseEntity.explanation = courseInput.explanation;
-    if (courseInput.color) courseEntity.color = courseInput.color;
-    if (courseInput.creatorId) courseEntity.creatorId = courseInput.creatorId;
-    if (courseInput.endDate) courseEntity.endDate = courseInput.endDate;
-    if (courseInput.startDate) courseEntity.startDate = courseInput.startDate;
-    if (courseInput.likeCount) courseEntity.likeCount = courseEntity.likeCount;
-    else courseInput.likeCount = 0;
+    const courseEntity = new Course(
+      undefined,
+      undefined,
+      new Color(courseTypeInput.color),
+      courseTypeInput.creatorId,
+      courseTypeInput.startDate,
+      courseTypeInput.endDate,
+      courseTypeInput.explanation,
+      courseTypeInput.title,
+      courseTypeInput.likeCount
+    );
 
-    courses.push(courseEntity);
-    courses = await this.find(courses);
+    courseEntitiesFindResult.push(courseEntity);
+    courseEntitiesFindResult = await this.find(courseEntitiesFindResult);
 
     // courseTag 관련 삽입 메소드 호출
     const courseTagEntities = new Array<CourseTag>();
-    for (const tag of tagEntities) {
+    for (const tag of tagEntitiesFindResult) {
       // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
-      const courseTagEntity = new CourseTag();
-      courseTagEntity.courseId = courses[0].id;
-      courseTagEntity.tagId = tag.id;
+      const tagEntity = new Tag(tag.id, undefined);
+      const courseEntity = new Course(courseEntitiesFindResult[0].id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+      const courseTagEntity = new CourseTag(undefined, courseEntity, tagEntity);
+
       courseTagEntities.push(courseTagEntity);
     }
     await this.courseTagService.create(courseTagEntities);

@@ -1,18 +1,30 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Course } from "./course.entity";
-import { User } from "./user.entity";
 
 @Entity({})
 export class CourseImportation {
+  constructor(id?: number, userId?: number, courseId?: Course, originalCourseId?: Course) {
+    if (id) {
+      this.id = id;
+    }
+    if (userId !== undefined) {
+      this.userId = userId;
+    }
+    if (courseId && courseId.id !== undefined) {
+      this.courseId = courseId;
+    }
+    if (originalCourseId && originalCourseId.id !== undefined) {
+      this.originalCourseId = originalCourseId;
+    }
+  }
+
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id, {
-    onDelete: "CASCADE",
-    eager: true,
+  @Column({
+    name: "user_id",
   })
-  @JoinColumn({ name: "user_id" })
   userId: number;
 
   @ManyToOne(() => Course, (course) => course.id, {
@@ -20,7 +32,7 @@ export class CourseImportation {
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
-  courseId: number;
+  courseId: Course;
 
   @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "SET NULL",
@@ -30,5 +42,5 @@ export class CourseImportation {
   @JoinColumn({
     name: "original_course_id",
   })
-  originalCourseId: number;
+  originalCourseId: Course;
 }

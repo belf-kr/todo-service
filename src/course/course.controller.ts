@@ -1,51 +1,44 @@
-import { Body, Controller, Delete, Get, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
+import { CourseDto } from "./course.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
 
-import { CourseType } from "src/course/course.type";
-
 import { Course } from "src/entity/course.entity";
 
-@Controller("course")
+@Controller("courses")
 export class CourseController extends CRUDController<Course> {
   constructor(private readonly courseService: CourseService) {
     super(courseService);
   }
 
-  @Post("create-course")
-  async createCourse(@Body() courseInput: CourseType): Promise<void> {
+  @Post()
+  async createCourse(@Body(new ValidationPipe({ groups: ["userCreate"] })) courseDTOInput: CourseDto) {
     try {
-      await this.courseService.createCourse(courseInput);
-      await this.courseService.createNewTags(courseInput.tags);
-      await this.courseService.createCourseTag(courseInput);
+      await this.courseService.createCourse(courseDTOInput);
+      await this.courseService.createNewTags(courseDTOInput.tags);
+      await this.courseService.createCourseTag(courseDTOInput);
 
-      return Object.assign({
-        status: HttpStatus.CREATED,
-        msg: `create successfully`,
-      });
+      return;
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
-  @Get("get-all-courses")
-  async getAllCourses(): Promise<HttpStatus> {
+  @Get()
+  async getAllCourses() {
     try {
       // 코스 리스트 저장
-      const serviceResult = await this.courseService.getAllCourses();
+      const courseServiceResult = await this.courseService.getAllCourses();
 
       return Object.assign({
-        course_list: serviceResult,
+        course_list: courseServiceResult,
       });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
@@ -53,31 +46,23 @@ export class CourseController extends CRUDController<Course> {
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 
-  @Delete("delete-courses")
-  async deleteCourses(@Body() courseInput: CourseType): Promise<HttpStatus> {
+  @Delete(":id")
+  async deleteCourses(@Param("id", ParseIntPipe) id: number) {
     try {
-      await this.courseService.deleteCourse(courseInput);
+      await this.courseService.deleteCourse(id);
 
-      return Object.assign({
-        msg: `delete successfully`,
-      });
+      return;
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
 
       // API에 에러를 토스
-      return Object.assign({
-        httpStatusCode: httpStatusCode,
-        message: message,
-      });
+      throw new HttpException(message, httpStatusCode);
     }
   }
 }

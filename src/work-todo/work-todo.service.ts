@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
@@ -18,42 +18,36 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     super(workTodoRepository);
   }
 
-  async createWorkTodo(workTodoInput: WorkTodoType): Promise<void> {
+  async createWorkTodo(workTodoTypeInput: WorkTodoType): Promise<void> {
     // 올바른 FK인지 검증한다.
-    const courseEntities = new Array<Course>();
-    const courseEntity = new Course();
+    const courseEntitiesInput = new Array<Course>();
+    const courseEntityInput = new Course(workTodoTypeInput.courseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
-    if (workTodoInput.courseId) courseEntity.id = workTodoInput.courseId;
-    else throw new Error("코스의 id 값이 비어있습니다.");
-
-    courseEntities.push(courseEntity);
-    const courseSearchResult = await this.courseService.find(courseEntities);
-    if (courseSearchResult.length === 0) throw new Error("코스의 id값을 만족하는 데이터가 없습니다.");
+    courseEntitiesInput.push(courseEntityInput);
+    const courseSearchResult = await this.courseService.find(courseEntitiesInput);
+    if (courseSearchResult.length === 0) {
+      throw new HttpException({ data: "코스의 id값을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
     //  WorkTodo 객체를 생성해 할일을 생성한다.
     const workTodoEntities = new Array<WorkTodo>();
-    const workTodoEntity = new WorkTodo();
+    const workTodoEntity = new WorkTodo(
+      undefined,
+      courseEntityInput,
+      workTodoTypeInput.recurringCycleDate,
+      workTodoTypeInput.title,
+      workTodoTypeInput.explanation,
+      workTodoTypeInput.passedDay,
+      new Date()
+    );
 
-    // 생성시 입력된 key value를 사용해 객체를 생성한다.
-    if (workTodoInput.title) workTodoEntity.title = workTodoInput.title;
-    if (workTodoInput.explanation) workTodoEntity.explanation = workTodoInput.explanation;
-    if (workTodoInput.courseId) workTodoEntity.courseId = workTodoInput.courseId;
-    else workTodoEntity.courseId = null;
-    if (workTodoInput.passedDay) workTodoEntity.passedDay = workTodoInput.passedDay;
-    if (workTodoInput.recurrintCycleDate) workTodoEntity.recurringCycleDate = workTodoInput.recurrintCycleDate;
-    // 기본값 입력
-    workTodoEntity.addDate = new Date();
     workTodoEntities.push(workTodoEntity);
 
-    return this.create(workTodoEntities);
+    await this.create(workTodoEntities);
   }
 
   async getAllWorkTodos(): Promise<WorkTodoDto[]> {
-    const blankWorkTodoEntities: WorkTodo[] = new Array<WorkTodo>();
-    const workTodoEntitiesResult = await this.find(blankWorkTodoEntities);
     const workTodoDtoArrayResult = new Array<WorkTodoDto>();
-
-    if (!workTodoEntitiesResult.length) throw new Error("할 일 정보가 존재하지 않습니다.");
 
     // DTO 객체에 삽입
     /*
@@ -68,7 +62,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       const workTodoDto = new WorkTodoDto();
 
       workTodoDto.id = joinItem["wt_id"];
-      workTodoDto.recurrintCycleDate = joinItem["wt_recurring_cycle_date"];
+      workTodoDto.recurringCycleDate = joinItem["wt_recurring_cycle_date"];
       workTodoDto.title = joinItem["wt_title"];
       workTodoDto.explanation = joinItem["wt_explanation"];
       workTodoDto.passedDay = joinItem["wt_passed_day"];
@@ -76,6 +70,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       workTodoDto.courseId = joinItem["c_id"];
       workTodoDto.courseTitle = joinItem["c_title"];
       workTodoDto.color = joinItem["c_color"];
+
       // TODO: 반복 요일에 대한 정보 리스트로 추가 하기
 
       workTodoDtoArrayResult.push(workTodoDto);
@@ -84,27 +79,18 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     return workTodoDtoArrayResult;
   }
 
-  async deleteWorkTodo(workTodoInput: WorkTodoType): Promise<void> {
-    // 검색 조건이 없는경우
-    if (!Object.keys(workTodoInput).length) {
-      throw new Error("검색 조건이 존재하지 않습니다.");
+  async deleteWorkTodo(id: number): Promise<void> {
+    // 검색을 위한 객체
+    const workTodoEntitiesInput = new Array<WorkTodo>();
+    const workTodoEntityInput = new WorkTodo(id, undefined, undefined, undefined, undefined, undefined, undefined);
+
+    workTodoEntitiesInput.push(workTodoEntityInput);
+    const workTodoFindResult = await this.find(workTodoEntitiesInput);
+
+    if (workTodoFindResult.length === 0) {
+      throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
-    // 검색을 위한 객체
-    const workTodoEntities = new Array<WorkTodo>();
-    const workTodoEntity = new WorkTodo();
-
-    // 생성시 입력된 key value를 사용해 객체를 생성한다.
-    if (workTodoInput.id) workTodoEntity.id = workTodoInput.id;
-    if (workTodoInput.title) workTodoEntity.title = workTodoInput.title;
-    if (workTodoInput.explanation) workTodoEntity.explanation = workTodoInput.explanation;
-    if (workTodoInput.courseId) workTodoEntity.courseId = workTodoInput.courseId;
-
-    workTodoEntities.push(workTodoEntity);
-    const workTodoFindResult = await this.find(workTodoEntities);
-
-    if (workTodoFindResult.length === 0) throw new Error("조건을 만족하는 데이터가 없습니다.");
-
-    return this.delete(workTodoEntities);
+    await this.delete(workTodoEntitiesInput);
   }
 }

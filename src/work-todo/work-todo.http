@@ -1,8 +1,8 @@
 @Host = http://localhost:3003
-@Router = work-todo
+@Router = work-todos
 
 ### work_todo 추가
-POST {{Host}}/{{Router}}/create-work-todo
+POST {{Host}}/{{Router}}
 Content-Type: application/json
 
 {
@@ -14,16 +14,9 @@ Content-Type: application/json
 }
 
 ### work_todo 전체 리스트 가져오기
-GET {{Host}}/{{Router}}/get-all-work-todos
+GET {{Host}}/{{Router}}
 Content-Type: application/json
 
 ### work_todo 삭제
-DELETE {{Host}}/{{Router}}/delete-work-todo
+DELETE {{Host}}/{{Router}}/1
 Content-Type: application/json
-
-{
-    "id": 1,
-    "title": "나만의 할 일3",
-    "explanation": "설명입니다.",
-    "courseId": 3
-}
