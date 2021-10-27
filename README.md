@@ -48,19 +48,19 @@
 
 ### 환경 변수 표
 
-| Variable           | dev | qa/prod | Default value | Example                 | Explanation                                                                         |
-| ------------------ | :-: | :-----: | :-----------: | ----------------------- | ----------------------------------------------------------------------------------- |
-| NODE_ENV           | ✅  |   ✅    |               | development, production | `NodeJS 실행 환경` 을 설정하는 값으로, 미리 선언한 npm 스크립트로 값이 설정됩니다.  |
-| STAGES             | 🚫  |   ✅    |               | qa, prod                | `k8s에서` 실행 환경에 맞는 svc를 연결 및 디버깅을 위해 사용되는 값입니다.           |
-| SERVER_PORT        | ✅  |   ✅    |     3000      | 3000, 3003              | `HTTP listen port`를 지정하기 위해서 사용되는 값입니다.                             |
-| DB_MASTER_HOST     | ✅  |   ✅    |               | localhost               | `DB 주소`로 `MASTER 환경`에서 사용되는 값입니다.                                    |
-| DB_MASTER_PORT     | ✅  |   ✅    |     3306      | 3306                    | `DB port`로 `MASTER 환경`에서 사용되는 값입니다.                                    |
-| DB_MASTER_USERNAME | ✅  |   ✅    |               | root                    | `DB 계정명`으로 `MASTER 환경`에서 사용되는 값입니다.                                |
-| DB_MASTER_PASSWORD | ✅  |   ✅    |               | example                 | `DB 계정의 비밀번호`로 `MASTER 환경`에서 사용되는 값입니다.                         |
-| DB_MASTER_DATABASE | ✅  |   ✅    |     belf      | belf                    | `DB명`으로 `MASTER 환경`에서 사용되는 값입니다.                                     |
-| DB_SLAVE_HOST      | ✅  |   ✅    |               | localhost               | `DB 주소`로 `SLAVE 환경`에서 사용되는 값입니다.                                     |
-| DB_SLAVE_PORT      | ✅  |   ✅    |     3306      | 3306                    | `DB port`로 `SLAVE 환경`에서 사용되는 값입니다.                                     |
-| DB_SLAVE_USERNAME  | ✅  |   ✅    |               | root                    | `DB 계정명`으로 `SLAVE 환경`에서 사용되는 값입니다.                                 |
-| DB_SLAVE_PASSWORD  | ✅  |   ✅    |               | example                 | `DB 계정의 비밀번호`로 `SLAVE 환경`에서 사용되는 값입니다.                          |
-| DB_SLAVE_DATABASE  | ✅  |   ✅    |     belf      | belf                    | `DB명`으로 `SLAVE 환경`에서 사용되는 값입니다.                                      |
-| DB_SYNCHRONIZE     | ✅  |   ✅    |     true      | true, false             | DB 스키마와 entity 코드의 `자동 동기화(기존 스키마의 정보가 삭제됨)` 설정 값입니다. |
+| Variable                        | dev | qa/prod | Default value | Example                 | Explanation                                                                         |
+| ------------------------------- | :-: | :-----: | :-----------: | ----------------------- | ----------------------------------------------------------------------------------- |
+| NODE_ENV                        | ✅  |   ✅    |               | development, production | `NodeJS 실행 환경` 을 설정하는 값으로, 미리 선언한 npm 스크립트로 값이 설정됩니다.  |
+| STAGES                          | 🚫  |   ✅    |               | qa, prod                | `k8s에서` 실행 환경에 맞는 svc를 연결 및 디버깅을 위해 사용되는 값입니다.           |
+| TODO_SERVICE_SERVER_PORT        | ✅  |   ✅    |     3000      | 3000, 3003              | `HTTP listen port`를 지정하기 위해서 사용되는 값입니다.                             |
+| TODO_SERVICE_DB_MASTER_HOST     | ✅  |   ✅    |               | localhost               | `DB 주소`로 `MASTER 환경`에서 사용되는 값입니다.                                    |
+| TODO_SERVICE_DB_MASTER_PORT     | ✅  |   ✅    |     3306      | 3306                    | `DB port`로 `MASTER 환경`에서 사용되는 값입니다.                                    |
+| TODO_SERVICE_DB_MASTER_USERNAME | ✅  |   ✅    |               | root                    | `DB 계정명`으로 `MASTER 환경`에서 사용되는 값입니다.                                |
+| TODO_SERVICE_DB_MASTER_PASSWORD | ✅  |   ✅    |               | example                 | `DB 계정의 비밀번호`로 `MASTER 환경`에서 사용되는 값입니다.                         |
+| TODO_SERVICE_DB_MASTER_DATABASE | ✅  |   ✅    |     belf      | belf                    | `DB명`으로 `MASTER 환경`에서 사용되는 값입니다.                                     |
+| TODO_SERVICE_DB_SLAVE_HOST      | ✅  |   ✅    |               | localhost               | `DB 주소`로 `SLAVE 환경`에서 사용되는 값입니다.                                     |
+| TODO_SERVICE_DB_SLAVE_PORT      | ✅  |   ✅    |     3306      | 3306                    | `DB port`로 `SLAVE 환경`에서 사용되는 값입니다.                                     |
+| TODO_SERVICE_DB_SLAVE_USERNAME  | ✅  |   ✅    |               | root                    | `DB 계정명`으로 `SLAVE 환경`에서 사용되는 값입니다.                                 |
+| TODO_SERVICE_DB_SLAVE_PASSWORD  | ✅  |   ✅    |               | example                 | `DB 계정의 비밀번호`로 `SLAVE 환경`에서 사용되는 값입니다.                          |
+| TODO_SERVICE_DB_SLAVE_DATABASE  | ✅  |   ✅    |     belf      | belf                    | `DB명`으로 `SLAVE 환경`에서 사용되는 값입니다.                                      |
+| TODO_SERVICE_DB_SYNCHRONIZE     | ✅  |   ✅    |     true      | true, false             | DB 스키마와 entity 코드의 `자동 동기화(기존 스키마의 정보가 삭제됨)` 설정 값입니다. |
