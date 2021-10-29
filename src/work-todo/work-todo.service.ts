@@ -46,7 +46,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     await this.create(workTodoEntities);
   }
 
-  async getAllWorkTodos(courseId: number): Promise<WorkTodoDto[]> {
+  async getWorkTodosByConditions(courseId: number): Promise<WorkTodoDto[]> {
     const workTodoDtoArrayResult = new Array<WorkTodoDto>();
 
     // DTO 객체에 삽입

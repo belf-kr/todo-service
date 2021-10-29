@@ -30,14 +30,12 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Get()
-  async getAllWorkTodos(@Query("courseId", ParseIntPipe) courseId: number) {
+  async getWorkTodosByConditions(@Query("courseId", ParseIntPipe) courseId: number) {
     try {
       // 할일 리스트 저장
-      const workTodoServiceResult = await this.workTodoService.getAllWorkTodos(courseId);
+      const workTodoServiceResult = await this.workTodoService.getWorkTodosByConditions(courseId);
 
-      return Object.assign({
-        todo_list: workTodoServiceResult,
-      });
+      return workTodoServiceResult;
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
