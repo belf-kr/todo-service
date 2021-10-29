@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
 
 import { WorkTodoService } from "./work-todo.service";
 import { WorkTodoDto } from "./work-todo.dto";
@@ -30,10 +30,10 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Get()
-  async getAllWorkTodos() {
+  async getAllWorkTodos(@Query("courseId", ParseIntPipe) courseId: number) {
     try {
       // 할일 리스트 저장
-      const workTodoServiceResult = await this.workTodoService.getAllWorkTodos();
+      const workTodoServiceResult = await this.workTodoService.getAllWorkTodos(courseId);
 
       return Object.assign({
         todo_list: workTodoServiceResult,
