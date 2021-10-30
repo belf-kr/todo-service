@@ -29,8 +29,9 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     }
   }
 
+  // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
-  async getWorkTodosByConditions(@Query("courseId", ParseIntPipe) courseId: number) {
+  async getWorkTodosByConditions(@Query("courseId") courseId?: number) {
     try {
       // 할일 리스트 저장
       const workTodoServiceResult = await this.workTodoService.getWorkTodosByConditions(courseId);
