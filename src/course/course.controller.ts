@@ -37,9 +37,7 @@ export class CourseController extends CRUDController<Course> {
       // 코스 리스트 저장
       const courseServiceResult = await this.courseService.getAllCourses();
 
-      return Object.assign({
-        course_list: courseServiceResult,
-      });
+      return courseServiceResult;
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
