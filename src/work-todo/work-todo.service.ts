@@ -46,7 +46,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     await this.create(workTodoEntities);
   }
 
-  async getAllWorkTodos(): Promise<WorkTodoDto[]> {
+  async getWorkTodosByConditions(courseId?: number): Promise<WorkTodoDto[]> {
     const workTodoDtoArrayResult = new Array<WorkTodoDto>();
 
     // DTO 객체에 삽입
@@ -55,7 +55,11 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       FROM work_todo
       INNER JOIN course c on work_todo.course_id = c.id
     */
-    const joinResult = await getRepository(WorkTodo).createQueryBuilder("wt").innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id").getRawMany();
+    let queryString = getRepository(WorkTodo).createQueryBuilder("wt").innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id");
+    if (courseId) {
+      queryString = queryString.where("c.id = :courseId", { courseId: courseId });
+    }
+    const joinResult = await queryString.getRawMany();
 
     for (const joinItem of joinResult) {
       // 반환을 위한 배열에 요소를 넣어주기 위한 DTO 객체
