@@ -58,9 +58,12 @@ export class WorkDoneService extends CRUDService<WorkDone> {
       throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
+    let workDoneEntityResult: WorkDoneDto;
     // DTO 객체에 값 입력
     for (const workDoneEntity of workDoneEntityFindResult) {
-      return WorkDoneDto.entityConstructor(workDoneEntity);
+      workDoneEntityResult = WorkDoneDto.entityConstructor(workDoneEntity);
     }
+
+    return workDoneEntityResult;
   }
 }

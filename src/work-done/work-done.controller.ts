@@ -13,8 +13,6 @@ export class WorkDoneController {
   async createWorkDone(@Body(new ValidationPipe({ groups: ["userInput"] })) workDoneInput: WorkDoneDto) {
     try {
       await this.workDoneService.createWorkDone(workDoneInput);
-
-      return;
     } catch (error) {
       // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);
@@ -22,14 +20,16 @@ export class WorkDoneController {
 
       throw new HttpException(message, httpStatusCode);
     }
+
+    return;
   }
 
   @Get(":id")
   async getWorkDone(@Param("id", ParseIntPipe) id: number) {
-    try {
-      const workDoneServiceResult = await this.workDoneService.getWorkDone(id);
+    let serviceResult: WorkDoneDto;
 
-      return workDoneServiceResult;
+    try {
+      serviceResult = await this.workDoneService.getWorkDone(id);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -37,5 +37,7 @@ export class WorkDoneController {
       // API에 에러를 토스
       throw new HttpException(message, httpStatusCode);
     }
+
+    return serviceResult;
   }
 }

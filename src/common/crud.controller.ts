@@ -18,43 +18,47 @@ export class CRUDController<T> {
   async create(@Body() crudEntities: T[]): Promise<HttpStatus> {
     try {
       await this.crudService.create(crudEntities);
-
-      return Object.assign({
-        status: HttpStatus.CREATED,
-        msg: `create successfully`,
-      });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
+
       throw new HttpException(message, httpStatusCode);
     }
+
+    return Object.assign({
+      status: HttpStatus.CREATED,
+      msg: `create successfully`,
+    });
   }
 
   // 1개 이상의 행 Read
   @Get()
   async read(@Body() crudEntities: T[]): Promise<HttpStatus> {
+    let result: T[];
+
     try {
       // 결과를 받아올 상수 선언
-      const result: T[] = await this.crudService.find(crudEntities);
+      result = await this.crudService.find(crudEntities);
 
       // ORM 리턴 값이 비어있는 경우
       if (!result.length) {
         throw new Error("Call HttpException on catch");
       }
-
-      // Service가 동작 된 경우 결과값을 반환
-      return Object.assign({
-        status: HttpStatus.OK,
-        msg: `read successfully`,
-        data: { ...result },
-      });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
+
       throw new HttpException(message, httpStatusCode);
     }
+
+    // Service가 동작 된 경우 결과값을 반환
+    return Object.assign({
+      status: HttpStatus.OK,
+      msg: `read successfully`,
+      data: { ...result },
+    });
   }
 
   // 1개 이상의 행 Update
@@ -63,17 +67,18 @@ export class CRUDController<T> {
   async update(@Body("crudEntitySearchFilters") crudEntitySearchFilters: T[], @Body("crudChangeResult") crudChangeResult: T): Promise<HttpStatus> {
     try {
       await this.crudService.update(crudEntitySearchFilters, crudChangeResult);
-
-      return Object.assign({
-        status: HttpStatus.OK,
-        msg: `update successfully`,
-      });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
+
       throw new HttpException(message, httpStatusCode);
     }
+
+    return Object.assign({
+      status: HttpStatus.OK,
+      msg: `update successfully`,
+    });
   }
 
   // 1개 이상의 행 Delete
@@ -81,16 +86,17 @@ export class CRUDController<T> {
   async delete(@Body() crudEntities: T[]): Promise<HttpStatus> {
     try {
       await this.crudService.delete(crudEntities);
-
-      return Object.assign({
-        status: HttpStatus.OK,
-        msg: `delete successfully`,
-      });
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
+
       throw new HttpException(message, httpStatusCode);
     }
+
+    return Object.assign({
+      status: HttpStatus.OK,
+      msg: `delete successfully`,
+    });
   }
 }
