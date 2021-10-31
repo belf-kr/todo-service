@@ -18,8 +18,6 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoInput: WorkTodoDto) {
     try {
       await this.workTodoService.createWorkTodo(workTodoInput);
-
-      return;
     } catch (error) {
       // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);
@@ -27,16 +25,18 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
 
       throw new HttpException(message, httpStatusCode);
     }
+
+    return;
   }
 
   // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
   async getWorkTodosByConditions(@Query("courseId") courseId?: number) {
+    let serviceResult: WorkTodoDto[];
+
     try {
       // 할일 리스트 저장
-      const workTodoServiceResult = await this.workTodoService.getWorkTodosByConditions(courseId);
-
-      return workTodoServiceResult;
+      serviceResult = await this.workTodoService.getWorkTodosByConditions(courseId);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -44,14 +44,14 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
       // API에 에러를 토스
       throw new HttpException(message, httpStatusCode);
     }
+
+    return serviceResult;
   }
 
   @Delete(":id")
   async deleteWorkTodo(@Param("id", ParseIntPipe) id: number) {
     try {
       await this.workTodoService.deleteWorkTodo(id);
-
-      return;
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -59,5 +59,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
       // API에 에러를 토스
       throw new HttpException(message, httpStatusCode);
     }
+
+    return;
   }
 }
