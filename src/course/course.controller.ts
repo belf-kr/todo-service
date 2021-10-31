@@ -20,8 +20,6 @@ export class CourseController extends CRUDController<Course> {
       await this.courseService.createCourse(courseDTOInput);
       await this.courseService.createNewTags(courseDTOInput.tags);
       await this.courseService.createCourseTag(courseDTOInput);
-
-      return;
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -29,15 +27,17 @@ export class CourseController extends CRUDController<Course> {
       // API에 에러를 토스
       throw new HttpException(message, httpStatusCode);
     }
+
+    return;
   }
 
   @Get()
   async getAllCourses() {
+    let serviceResult: CourseDto[];
+
     try {
       // 코스 리스트 저장
-      const courseServiceResult = await this.courseService.getAllCourses();
-
-      return courseServiceResult;
+      serviceResult = await this.courseService.getAllCourses();
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
@@ -46,14 +46,14 @@ export class CourseController extends CRUDController<Course> {
       // API에 에러를 토스
       throw new HttpException(message, httpStatusCode);
     }
+
+    return serviceResult;
   }
 
   @Delete(":id")
   async deleteCourses(@Param("id", ParseIntPipe) id: number) {
     try {
       await this.courseService.deleteCourse(id);
-
-      return;
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
@@ -62,5 +62,7 @@ export class CourseController extends CRUDController<Course> {
       // API에 에러를 토스
       throw new HttpException(message, httpStatusCode);
     }
+
+    return;
   }
 }
