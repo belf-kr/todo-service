@@ -56,8 +56,8 @@ export class WorkTodoDto implements WorkTodoType {
   @IsNotEmpty({ always: true, message: "title에 해당되는 값이 존재하지 않습니다." })
   title: string;
 
-  @IsString({ always: true })
-  @IsNotEmpty({ always: true, message: "explanation에 해당되는 값이 존재하지 않습니다." })
+  @IsString({})
+  @IsNotEmpty({ message: "explanation에 해당되는 값이 존재하지 않습니다." })
   explanation: string;
 
   @IsInt({ groups: ["generated"] })
