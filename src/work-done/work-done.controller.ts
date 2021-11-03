@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
 
 import { WorkDoneDto } from "./work-done.dto";
 import { WorkDoneService } from "./work-done.service";
@@ -22,6 +22,25 @@ export class WorkDoneController {
     }
 
     return;
+  }
+
+  // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
+  @Get()
+  async getWorkTodosByConditions(@Query("courseId") courseId?: number) {
+    let serviceResult: WorkDoneDto[];
+
+    try {
+      // 할일 리스트 저장
+      serviceResult = await this.workDoneService.getWorkDonesByConditions(courseId);
+    } catch (error) {
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+
+      // API에 에러를 토스
+      throw new HttpException(message, httpStatusCode);
+    }
+
+    return serviceResult;
   }
 
   @Get(":id")
