@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 
 import { WorkDoneType } from "./work-done.type";
 import { WorkDoneDto } from "./work-done.dto";
@@ -9,6 +9,7 @@ import { CRUDService } from "src/common/crud.service";
 
 import { WorkDone } from "src/entity/work-done.entity";
 import { WorkTodo } from "src/entity/work-todo.entity";
+import { Course } from "src/entity/course.entity";
 
 import { WorkTodoService } from "src/work-todo/work-todo.service";
 
@@ -43,6 +44,61 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     workDoneEntitiesInput.push(workDoneEntityInput);
 
     await this.create(workDoneEntitiesInput);
+  }
+
+  async getWorkDonesByConditions(courseId?: number): Promise<WorkDoneDto[]> {
+    const workDoneDtoArrayResult = new Array<WorkDoneDto>();
+    /*
+      FROM    work_done AS wd
+    */
+    let queryString = getRepository(WorkDone).createQueryBuilder("wd");
+
+    if (courseId) {
+      // courseId 값을 가지고 있는 WorkDoneDto 객체의 배열을 생성한다.
+      const wokrTodoDtoArrayResult = await this.workTodoService.getWorkTodosByConditions(courseId);
+      const workTodoIdArray = new Array<number>();
+      // number 배열을 workTodoDtoArrayResult로 부터 생성한다.
+      for (const item of wokrTodoDtoArrayResult) {
+        workTodoIdArray.push(item.id);
+      }
+
+      /*
+                INNER JOIN work_todo wt on wd.work_todo_id = wt.id
+                INNER JOIN course c on wt.course_id = c.id
+        WHERE   wd.work_todo_id IN (1, 2, 3, 4);
+      */
+      queryString = queryString
+        .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
+        .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
+        .where("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
+    }
+
+    // query string 을 사용해 SELECT 수행
+    /*
+        SELECT  wd.id,
+                wd.title,
+                wd.content,
+                wd.user_id,
+                wd.action_date,
+                wd.work_todo_id
+        FROM work_done AS wd
+      */
+    const selectResult = await queryString.getRawMany();
+
+    // SELECT 결과 DTO 배열에 매핑
+    for (const selectItem of selectResult) {
+      const workDoneDto = new WorkDoneDto();
+
+      workDoneDto.id = selectItem["wd_id"];
+      workDoneDto.title = selectItem["wd_title"];
+      workDoneDto.content = selectItem["wd_content"];
+      workDoneDto.actionDate = selectItem["wd_action_date"];
+      workDoneDto.workTodoId = selectItem["wd_work_todo_id"];
+
+      workDoneDtoArrayResult.push(workDoneDto);
+    }
+
+    return workDoneDtoArrayResult;
   }
 
   async getWorkDone(id: number) {
