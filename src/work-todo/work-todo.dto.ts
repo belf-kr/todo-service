@@ -10,13 +10,12 @@ import { RepeatedDaysOfTheWeekDto } from "src/repeated-days-of-the-week/repeated
 export class WorkTodoDto implements WorkTodoType {
   constructor(workTodoTypeInput?: WorkTodoType) {
     if (workTodoTypeInput !== undefined) {
-      this.addDate = workTodoTypeInput.addDate ?? undefined;
+      this.activeDate = workTodoTypeInput.activeDate ?? undefined;
       this.color = workTodoTypeInput.color ?? undefined;
       this.courseId = workTodoTypeInput.courseId ?? undefined;
       this.courseTitle = workTodoTypeInput.courseTitle ?? undefined;
       this.explanation = workTodoTypeInput.explanation ?? undefined;
       this.id = workTodoTypeInput.id ?? undefined;
-      this.passedDay = workTodoTypeInput.passedDay ?? undefined;
       this.recurringCycleDate = workTodoTypeInput.recurringCycleDate ?? undefined;
       this.repeatedDaysOfTheWeek = workTodoTypeInput.repeatedDaysOfTheWeek ?? undefined;
       this.title = workTodoTypeInput.title ?? undefined;
@@ -31,8 +30,7 @@ export class WorkTodoDto implements WorkTodoType {
     workTodoDto.recurringCycleDate = workTodoEntityInput.recurringCycleDate ?? undefined;
     workTodoDto.title = workTodoEntityInput.title ?? undefined;
     workTodoDto.explanation = workTodoEntityInput.explanation ?? undefined;
-    workTodoDto.passedDay = workTodoEntityInput.passedDay ?? undefined;
-    workTodoDto.addDate = workTodoEntityInput.addDate ?? undefined;
+    workTodoDto.activeDate = workTodoEntityInput.activeDate ?? undefined;
     workTodoDto.courseId = workTodoEntityInput.courseId?.id ?? undefined;
 
     // repeatedDaysOfTheWeekEntities 값이 존재 하는 경우
@@ -60,11 +58,8 @@ export class WorkTodoDto implements WorkTodoType {
   @IsNotEmpty({ message: "explanation에 해당되는 값이 존재하지 않습니다." })
   explanation: string;
 
-  @IsInt({ groups: ["generated"] })
-  passedDay: number;
-
   @IsDate({ groups: ["generated"] })
-  addDate: Date;
+  activeDate: Date;
 
   @IsInt({ always: true })
   @IsNotEmpty({ always: true, message: "코스의 id값이 비어있습니다." })

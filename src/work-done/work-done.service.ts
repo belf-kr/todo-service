@@ -22,7 +22,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
   async createWorkDone(workDoneTypeInput: WorkDoneType): Promise<void> {
     // 올바른 FK인지 검증한다.
     const workTodoEntitiesInput = new Array<WorkTodo>();
-    const workTodoEntityInput = new WorkTodo(workDoneTypeInput.workTodoId, undefined, undefined, undefined, undefined, undefined, undefined);
+    const workTodoEntityInput = new WorkTodo(workDoneTypeInput.workTodoId, undefined, undefined, undefined, undefined, undefined);
 
     workTodoEntitiesInput.push(workTodoEntityInput);
     const workTodosSearchResult = await this.workTodoService.find(workTodoEntitiesInput);

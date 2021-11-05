@@ -18,8 +18,7 @@ Content-Type: application/json
     "courseId": 1,
     "recurringCycleDate": 1,
     "title": "나만의 할 일1",
-    "explanation": "나만의 할 일 설명1",
-    "passedDay": 5
+    "explanation": "나만의 할 일 설명1"
 }
 
 ### work_todo 전체 리스트 가져오기
