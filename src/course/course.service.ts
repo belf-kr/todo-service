@@ -3,7 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
 import { CourseDto } from "./course.dto";
-import { CourseType } from "./course.type";
+import { CourseGetDto } from "./course-get.dto";
+import { CoursePostDto } from "./course-post.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -31,8 +32,8 @@ export class CourseService extends CRUDService<Course> {
     super(courseRepository);
   }
 
-  async createCourse(courseTypeInput: CourseType): Promise<void> {
-    const colorEntity = new Color(courseTypeInput.color);
+  async createCourse(courseDtoInput: CourseDto): Promise<void> {
+    const colorEntity = new Color(courseDtoInput.color);
 
     // 입력한 color 외래키의 존재 여부를 검증한다.
     const colorEntities = new Array<Color>();
@@ -46,13 +47,13 @@ export class CourseService extends CRUDService<Course> {
     const courseEntities = new Array<Course>();
     const courseEntity = new Course(
       undefined,
-      new Course(courseTypeInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      new Course(courseDtoInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
       colorEntity,
-      courseTypeInput.creatorId,
-      courseTypeInput.startDate,
-      courseTypeInput.endDate,
-      courseTypeInput.explanation,
-      courseTypeInput.title,
+      courseDtoInput.creatorId,
+      courseDtoInput.startDate,
+      courseDtoInput.endDate,
+      courseDtoInput.explanation,
+      courseDtoInput.title,
       0
     );
 
@@ -62,12 +63,12 @@ export class CourseService extends CRUDService<Course> {
     await this.create(courseEntities);
   }
 
-  async getAllCourses(): Promise<CourseDto[]> {
+  async getAllCourses(): Promise<CourseGetDto[]> {
     // TypeORM 사용해서 검색을 할 때 조건을 주지 않고 전체 검색을 위한 Course entity 배열
     const blankCourseEntities: Course[] = new Array<Course>();
     const courseEntitiesResult = await this.find(blankCourseEntities);
     // DTO 형태로 반환하기 위한 CourseDTO 배열
-    const courseDtoArrayResult = new Array<CourseDto>();
+    const courseGetDtoArrayResult = new Array<CourseGetDto>();
 
     // course 테이블과 course-tag 테이블의 조인 처리
     // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
@@ -101,11 +102,11 @@ export class CourseService extends CRUDService<Course> {
         tagDtos.push(TagDto.entityConstructor(tagEntity));
       }
 
-      const courseDto = CourseDto.entityConstructor(courseEntity, tagEntitiesResult);
-      courseDtoArrayResult.push(courseDto);
+      const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult);
+      courseGetDtoArrayResult.push(courseGetDto);
     }
 
-    return courseDtoArrayResult;
+    return courseGetDtoArrayResult;
   }
 
   async deleteCourse(id: number): Promise<void> {
@@ -147,11 +148,11 @@ export class CourseService extends CRUDService<Course> {
   }
 
   // 코스와 태그의 관계를 삽입 해 주기 위한 메소드
-  async createCourseTag(courseTypeInput: CourseType): Promise<void> {
+  async createCourseTag(coursePostDtoInput: CoursePostDto): Promise<void> {
     let tagEntitiesFindResult = new Array<Tag>();
 
     const inputTagEntities = new Array<Tag>();
-    for (const tagType of courseTypeInput.tags) {
+    for (const tagType of coursePostDtoInput.tags) {
       const tagEntity = new Tag(undefined, tagType.value);
       inputTagEntities.push(tagEntity);
     }
@@ -166,13 +167,13 @@ export class CourseService extends CRUDService<Course> {
     const courseEntity = new Course(
       undefined,
       undefined,
-      new Color(courseTypeInput.color),
-      courseTypeInput.creatorId,
-      courseTypeInput.startDate,
-      courseTypeInput.endDate,
-      courseTypeInput.explanation,
-      courseTypeInput.title,
-      courseTypeInput.likeCount
+      new Color(coursePostDtoInput.color),
+      coursePostDtoInput.creatorId,
+      coursePostDtoInput.startDate,
+      coursePostDtoInput.endDate,
+      coursePostDtoInput.explanation,
+      coursePostDtoInput.title,
+      coursePostDtoInput.likeCount
     );
 
     courseEntitiesFindResult.push(courseEntity);

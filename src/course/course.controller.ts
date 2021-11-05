@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
-import { CourseDto } from "./course.dto";
+import { CoursePostDto } from "./course-post.dto";
+import { CourseGetDto } from "./course-get.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -15,11 +16,11 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Post()
-  async createCourse(@Body(new ValidationPipe({ groups: ["userCreate"] })) courseDTOInput: CourseDto) {
+  async createCourse(@Body(new ValidationPipe({ groups: ["userCreate"] })) coursePostDtoInput: CoursePostDto) {
     try {
-      await this.courseService.createCourse(courseDTOInput);
-      await this.courseService.createNewTags(courseDTOInput.tags);
-      await this.courseService.createCourseTag(courseDTOInput);
+      await this.courseService.createCourse(coursePostDtoInput);
+      await this.courseService.createNewTags(coursePostDtoInput.tags);
+      await this.courseService.createCourseTag(coursePostDtoInput);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -33,7 +34,7 @@ export class CourseController extends CRUDController<Course> {
 
   @Get()
   async getAllCourses() {
-    let serviceResult: CourseDto[];
+    let serviceResult: CourseGetDto[];
 
     try {
       // 코스 리스트 저장
