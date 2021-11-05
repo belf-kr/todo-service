@@ -16,7 +16,6 @@ export class WorkTodoDto implements WorkTodoType {
       this.courseTitle = workTodoTypeInput.courseTitle ?? undefined;
       this.explanation = workTodoTypeInput.explanation ?? undefined;
       this.id = workTodoTypeInput.id ?? undefined;
-      this.passedDay = workTodoTypeInput.passedDay ?? undefined;
       this.recurringCycleDate = workTodoTypeInput.recurringCycleDate ?? undefined;
       this.repeatedDaysOfTheWeek = workTodoTypeInput.repeatedDaysOfTheWeek ?? undefined;
       this.title = workTodoTypeInput.title ?? undefined;
@@ -31,7 +30,6 @@ export class WorkTodoDto implements WorkTodoType {
     workTodoDto.recurringCycleDate = workTodoEntityInput.recurringCycleDate ?? undefined;
     workTodoDto.title = workTodoEntityInput.title ?? undefined;
     workTodoDto.explanation = workTodoEntityInput.explanation ?? undefined;
-    workTodoDto.passedDay = workTodoEntityInput.passedDay ?? undefined;
     workTodoDto.addDate = workTodoEntityInput.addDate ?? undefined;
     workTodoDto.courseId = workTodoEntityInput.courseId?.id ?? undefined;
 
@@ -59,9 +57,6 @@ export class WorkTodoDto implements WorkTodoType {
   @IsString({})
   @IsNotEmpty({ message: "explanation에 해당되는 값이 존재하지 않습니다." })
   explanation: string;
-
-  @IsInt({ groups: ["generated"] })
-  passedDay: number;
 
   @IsDate({ groups: ["generated"] })
   addDate: Date;

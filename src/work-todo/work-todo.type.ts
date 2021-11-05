@@ -5,7 +5,6 @@ export type WorkTodoType = {
   recurringCycleDate: number;
   title: string;
   explanation: string;
-  passedDay: number;
   addDate: Date;
   courseId: number;
   courseTitle: string;
