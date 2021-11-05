@@ -37,7 +37,6 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       workTodoTypeInput.recurringCycleDate,
       workTodoTypeInput.title,
       workTodoTypeInput.explanation,
-      workTodoTypeInput.passedDay,
       new Date()
     );
 
@@ -69,8 +68,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       workTodoDto.recurringCycleDate = joinItem["wt_recurring_cycle_date"];
       workTodoDto.title = joinItem["wt_title"];
       workTodoDto.explanation = joinItem["wt_explanation"];
-      workTodoDto.passedDay = joinItem["wt_passed_day"];
-      workTodoDto.addDate = joinItem["wt_add_date"];
+      workTodoDto.activeDate = joinItem["wt_active_date"];
       workTodoDto.courseId = joinItem["c_id"];
       workTodoDto.courseTitle = joinItem["c_title"];
       workTodoDto.color = joinItem["c_color"];
@@ -86,7 +84,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   async deleteWorkTodo(id: number): Promise<void> {
     // 검색을 위한 객체
     const workTodoEntitiesInput = new Array<WorkTodo>();
-    const workTodoEntityInput = new WorkTodo(id, undefined, undefined, undefined, undefined, undefined, undefined);
+    const workTodoEntityInput = new WorkTodo(id, undefined, undefined, undefined, undefined, undefined);
 
     workTodoEntitiesInput.push(workTodoEntityInput);
     const workTodoFindResult = await this.find(workTodoEntitiesInput);
