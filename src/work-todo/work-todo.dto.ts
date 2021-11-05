@@ -10,7 +10,7 @@ import { RepeatedDaysOfTheWeekDto } from "src/repeated-days-of-the-week/repeated
 export class WorkTodoDto implements WorkTodoType {
   constructor(workTodoTypeInput?: WorkTodoType) {
     if (workTodoTypeInput !== undefined) {
-      this.addDate = workTodoTypeInput.addDate ?? undefined;
+      this.activeDate = workTodoTypeInput.activeDate ?? undefined;
       this.color = workTodoTypeInput.color ?? undefined;
       this.courseId = workTodoTypeInput.courseId ?? undefined;
       this.courseTitle = workTodoTypeInput.courseTitle ?? undefined;
@@ -30,7 +30,7 @@ export class WorkTodoDto implements WorkTodoType {
     workTodoDto.recurringCycleDate = workTodoEntityInput.recurringCycleDate ?? undefined;
     workTodoDto.title = workTodoEntityInput.title ?? undefined;
     workTodoDto.explanation = workTodoEntityInput.explanation ?? undefined;
-    workTodoDto.addDate = workTodoEntityInput.addDate ?? undefined;
+    workTodoDto.activeDate = workTodoEntityInput.activeDate ?? undefined;
     workTodoDto.courseId = workTodoEntityInput.courseId?.id ?? undefined;
 
     // repeatedDaysOfTheWeekEntities 값이 존재 하는 경우
@@ -59,7 +59,7 @@ export class WorkTodoDto implements WorkTodoType {
   explanation: string;
 
   @IsDate({ groups: ["generated"] })
-  addDate: Date;
+  activeDate: Date;
 
   @IsInt({ always: true })
   @IsNotEmpty({ always: true, message: "코스의 id값이 비어있습니다." })

@@ -68,7 +68,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       workTodoDto.recurringCycleDate = joinItem["wt_recurring_cycle_date"];
       workTodoDto.title = joinItem["wt_title"];
       workTodoDto.explanation = joinItem["wt_explanation"];
-      workTodoDto.addDate = joinItem["wt_add_date"];
+      workTodoDto.activeDate = joinItem["wt_active_date"];
       workTodoDto.courseId = joinItem["c_id"];
       workTodoDto.courseTitle = joinItem["c_title"];
       workTodoDto.color = joinItem["c_color"];

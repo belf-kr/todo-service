@@ -4,7 +4,7 @@ import { Course } from "./course.entity";
 
 @Entity({})
 export class WorkTodo {
-  constructor(id?: number, courseId?: Course, recurringCycleDate?: number, title?: string, explanation?: string, addDate?: Date) {
+  constructor(id?: number, courseId?: Course, recurringCycleDate?: number, title?: string, explanation?: string, activeDate?: Date) {
     if (id) {
       this.id = id;
     }
@@ -20,8 +20,8 @@ export class WorkTodo {
     if (explanation) {
       this.explanation = explanation;
     }
-    if (addDate) {
-      this.addDate = addDate;
+    if (activeDate) {
+      this.activeDate = activeDate;
     }
   }
 
@@ -57,7 +57,7 @@ export class WorkTodo {
 
   @CreateDateColumn({
     type: "datetime",
-    name: "add_date",
+    name: "active_date",
   })
-  addDate: Date;
+  activeDate: Date;
 }
