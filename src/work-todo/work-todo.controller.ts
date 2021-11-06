@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
 
 import { WorkTodoService } from "./work-todo.service";
-import { WorkTodoDto } from "./work-todo.dto";
+import { WorkTodoGetDto } from "./work-todo-get.dto";
+import { WorkTodoPostDto } from "./work-todo-post.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -15,9 +16,9 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Post()
-  async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoInput: WorkTodoDto) {
+  async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoPostInput: WorkTodoPostDto) {
     try {
-      await this.workTodoService.createWorkTodo(workTodoInput);
+      await this.workTodoService.createWorkTodo(workTodoPostInput);
     } catch (error) {
       // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);
@@ -32,7 +33,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
   async getWorkTodosByConditions(@Query("courseId") courseId?: number) {
-    let serviceResult: WorkTodoDto[];
+    let serviceResult: WorkTodoGetDto[];
 
     try {
       // 할일 리스트 저장

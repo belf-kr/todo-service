@@ -1,11 +1,8 @@
-import { IsArray, IsDate, IsInt, IsNotEmpty, IsString, Length } from "class-validator";
+import { IsDate, IsInt, IsNotEmpty, IsString, Length } from "class-validator";
 
 import { CourseType } from "./course.type";
 
 import { Course } from "src/entity/course.entity";
-import { Tag } from "src/entity/tag.entity";
-
-import { TagDto } from "src/tag/tag.dto";
 
 export class CourseDto implements CourseType {
   constructor(courseTypeInput?: CourseType) {
@@ -18,14 +15,12 @@ export class CourseDto implements CourseType {
       this.likeCount = courseTypeInput.likeCount ?? undefined;
       this.originalCourseId = courseTypeInput.originalCourseId ?? undefined;
       this.startDate = courseTypeInput.startDate ?? undefined;
-      this.tags = courseTypeInput.tags ?? undefined;
       this.title = courseTypeInput.title ?? undefined;
     }
   }
 
-  static entityConstructor(courseEntityInput?: Course, tagEntitiesInput?: Tag[]) {
+  static entityConstructor(courseEntityInput?: Course) {
     const courseDto = new CourseDto();
-    courseDto.tags = new Array<TagDto>();
 
     if (courseEntityInput !== undefined) {
       courseDto.color = courseEntityInput.color?.id ?? undefined;
@@ -37,14 +32,6 @@ export class CourseDto implements CourseType {
       courseDto.originalCourseId = courseEntityInput.originalCourseId?.id ?? undefined;
       courseDto.startDate = courseEntityInput.startDate ?? undefined;
       courseDto.title = courseEntityInput.title ?? undefined;
-    }
-
-    // Tag entity 값을 입력 한 경우
-    if (tagEntitiesInput !== undefined) {
-      for (const tagEntity of tagEntitiesInput) {
-        const tagDto = new TagDto(tagEntity);
-        courseDto.tags.push(tagDto);
-      }
     }
 
     return courseDto;
@@ -69,7 +56,7 @@ export class CourseDto implements CourseType {
   @IsDate({ groups: ["userUpdate"] })
   endDate: Date;
 
-  @IsString({ always: true })
+  @IsString({})
   explanation: string;
 
   @IsString({ always: true })
@@ -78,9 +65,4 @@ export class CourseDto implements CourseType {
 
   @IsInt({ groups: ["userUpdate"] })
   likeCount: number;
-
-  @IsArray()
-  @IsString({ each: true })
-  @IsNotEmpty({ each: true })
-  tags: TagDto[];
 }
