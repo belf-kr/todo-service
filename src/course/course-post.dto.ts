@@ -29,7 +29,7 @@ export class CoursePostDto extends CourseDto implements CoursePostInterface {
     // Tag entity 값을 입력 한 경우
     if (tagEntitiesInput) {
       for (const tagEntity of tagEntitiesInput) {
-        const tagDto = new TagDto(tagEntity);
+        const tagDto = TagDto.entityConstructor(tagEntity);
         coursePostDto.tags.push(tagDto);
       }
     }

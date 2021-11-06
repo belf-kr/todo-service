@@ -10,9 +10,9 @@ import { Tag } from "src/entity/tag.entity";
 
 export class CourseGetDto extends CourseDto implements CourseGetInterface {
   constructor(courseGetInterfaceInput?: CourseGetInterface) {
-    if (courseGetInterfaceInput) {
-      super(courseGetInterfaceInput);
+    super(courseGetInterfaceInput);
 
+    if (courseGetInterfaceInput) {
       if (courseGetInterfaceInput.tags) {
         this.tags = courseGetInterfaceInput.tags ?? undefined;
       }
