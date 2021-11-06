@@ -2,8 +2,8 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
 
-import { WorkTodoType } from "./work-todo.type";
-import { WorkTodoDto } from "./work-todo.dto";
+import { WorkTodoGetDto } from "./work-todo-get.dto";
+import { WorkTodoPostDto } from "./work-todo-post.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -18,10 +18,10 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     super(workTodoRepository);
   }
 
-  async createWorkTodo(workTodoTypeInput: WorkTodoType): Promise<void> {
+  async createWorkTodo(workTodoPostDtoInput: WorkTodoPostDto): Promise<void> {
     // 올바른 FK인지 검증한다.
     const courseEntitiesInput = new Array<Course>();
-    const courseEntityInput = new Course(workTodoTypeInput.courseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+    const courseEntityInput = new Course(workTodoPostDtoInput.courseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
     courseEntitiesInput.push(courseEntityInput);
     const courseSearchResult = await this.courseService.find(courseEntitiesInput);
@@ -34,10 +34,10 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     const workTodoEntity = new WorkTodo(
       undefined,
       courseEntityInput,
-      workTodoTypeInput.recurringCycleDate,
-      workTodoTypeInput.title,
-      workTodoTypeInput.explanation,
-      workTodoTypeInput.activeDate
+      workTodoPostDtoInput.recurringCycleDate,
+      workTodoPostDtoInput.title,
+      workTodoPostDtoInput.explanation,
+      workTodoPostDtoInput.activeDate
     );
 
     workTodoEntities.push(workTodoEntity);
@@ -45,8 +45,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     await this.create(workTodoEntities);
   }
 
-  async getWorkTodosByConditions(courseId?: number): Promise<WorkTodoDto[]> {
-    const workTodoDtoArrayResult = new Array<WorkTodoDto>();
+  async getWorkTodosByConditions(courseId?: number): Promise<WorkTodoGetDto[]> {
+    const workTodoGetDtoArrayResult = new Array<WorkTodoGetDto>();
 
     // DTO 객체에 삽입
     /*
@@ -62,23 +62,23 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
     for (const joinItem of joinResult) {
       // 반환을 위한 배열에 요소를 넣어주기 위한 DTO 객체
-      const workTodoDto = new WorkTodoDto();
+      const workTodoGetDto = new WorkTodoGetDto();
 
-      workTodoDto.id = joinItem["wt_id"];
-      workTodoDto.recurringCycleDate = joinItem["wt_recurring_cycle_date"];
-      workTodoDto.title = joinItem["wt_title"];
-      workTodoDto.explanation = joinItem["wt_explanation"];
-      workTodoDto.activeDate = joinItem["wt_active_date"];
-      workTodoDto.courseId = joinItem["c_id"];
-      workTodoDto.courseTitle = joinItem["c_title"];
-      workTodoDto.color = joinItem["c_color"];
+      workTodoGetDto.id = joinItem["wt_id"];
+      workTodoGetDto.recurringCycleDate = joinItem["wt_recurring_cycle_date"];
+      workTodoGetDto.title = joinItem["wt_title"];
+      workTodoGetDto.explanation = joinItem["wt_explanation"];
+      workTodoGetDto.activeDate = joinItem["wt_active_date"];
+      workTodoGetDto.courseId = joinItem["c_id"];
+      workTodoGetDto.courseTitle = joinItem["c_title"];
+      workTodoGetDto.color = joinItem["c_color"];
 
       // TODO: 반복 요일에 대한 정보 리스트로 추가 하기
 
-      workTodoDtoArrayResult.push(workTodoDto);
+      workTodoGetDtoArrayResult.push(workTodoGetDto);
     }
 
-    return workTodoDtoArrayResult;
+    return workTodoGetDtoArrayResult;
   }
 
   async deleteWorkTodo(id: number): Promise<void> {
