@@ -7,7 +7,8 @@ Content-Type: application/json
 
 {
     "courseId": 1,
-    "title": "나만의 할 일3"
+    "title": "나만의 할 일1",
+    "repeatedDaysOfTheWeek": []
 }
 
 ### work_todo 추가(선택)
@@ -16,10 +17,11 @@ Content-Type: application/json
 
 {
     "courseId": 1,
-    "recurringCycleDate": 1,
     "title": "나만의 할 일1",
-    "explanation": "나만의 할 일 설명1",
-    "activeDate": "2021-11-05T08:50:00.12"
+    "repeatedDaysOfTheWeek": [1, 2, 3],
+    "activeDate": "2021-11-05T08:50:00.12",
+    "recurringCycleDate": 1,
+    "explanation": "나만의 할 일 설명1"
 }
 
 ### work_todo 전체 리스트 가져오기

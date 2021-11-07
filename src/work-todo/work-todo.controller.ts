@@ -19,6 +19,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   async createWorkTodo(@Body(new ValidationPipe({ groups: ["userInput"] })) workTodoPostInput: WorkTodoPostDto) {
     try {
       await this.workTodoService.createWorkTodo(workTodoPostInput);
+      await this.workTodoService.createRepeatedDaysOfTheWeek(workTodoPostInput);
     } catch (error) {
       // API에 에러를 토스
       const httpStatusCode = getErrorHttpStatusCode(error);

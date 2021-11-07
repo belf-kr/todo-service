@@ -9,12 +9,19 @@ import { CRUDService } from "src/common/crud.service";
 
 import { WorkTodo } from "src/entity/work-todo.entity";
 import { Course } from "src/entity/course.entity";
+import { RepeatedDaysOfTheWeek } from "src/entity/repeated-day-of-the-week.entity";
 
 import { CourseService } from "src/course/course.service";
 
+import { RepeatedDaysOfTheWeekService } from "src/repeated-days-of-the-week/repeated-days-of-the-week.service";
+
 @Injectable()
 export class WorkTodoService extends CRUDService<WorkTodo> {
-  constructor(@InjectRepository(WorkTodo) workTodoRepository: Repository<WorkTodo>, private readonly courseService: CourseService) {
+  constructor(
+    @InjectRepository(WorkTodo) workTodoRepository: Repository<WorkTodo>,
+    private readonly courseService: CourseService,
+    private readonly repeatedDaysOfTheWeekService: RepeatedDaysOfTheWeekService
+  ) {
     super(workTodoRepository);
   }
 
@@ -43,6 +50,38 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     workTodoEntities.push(workTodoEntity);
 
     await this.create(workTodoEntities);
+  }
+
+  async createRepeatedDaysOfTheWeek(workTodoPostDtoInput: WorkTodoPostDto): Promise<void> {
+    let workTodoEntitiesFindResult = new Array<WorkTodo>();
+    // 코스의 Id 값 알아오기
+    const workTodoEntity = new WorkTodo(
+      undefined,
+      new Course(workTodoPostDtoInput.id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
+      workTodoPostDtoInput.recurringCycleDate,
+      workTodoPostDtoInput.title,
+      workTodoPostDtoInput.explanation,
+      workTodoPostDtoInput.activeDate
+    );
+
+    workTodoEntitiesFindResult.push(workTodoEntity);
+    workTodoEntitiesFindResult = await this.find(workTodoEntitiesFindResult);
+
+    const repeatedDaysOfTheWeekEntities = new Array<RepeatedDaysOfTheWeek>();
+
+    for (const daysOfTheWeekItem of workTodoPostDtoInput.repeatedDaysOfTheWeek) {
+      for (const workTodoEntityItem of workTodoEntitiesFindResult) {
+        const repeatedDaysOfTheWeekEntity = new RepeatedDaysOfTheWeek(
+          undefined,
+          new WorkTodo(workTodoEntityItem.id, undefined, undefined, undefined, undefined, undefined),
+          daysOfTheWeekItem
+        );
+
+        repeatedDaysOfTheWeekEntities.push(repeatedDaysOfTheWeekEntity);
+      }
+    }
+
+    await this.repeatedDaysOfTheWeekService.create(repeatedDaysOfTheWeekEntities);
   }
 
   async getWorkTodosByConditions(courseId?: number): Promise<WorkTodoGetDto[]> {
