@@ -53,8 +53,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   }
 
   async createRepeatedDaysOfTheWeek(workTodoPostDtoInput: WorkTodoPostDto): Promise<void> {
+    // createWorkTodo 메소드에서 생성된 work todo의 id 값을 알아낸다.
     let workTodoEntitiesFindResult = new Array<WorkTodo>();
-    // 코스의 Id 값 알아오기
     const workTodoEntity = new WorkTodo(
       undefined,
       new Course(workTodoPostDtoInput.id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
@@ -69,6 +69,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
     const repeatedDaysOfTheWeekEntities = new Array<RepeatedDaysOfTheWeek>();
 
+    // 사용자가 입력한 반복 요일 정보를 요일 entity 객체 배열에 저장
     for (const daysOfTheWeekItem of workTodoPostDtoInput.repeatedDaysOfTheWeek) {
       for (const workTodoEntityItem of workTodoEntitiesFindResult) {
         const repeatedDaysOfTheWeekEntity = new RepeatedDaysOfTheWeek(
