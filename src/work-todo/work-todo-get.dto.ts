@@ -1,9 +1,8 @@
-import { IsNotEmpty, IsString, Length } from "class-validator";
-
 import { WorkTodoGetInterface } from "./work-todo-get.interface";
 import { WorkTodoDto } from "./work-todo.dto";
 
 import { WorkTodo } from "src/entity/work-todo.entity";
+import { RepeatedDaysOfTheWeek } from "src/entity/repeated-day-of-the-week.entity";
 
 export class WorkTodoGetDto extends WorkTodoDto implements WorkTodoGetInterface {
   constructor(workTodoGetInterfaceInput?: WorkTodoGetInterface) {
@@ -20,19 +19,24 @@ export class WorkTodoGetDto extends WorkTodoDto implements WorkTodoGetInterface 
     }
   }
 
-  static entityConstructor(workTodoEntityInput?: WorkTodo) {
+  static entityConstructor(workTodoEntityInput?: WorkTodo, repeatedDaysOfTheWeekEntitiesInput?: RepeatedDaysOfTheWeek[]) {
     const workTodoDto = super.entityConstructor(workTodoEntityInput);
     const workTodoGetDto = new WorkTodoGetDto(workTodoDto as WorkTodoGetInterface);
+
+    workTodoGetDto.repeatedDaysOfTheWeek = new Array<number>();
+    // 반복 요일 정보가 존재하는 경우
+    if (repeatedDaysOfTheWeekEntitiesInput[0].dayOfTheWeek) {
+      for (const repeatedDayOfTheWeekEntity of repeatedDaysOfTheWeekEntitiesInput) {
+        workTodoGetDto.repeatedDaysOfTheWeek.push(repeatedDayOfTheWeekEntity.dayOfTheWeek);
+      }
+    }
 
     return workTodoGetDto;
   }
 
-  @IsString({ groups: ["generated"] })
-  @IsNotEmpty({ groups: ["generated"] })
   courseTitle: string;
 
-  @IsString({ groups: ["generated"] })
-  @IsNotEmpty({ groups: ["generated"] })
-  @Length(7, 7, { groups: ["generated"] })
   color: string;
+
+  repeatedDaysOfTheWeek: number[];
 }
