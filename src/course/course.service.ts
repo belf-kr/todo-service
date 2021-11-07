@@ -81,10 +81,10 @@ export class CourseService extends CRUDService<Course> {
           INNER JOIN tag t on ct.tag_id = t.id
           WHERE ct.course_id = ?
         */
-      const joinResult = await getRepository(CourseTag)
-        .createQueryBuilder("ct")
-        .innerJoinAndMapMany("ct", Course, "c", "ct.course_id = c.id")
-        .innerJoinAndMapMany("ct", Tag, "t", "ct.tag_id = t.id")
+      const joinResult = await getRepository(Course)
+        .createQueryBuilder("c")
+        .leftJoinAndMapMany("c", CourseTag, "ct", "c.id = ct.course_id")
+        .leftJoinAndMapMany("c", Tag, "t", "ct.tag_id = t.id")
         .where("ct.course_id = :courseId", { courseId: courseEntity.id })
         .getRawMany();
 
