@@ -1,5 +1,3 @@
-import { IsArray, IsNotEmpty, IsString } from "class-validator";
-
 import { CourseDto } from "./course.dto";
 import { CourseGetInterface } from "./course-get.interface";
 
@@ -35,8 +33,5 @@ export class CourseGetDto extends CourseDto implements CourseGetInterface {
     return courseGetDto;
   }
 
-  @IsArray()
-  @IsString({ each: true })
-  @IsNotEmpty({ each: true })
   tags: TagDto[];
 }

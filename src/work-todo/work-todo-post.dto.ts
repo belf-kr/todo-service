@@ -1,12 +1,9 @@
-import { IsArray } from "class-validator";
+import { IsArray, IsNotEmpty, IsString } from "class-validator";
 
 import { WorkTodoPostInterface } from "./work-todo-post.interface";
 import { WorkTodoDto } from "./work-todo.dto";
 
-import { RepeatedDaysOfTheWeek } from "src/entity/repeated-day-of-the-week.entity";
 import { WorkTodo } from "src/entity/work-todo.entity";
-
-import { RepeatedDaysOfTheWeekDto } from "src/repeated-days-of-the-week/repeated-days-of-the-week.dto";
 
 export class WorkTodoPostDto extends WorkTodoDto implements WorkTodoPostInterface {
   constructor(workTodoPostInterfaceInput?: WorkTodoPostInterface) {
@@ -21,22 +18,17 @@ export class WorkTodoPostDto extends WorkTodoDto implements WorkTodoPostInterfac
     }
   }
 
-  static entityConstructor(workTodoEntityInput?: WorkTodo, repeatedDaysOfTheWeekEntityInput?: RepeatedDaysOfTheWeek[]) {
+  static entityConstructor(workTodoEntityInput?: WorkTodo) {
     const workTodoDto = super.entityConstructor(workTodoEntityInput);
     const workTodoPostDto = new WorkTodoPostDto(workTodoDto as WorkTodoPostInterface);
 
-    workTodoPostDto.repeatedDaysOfTheWeek = new Array<RepeatedDaysOfTheWeekDto>();
-    //     RepeatedDaysOfTheWeek entity 값을 입력 한 경우
-    if (repeatedDaysOfTheWeekEntityInput) {
-      for (const repeatedDaysOfTheWeekEntity of repeatedDaysOfTheWeekEntityInput) {
-        const repeatedDaysOfTheWeekDto = RepeatedDaysOfTheWeekDto.entityConstructor(repeatedDaysOfTheWeekEntity);
-        workTodoPostDto.repeatedDaysOfTheWeek.push(repeatedDaysOfTheWeekDto);
-      }
-    }
+    workTodoPostDto.repeatedDaysOfTheWeek = new Array<number>();
 
     return workTodoPostDto;
   }
 
-  @IsArray()
-  repeatedDaysOfTheWeek: RepeatedDaysOfTheWeekDto[];
+  @IsArray({ always: true, message: "repeatedDaysOfTheWeek key 값이 존재하지 않습니다." })
+  @IsString({ each: true })
+  @IsNotEmpty({ each: true })
+  repeatedDaysOfTheWeek: number[];
 }

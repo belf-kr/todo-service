@@ -25,4 +25,3 @@ Content-Type: application/json
 
 ### course 삭제
 DELETE {{Host}}/{{Router}}/courses/1
-Content-Type: application/json
