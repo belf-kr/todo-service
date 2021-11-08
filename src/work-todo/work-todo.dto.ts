@@ -43,10 +43,10 @@ export class WorkTodoDto implements WorkTodoType {
   @IsNotEmpty({ message: "explanation에 해당되는 값이 존재하지 않습니다." })
   explanation: string;
 
-  @IsDate({ groups: ["generated"] })
+  @IsDate({ groups: ["usrUpdate"] })
   activeDate: Date;
 
-  @IsInt({ always: true })
+  @IsInt({ always: true, message: "코스의 id값이 비어있습니다." })
   @IsNotEmpty({ always: true, message: "코스의 id값이 비어있습니다." })
   courseId: number;
 }

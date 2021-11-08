@@ -65,7 +65,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
       /*
                 INNER JOIN work_todo wt on wd.work_todo_id = wt.id
                 INNER JOIN course c on wt.course_id = c.id
-        WHERE   wd.work_todo_id IN (1, 2, 3, 4);
+        WHERE   wd.work_todo_id IN (?);
       */
       queryString = queryString
         .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
@@ -81,7 +81,6 @@ export class WorkDoneService extends CRUDService<WorkDone> {
                 wd.user_id,
                 wd.action_date,
                 wd.work_todo_id
-        FROM work_done AS wd
       */
     const selectResult = await queryString.getRawMany();
 

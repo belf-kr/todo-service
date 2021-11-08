@@ -8,8 +8,10 @@ import { WorkTodo } from "src/entity/work-todo.entity";
 
 import { CourseModule } from "src/course/course.module";
 
+import { RepeatedDaysOfTheWeekModule } from "src/repeated-days-of-the-week/repeated-days-of-the-week.module";
+
 @Module({
-  imports: [TypeOrmModule.forFeature([WorkTodo]), CourseModule],
+  imports: [TypeOrmModule.forFeature([WorkTodo]), CourseModule, RepeatedDaysOfTheWeekModule],
   providers: [WorkTodoService],
   controllers: [WorkTodoController],
   exports: [WorkTodoService],

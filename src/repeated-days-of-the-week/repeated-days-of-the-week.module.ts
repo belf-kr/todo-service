@@ -10,5 +10,6 @@ import { RepeatedDaysOfTheWeek } from "src/entity/repeated-day-of-the-week.entit
   imports: [TypeOrmModule.forFeature([RepeatedDaysOfTheWeek])],
   providers: [RepeatedDaysOfTheWeekService],
   controllers: [RepeatedDaysOfTheWeekController],
+  exports: [RepeatedDaysOfTheWeekService],
 })
 export class RepeatedDaysOfTheWeekModule {}

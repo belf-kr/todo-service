@@ -15,7 +15,6 @@ import { Color } from "src/entity/color.entity";
 
 import { TagService } from "src/tag/tag.service";
 import { TagType } from "src/tag/tag.type";
-import { TagDto } from "src/tag/tag.dto";
 
 import { CourseTagService } from "src/course-tag/course-tag.service";
 
@@ -76,15 +75,15 @@ export class CourseService extends CRUDService<Course> {
       // course에 대한 tag 값을 join 해서 가져온다
       /*
           SELECT *
-          FROM course
-          INNER JOIN course_tag ct on course.id = ct.course_id
-          INNER JOIN tag t on ct.tag_id = t.id
+          FROM course c
+          LEFT  JOIN course_tag ct on c.id = ct.course_id
+          LEFT  JOIN tag t on ct.tag_id = t.id
           WHERE ct.course_id = ?
         */
-      const joinResult = await getRepository(CourseTag)
-        .createQueryBuilder("ct")
-        .innerJoinAndMapMany("ct", Course, "c", "ct.course_id = c.id")
-        .innerJoinAndMapMany("ct", Tag, "t", "ct.tag_id = t.id")
+      const joinResult = await getRepository(Course)
+        .createQueryBuilder("c")
+        .leftJoinAndMapMany("c", CourseTag, "ct", "c.id = ct.course_id")
+        .leftJoinAndMapMany("c", Tag, "t", "ct.tag_id = t.id")
         .where("ct.course_id = :courseId", { courseId: courseEntity.id })
         .getRawMany();
 
@@ -94,12 +93,6 @@ export class CourseService extends CRUDService<Course> {
         const tagEntity = new Tag();
         tagEntity.value = joinItem["t_value"];
         tagEntitiesResult.push(tagEntity);
-      }
-
-      // Tag DTO 배열을 생성하기
-      const tagDtos = new Array<TagDto>();
-      for (const tagEntity of tagEntitiesResult) {
-        tagDtos.push(TagDto.entityConstructor(tagEntity));
       }
 
       const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult);
@@ -114,7 +107,6 @@ export class CourseService extends CRUDService<Course> {
     const courseEntity = new Course(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
 
     courseEntities.push(courseEntity);
-
     const selectResult = await this.find(courseEntities);
 
     if (selectResult.length === 0) {
@@ -166,7 +158,7 @@ export class CourseService extends CRUDService<Course> {
     // 코스의 Id 값 알아오기
     const courseEntity = new Course(
       undefined,
-      undefined,
+      new Course(coursePostDtoInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
       new Color(coursePostDtoInput.color),
       coursePostDtoInput.creatorId,
       coursePostDtoInput.startDate,
@@ -182,13 +174,14 @@ export class CourseService extends CRUDService<Course> {
     // courseTag 관련 삽입 메소드 호출
     const courseTagEntities = new Array<CourseTag>();
     for (const tag of tagEntitiesFindResult) {
-      // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
       const tagEntity = new Tag(tag.id, undefined);
+      // 검색된 course는 무조껀 1개라는 전제가 깔려있다.
       const courseEntity = new Course(courseEntitiesFindResult[0].id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
       const courseTagEntity = new CourseTag(undefined, courseEntity, tagEntity);
 
       courseTagEntities.push(courseTagEntity);
     }
+
     await this.courseTagService.create(courseTagEntities);
   }
 }
