@@ -1,5 +1,4 @@
-import { Controller, Get, HttpStatus, Res } from "@nestjs/common";
-import { Response } from "express";
+import { Controller, Get } from "@nestjs/common";
 
 import { AppService } from "./app.service";
 
@@ -13,8 +12,8 @@ export class AppController {
   }
 
   @Get("ping")
-  getPing(@Res() res: Response): void {
-    res.sendStatus(HttpStatus.OK);
+  getPing(): void {
+    return;
   }
 
   @Get("version")
