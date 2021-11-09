@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConnectionOptions } from "typeorm";
-import * as Joi from "joi";
+import Joi = require("joi");
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";

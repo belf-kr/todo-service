@@ -1,5 +1,5 @@
 import { ConnectionOptions } from "typeorm";
-import * as dotenv from "dotenv";
+import dotenv = require("dotenv");
 
 import DbConfig from "./database.config";
 
