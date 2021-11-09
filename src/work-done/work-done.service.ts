@@ -4,6 +4,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { WorkDoneType } from "./work-done.type";
 import { WorkDoneDto } from "./work-done.dto";
+import { WorkDoneQuerystringDto } from "./work-done-querystring.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -12,6 +13,7 @@ import { WorkTodo } from "src/entity/work-todo.entity";
 import { Course } from "src/entity/course.entity";
 
 import { WorkTodoService } from "src/work-todo/work-todo.service";
+import { WorkTodoQuerystringDto } from "src/work-todo/work-todo-querystring.dto";
 
 @Injectable()
 export class WorkDoneService extends CRUDService<WorkDone> {
@@ -46,16 +48,17 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     await this.create(workDoneEntitiesInput);
   }
 
-  async getWorkDonesByConditions(courseId?: number): Promise<WorkDoneDto[]> {
+  async getWorkDonesByConditions(querystringInput: WorkDoneQuerystringDto): Promise<WorkDoneDto[]> {
     const workDoneDtoArrayResult = new Array<WorkDoneDto>();
     /*
       FROM    work_done AS wd
     */
     let queryString = getRepository(WorkDone).createQueryBuilder("wd");
 
-    if (courseId) {
+    if (querystringInput?.courseId) {
+      const workTodoQuerystringInput = new WorkTodoQuerystringDto(querystringInput.courseId);
       // courseId 값을 가지고 있는 WorkDoneDto 객체의 배열을 생성한다.
-      const wokrTodoDtoArrayResult = await this.workTodoService.getWorkTodosByConditions(courseId);
+      const wokrTodoDtoArrayResult = await this.workTodoService.getWorkTodosByConditions(workTodoQuerystringInput);
       const workTodoIdArray = new Array<number>();
       // number 배열을 workTodoDtoArrayResult로 부터 생성한다.
       for (const item of wokrTodoDtoArrayResult) {

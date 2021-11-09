@@ -4,6 +4,7 @@ import { getRepository, Repository } from "typeorm";
 
 import { WorkTodoGetDto } from "./work-todo-get.dto";
 import { WorkTodoPostDto } from "./work-todo-post.dto";
+import { WorkTodoQuerystringDto } from "./work-todo-querystring.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -85,7 +86,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     await this.repeatedDaysOfTheWeekService.create(repeatedDaysOfTheWeekEntities);
   }
 
-  async getWorkTodosByConditions(courseId?: number): Promise<WorkTodoGetDto[]> {
+  async getWorkTodosByConditions(querystringInput: WorkTodoQuerystringDto): Promise<WorkTodoGetDto[]> {
     const blankWorkTodoEntities = new Array<WorkTodo>();
     const workTodoEntitiesResult = await this.find(blankWorkTodoEntities);
     const workTodoGetDtoArrayResult = new Array<WorkTodoGetDto>();
@@ -104,8 +105,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
         .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
         .leftJoinAndMapMany("wt", RepeatedDaysOfTheWeek, "rdotw", "wt.id = rdotw.work_todo_id")
         .where("wt.id = :workTodoId", { workTodoId: workTodoEntity.id });
-      if (courseId) {
-        queryString = queryString.andWhere("c.id = :courseId", { courseId: courseId });
+      if (querystringInput?.courseId) {
+        queryString = queryString.andWhere("c.id = :courseId", { courseId: querystringInput.courseId });
       }
       const joinResult = await queryString.getRawMany();
 
