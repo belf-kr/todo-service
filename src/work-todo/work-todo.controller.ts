@@ -3,6 +3,7 @@ import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post
 import { WorkTodoService } from "./work-todo.service";
 import { WorkTodoGetDto } from "./work-todo-get.dto";
 import { WorkTodoPostDto } from "./work-todo-post.dto";
+import { WorkTodoQuerystringDto } from "./work-todo-querystring.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -37,8 +38,10 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     let serviceResult: WorkTodoGetDto[];
 
     try {
+      const querystringInput = new WorkTodoQuerystringDto(courseId);
+
       // 할일 리스트 저장
-      serviceResult = await this.workTodoService.getWorkTodosByConditions(courseId);
+      serviceResult = await this.workTodoService.getWorkTodosByConditions(querystringInput);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);

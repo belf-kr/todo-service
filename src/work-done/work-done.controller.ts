@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Post, Query,
 
 import { WorkDoneDto } from "./work-done.dto";
 import { WorkDoneService } from "./work-done.service";
+import { WorkDoneQuerystringDto } from "./work-done-querystring.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 
@@ -30,8 +31,10 @@ export class WorkDoneController {
     let serviceResult: WorkDoneDto[];
 
     try {
+      const querystringInput = new WorkDoneQuerystringDto(courseId);
+
       // 할일 리스트 저장
-      serviceResult = await this.workDoneService.getWorkDonesByConditions(courseId);
+      serviceResult = await this.workDoneService.getWorkDonesByConditions(querystringInput);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
