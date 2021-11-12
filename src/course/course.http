@@ -18,9 +18,10 @@ Content-Type: application/json
             "value": "자동차"
         },
         {
-            "value": "차차차"
+            "value": "하하하"
         }
-    ]
+    ],
+    "creatorId": 1
 }
 
 ### course 삭제

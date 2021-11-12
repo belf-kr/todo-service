@@ -14,8 +14,8 @@ export class WorkDone {
     if (content) {
       this.content = content;
     }
-    if (userId !== undefined) {
-      this.userId;
+    if (userId) {
+      this.userId = userId;
     }
     if (workTodoId && workTodoId.id !== undefined) {
       this.workTodoId = workTodoId;
