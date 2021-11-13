@@ -32,6 +32,10 @@ export class WorkDoneService extends CRUDService<WorkDone> {
       throw new HttpException({ data: "할 일의 id값을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
+    // 올바른 유저의 접근인지 검증한다.
+    if (workTodosSearchResult[0].courseId.creatorId != workDoneTypeInput?.userId) {
+      throw new HttpException({ data: "데이터를 처리할 수 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
     // WorkDone 객체를 생성해 한일을 생성한다.
     const workDoneEntitiesInput = new Array<WorkDone>();
     const workDoneEntityInput = new WorkDone(
