@@ -45,7 +45,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       workTodoPostDtoInput.recurringCycleDate,
       workTodoPostDtoInput.title,
       workTodoPostDtoInput.explanation,
-      workTodoPostDtoInput.activeDate
+      workTodoPostDtoInput.activeDate,
+      workTodoPostDtoInput.userId
     );
 
     workTodoEntities.push(workTodoEntity);

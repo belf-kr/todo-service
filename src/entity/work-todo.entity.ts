@@ -4,7 +4,7 @@ import { Course } from "./course.entity";
 
 @Entity({})
 export class WorkTodo {
-  constructor(id?: number, courseId?: Course, recurringCycleDate?: number, title?: string, explanation?: string, activeDate?: Date) {
+  constructor(id?: number, courseId?: Course, recurringCycleDate?: number, title?: string, explanation?: string, activeDate?: Date, userId?: number) {
     if (id) {
       this.id = id;
     }
@@ -22,6 +22,9 @@ export class WorkTodo {
     }
     if (activeDate) {
       this.activeDate = activeDate;
+    }
+    if (userId) {
+      this.userId = userId;
     }
   }
 
