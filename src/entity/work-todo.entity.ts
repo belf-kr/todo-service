@@ -60,4 +60,9 @@ export class WorkTodo {
     name: "active_date",
   })
   activeDate: Date;
+
+  @Column({
+    name: "user_id",
+  })
+  userId: number;
 }

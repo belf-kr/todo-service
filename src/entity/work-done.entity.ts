@@ -41,7 +41,7 @@ export class WorkDone {
   })
   content: string;
 
-  @Column({ nullable: true, name: "user_id" })
+  @Column({ name: "user_id" })
   userId: number;
 
   @ManyToOne(() => WorkTodo, (workToDo) => workToDo.id, {

@@ -13,6 +13,7 @@ export class WorkTodoDto implements WorkTodoType {
       this.id = workTodoTypeInput.id ?? undefined;
       this.recurringCycleDate = workTodoTypeInput.recurringCycleDate ?? undefined;
       this.title = workTodoTypeInput.title ?? undefined;
+      this.userId = workTodoTypeInput.userId ?? undefined;
     }
   }
 
@@ -25,6 +26,7 @@ export class WorkTodoDto implements WorkTodoType {
     workTodoDto.explanation = workTodoEntityInput.explanation ?? undefined;
     workTodoDto.activeDate = workTodoEntityInput.activeDate ?? undefined;
     workTodoDto.courseId = workTodoEntityInput.courseId?.id ?? undefined;
+    workTodoDto.userId = workTodoEntityInput.userId ?? undefined;
 
     return workTodoDto;
   }
@@ -49,4 +51,7 @@ export class WorkTodoDto implements WorkTodoType {
   @IsInt({ always: true, message: "코스의 id값이 비어있습니다." })
   @IsNotEmpty({ always: true, message: "코스의 id값이 비어있습니다." })
   courseId: number;
+
+  @IsInt({ always: true, message: "userId 값이 비어있습니다." })
+  userId: number;
 }
