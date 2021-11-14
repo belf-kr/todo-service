@@ -5,4 +5,5 @@ export type WorkTodoType = {
   explanation?: string;
   activeDate: Date;
   courseId: number;
+  userId: number;
 };
