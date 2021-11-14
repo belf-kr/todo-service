@@ -62,7 +62,7 @@ export class Course {
   @JoinColumn({ name: "color" })
   color: Color;
 
-  @Column({ nullable: true, name: "creator_id" })
+  @Column({ name: "creator_id" })
   creatorId: number;
 
   @Column({
