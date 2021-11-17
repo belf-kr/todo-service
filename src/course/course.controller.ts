@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
 import { CoursePostDto } from "./course-post.dto";
 import { CourseGetDto } from "./course-get.dto";
+import { CourseQuerystringDto } from "./course-querystring.dto";
 
 import { getErrorHttpStatusCode, getErrorMessage } from "src/common/lib/error";
 import { CRUDController } from "src/common/crud.controller";
@@ -33,12 +34,14 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Get()
-  async getAllCourses() {
+  async getAllCourses(@Query("userId") userId: number) {
     let serviceResult: CourseGetDto[];
 
     try {
+      const querystringInput = new CourseQuerystringDto(userId);
+
       // 코스 리스트 저장
-      serviceResult = await this.courseService.getAllCourses();
+      serviceResult = await this.courseService.getAllCourses(querystringInput);
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
