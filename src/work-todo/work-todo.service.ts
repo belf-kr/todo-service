@@ -133,10 +133,10 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     return workTodoGetDtoArrayResult;
   }
 
-  async deleteWorkTodo(id: number): Promise<void> {
+  async deleteWorkTodo(userId: number, id: number): Promise<void> {
     // 검색을 위한 객체
     const workTodoEntitiesInput = new Array<WorkTodo>();
-    const workTodoEntityInput = new WorkTodo(id, undefined, undefined, undefined, undefined, undefined);
+    const workTodoEntityInput = new WorkTodo(id, undefined, undefined, undefined, undefined, undefined, userId);
 
     workTodoEntitiesInput.push(workTodoEntityInput);
     const workTodoFindResult = await this.find(workTodoEntitiesInput);

@@ -103,9 +103,9 @@ export class CourseService extends CRUDService<Course> {
     return courseGetDtoArrayResult;
   }
 
-  async deleteCourse(id: number): Promise<void> {
+  async deleteCourse(userId: number, id: number): Promise<void> {
     const courseEntities = new Array<Course>();
-    const courseEntity = new Course(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+    const courseEntity = new Course(id, undefined, undefined, userId, undefined, undefined, undefined, undefined, undefined);
 
     courseEntities.push(courseEntity);
     const selectResult = await this.find(courseEntities);

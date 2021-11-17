@@ -55,9 +55,9 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Delete(":id")
-  async deleteCourses(@Param("id", ParseIntPipe) id: number) {
+  async deleteCourses(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
     try {
-      await this.courseService.deleteCourse(id);
+      await this.courseService.deleteCourse(userId, id);
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);

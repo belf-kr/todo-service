@@ -33,4 +33,4 @@ GET {{Host}}/{{Router}}?userId=
 GET {{Host}}/{{Router}}?userId=&courseId=1
 
 ### work_todo 삭제
-DELETE {{Host}}/{{Router}}/1
+DELETE {{Host}}/{{Router}}/1?userid=

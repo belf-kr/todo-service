@@ -54,9 +54,9 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   }
 
   @Delete(":id")
-  async deleteWorkTodo(@Param("id", ParseIntPipe) id: number) {
+  async deleteWorkTodo(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
     try {
-      await this.workTodoService.deleteWorkTodo(id);
+      await this.workTodoService.deleteWorkTodo(userId, id);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);

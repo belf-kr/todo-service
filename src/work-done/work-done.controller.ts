@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
 
 import { WorkDoneDto } from "./work-done.dto";
 import { WorkDoneService } from "./work-done.service";
@@ -61,5 +61,20 @@ export class WorkDoneController {
     }
 
     return serviceResult;
+  }
+
+  @Delete(":id")
+  async deleteWorkDone(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
+    try {
+      await this.workDoneService.deleteWorkDone(userId, id);
+    } catch (error) {
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+
+      // API에 에러를 토스
+      throw new HttpException(message, httpStatusCode);
+    }
+
+    return;
   }
 }

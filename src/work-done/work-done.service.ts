@@ -130,4 +130,19 @@ export class WorkDoneService extends CRUDService<WorkDone> {
 
     return workDoneEntityResult;
   }
+
+  async deleteWorkDone(userId: number, id: number): Promise<void> {
+    // 검색을 위한 객체
+    const workDoneEntitiesInput = new Array<WorkDone>();
+    const workDoneEntityInput = new WorkDone(id, undefined, undefined, userId, undefined, undefined);
+
+    workDoneEntitiesInput.push(workDoneEntityInput);
+    const workTodoFindResult = await this.find(workDoneEntitiesInput);
+
+    if (workTodoFindResult.length === 0) {
+      throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
+
+    await this.delete(workDoneEntitiesInput);
+  }
 }

@@ -22,4 +22,4 @@ GET {{Host}}/{{Router}}?userId=&courseId=
 GET {{Host}}/{{Router}}/1
 
 ### work_done 삭제
-DELETE {{Host}}/{{Router}}/1
+DELETE {{Host}}/{{Router}}/1?userId=
