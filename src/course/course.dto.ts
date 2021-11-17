@@ -47,7 +47,7 @@ export class CourseDto implements CourseType {
   @IsNotEmpty({ always: true })
   color: string;
 
-  @IsInt()
+  @IsInt({ always: true, message: "creatorId 값이 비어있습니다." })
   creatorId: number;
 
   @IsDate({ groups: ["userUpdate"] })

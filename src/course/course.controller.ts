@@ -17,7 +17,7 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Post()
-  async createCourse(@Body(new ValidationPipe({ groups: ["userCreate"] })) coursePostDtoInput: CoursePostDto) {
+  async createCourse(@Body(new ValidationPipe({ groups: ["userInput"] })) coursePostDtoInput: CoursePostDto) {
     try {
       await this.courseService.createCourse(coursePostDtoInput);
       await this.courseService.createNewTags(coursePostDtoInput.tags);
