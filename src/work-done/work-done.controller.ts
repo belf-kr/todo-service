@@ -27,11 +27,11 @@ export class WorkDoneController {
 
   // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
-  async getWorkTodosByConditions(@Query("courseId") courseId?: number) {
+  async getWorkTodosByConditions(@Query("userId") userId: number, @Query("courseId") courseId?: number) {
     let serviceResult: WorkDoneDto[];
 
     try {
-      const querystringInput = new WorkDoneQuerystringDto(courseId);
+      const querystringInput = new WorkDoneQuerystringDto(userId, courseId);
 
       // 할일 리스트 저장
       serviceResult = await this.workDoneService.getWorkDonesByConditions(querystringInput);
