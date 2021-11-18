@@ -1,9 +1,12 @@
 import { WorkDoneQuerystringType } from "./work-done-querystring.type";
 
 export class WorkDoneQuerystringDto implements WorkDoneQuerystringType {
-  constructor(courseId: number) {
+  constructor(userId: number, courseId?: number) {
+    this.userId = userId ?? undefined;
     this.courseId = courseId ?? undefined;
   }
 
-  courseId: number;
+  userId: number;
+
+  courseId?: number;
 }

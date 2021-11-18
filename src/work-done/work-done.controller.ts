@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
 
 import { WorkDoneDto } from "./work-done.dto";
 import { WorkDoneService } from "./work-done.service";
@@ -27,11 +27,11 @@ export class WorkDoneController {
 
   // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
-  async getWorkTodosByConditions(@Query("courseId") courseId?: number) {
+  async getWorkTodosByConditions(@Query("userId") userId: number, @Query("courseId") courseId?: number) {
     let serviceResult: WorkDoneDto[];
 
     try {
-      const querystringInput = new WorkDoneQuerystringDto(courseId);
+      const querystringInput = new WorkDoneQuerystringDto(userId, courseId);
 
       // 할일 리스트 저장
       serviceResult = await this.workDoneService.getWorkDonesByConditions(querystringInput);
@@ -47,11 +47,11 @@ export class WorkDoneController {
   }
 
   @Get(":id")
-  async getWorkDone(@Param("id", ParseIntPipe) id: number) {
+  async getWorkDone(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
     let serviceResult: WorkDoneDto;
 
     try {
-      serviceResult = await this.workDoneService.getWorkDone(id);
+      serviceResult = await this.workDoneService.getWorkDone(userId, id);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
@@ -61,5 +61,20 @@ export class WorkDoneController {
     }
 
     return serviceResult;
+  }
+
+  @Delete(":id")
+  async deleteWorkDone(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
+    try {
+      await this.workDoneService.deleteWorkDone(userId, id);
+    } catch (error) {
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+
+      // API에 에러를 토스
+      throw new HttpException(message, httpStatusCode);
+    }
+
+    return;
   }
 }

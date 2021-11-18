@@ -40,7 +40,7 @@ export class WorkDoneDto implements WorkDoneType {
   @IsNotEmpty({ always: true, message: "content 값이 비어있습니다." })
   content: string;
 
-  //   @IsInt({ groups: ["userInput"] })
+  @IsInt({ always: true, message: "userId 값이 비어있습니다." })
   userId: number;
 
   @IsInt({ groups: ["userInput"] })
