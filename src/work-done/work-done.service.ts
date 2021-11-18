@@ -109,10 +109,10 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     return workDoneDtoArrayResult;
   }
 
-  async getWorkDone(id: number) {
+  async getWorkDone(userId: number, id: number) {
     // 검색을 위한 객체
     const workDoneEntitiesInput = new Array<WorkDone>();
-    const workDoneEntityInput = new WorkDone(id, undefined, undefined, undefined, undefined, undefined);
+    const workDoneEntityInput = new WorkDone(id, undefined, undefined, userId, undefined, undefined);
 
     workDoneEntitiesInput.push(workDoneEntityInput);
 

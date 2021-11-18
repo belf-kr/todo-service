@@ -47,11 +47,11 @@ export class WorkDoneController {
   }
 
   @Get(":id")
-  async getWorkDone(@Param("id", ParseIntPipe) id: number) {
+  async getWorkDone(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
     let serviceResult: WorkDoneDto;
 
     try {
-      serviceResult = await this.workDoneService.getWorkDone(id);
+      serviceResult = await this.workDoneService.getWorkDone(userId, id);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
