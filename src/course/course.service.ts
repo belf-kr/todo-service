@@ -5,6 +5,7 @@ import { getRepository, Repository } from "typeorm";
 import { CourseDto } from "./course.dto";
 import { CourseGetDto } from "./course-get.dto";
 import { CoursePostDto } from "./course-post.dto";
+import { CourseQuerystringDto } from "./course-querystring.dto";
 
 import { CRUDService } from "src/common/crud.service";
 
@@ -62,10 +63,10 @@ export class CourseService extends CRUDService<Course> {
     await this.create(courseEntities);
   }
 
-  async getAllCourses(): Promise<CourseGetDto[]> {
-    // TypeORM 사용해서 검색을 할 때 조건을 주지 않고 전체 검색을 위한 Course entity 배열
-    const blankCourseEntities: Course[] = new Array<Course>();
-    const courseEntitiesResult = await this.find(blankCourseEntities);
+  async getAllCourses(querystringInput: CourseQuerystringDto): Promise<CourseGetDto[]> {
+    const courseEntitiesFilter: Course[] = new Array<Course>();
+    courseEntitiesFilter.push(new Course(undefined, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined));
+    const courseEntitiesResult = await this.find(courseEntitiesFilter);
     // DTO 형태로 반환하기 위한 CourseDTO 배열
     const courseGetDtoArrayResult = new Array<CourseGetDto>();
 
@@ -102,9 +103,9 @@ export class CourseService extends CRUDService<Course> {
     return courseGetDtoArrayResult;
   }
 
-  async deleteCourse(id: number): Promise<void> {
+  async deleteCourse(userId: number, id: number): Promise<void> {
     const courseEntities = new Array<Course>();
-    const courseEntity = new Course(id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
+    const courseEntity = new Course(id, undefined, undefined, userId, undefined, undefined, undefined, undefined, undefined);
 
     courseEntities.push(courseEntity);
     const selectResult = await this.find(courseEntities);

@@ -57,28 +57,30 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     /*
       FROM    work_done AS wd
     */
-    let queryString = getRepository(WorkDone).createQueryBuilder("wd");
+    let sqlQueryString = getRepository(WorkDone).createQueryBuilder("wd");
 
-    if (querystringInput?.courseId) {
-      const workTodoQuerystringInput = new WorkTodoQuerystringDto(querystringInput.courseId);
-      // courseId 값을 가지고 있는 WorkDoneDto 객체의 배열을 생성한다.
-      const wokrTodoDtoArrayResult = await this.workTodoService.getWorkTodosByConditions(workTodoQuerystringInput);
-      const workTodoIdArray = new Array<number>();
-      // number 배열을 workTodoDtoArrayResult로 부터 생성한다.
-      for (const item of wokrTodoDtoArrayResult) {
-        workTodoIdArray.push(item.id);
-      }
+    const workTodoQuerystringInput = new WorkTodoQuerystringDto(querystringInput.userId, querystringInput.courseId);
+    const wokrTodoDtoArrayResult = await this.workTodoService.getWorkTodosByConditions(workTodoQuerystringInput);
+    if (wokrTodoDtoArrayResult.length === 0) {
+      throw new HttpException({ data: "workTodo의 id 값을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
 
-      /*
+    const workTodoIdArray = new Array<number>();
+    // number 배열을 workTodoDtoArrayResult로 부터 생성한다.
+    for (const item of wokrTodoDtoArrayResult) {
+      workTodoIdArray.push(item.id);
+    }
+
+    /*
                 INNER JOIN work_todo wt on wd.work_todo_id = wt.id
                 INNER JOIN course c on wt.course_id = c.id
         WHERE   wd.work_todo_id IN (?);
       */
-      queryString = queryString
-        .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
-        .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
-        .where("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
-    }
+    sqlQueryString = sqlQueryString
+      .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
+      .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
+      .where("wd.user_id = :userId", { userId: querystringInput.userId })
+      .andWhere("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
 
     // query string 을 사용해 SELECT 수행
     /*
@@ -89,7 +91,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
                 wd.action_date,
                 wd.work_todo_id
       */
-    const selectResult = await queryString.getRawMany();
+    const selectResult = await sqlQueryString.getRawMany();
 
     // SELECT 결과 DTO 배열에 매핑
     for (const selectItem of selectResult) {
@@ -107,10 +109,10 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     return workDoneDtoArrayResult;
   }
 
-  async getWorkDone(id: number) {
+  async getWorkDone(userId: number, id: number) {
     // 검색을 위한 객체
     const workDoneEntitiesInput = new Array<WorkDone>();
-    const workDoneEntityInput = new WorkDone(id, undefined, undefined, undefined, undefined, undefined);
+    const workDoneEntityInput = new WorkDone(id, undefined, undefined, userId, undefined, undefined);
 
     workDoneEntitiesInput.push(workDoneEntityInput);
 
@@ -127,5 +129,20 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     }
 
     return workDoneEntityResult;
+  }
+
+  async deleteWorkDone(userId: number, id: number): Promise<void> {
+    // 검색을 위한 객체
+    const workDoneEntitiesInput = new Array<WorkDone>();
+    const workDoneEntityInput = new WorkDone(id, undefined, undefined, userId, undefined, undefined);
+
+    workDoneEntitiesInput.push(workDoneEntityInput);
+    const workTodoFindResult = await this.find(workDoneEntitiesInput);
+
+    if (workTodoFindResult.length === 0) {
+      throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
+    }
+
+    await this.delete(workDoneEntitiesInput);
   }
 }

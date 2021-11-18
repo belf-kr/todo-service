@@ -11,8 +11,9 @@ export function getErrorMessage(error: any): string {
   if (isAxiosError(error)) {
     if (error.response.data !== undefined) {
       errorResult = error.response.data;
+    } else {
+      errorResult = error.message;
     }
-    errorResult = error.message;
   }
 
   return errorResult;

@@ -88,11 +88,13 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   }
 
   async getWorkTodosByConditions(querystringInput: WorkTodoQuerystringDto): Promise<WorkTodoGetDto[]> {
-    const blankWorkTodoEntities = new Array<WorkTodo>();
-    const workTodoEntitiesResult = await this.find(blankWorkTodoEntities);
+    const workTodoEntitiesFilter = new Array<WorkTodo>();
+    workTodoEntitiesFilter.push(new WorkTodo(undefined, undefined, undefined, undefined, undefined, undefined, querystringInput.userId));
+    const workTodoEntitiesFilteredResult = await this.find(workTodoEntitiesFilter);
+
     const workTodoGetDtoArrayResult = new Array<WorkTodoGetDto>();
 
-    for (const workTodoEntity of workTodoEntitiesResult) {
+    for (const workTodoEntity of workTodoEntitiesFilteredResult) {
       /*
         SELECT *
         FROM work_todo
@@ -101,15 +103,15 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
         WHERE work_todo.id = ?
           AND c.id = ?
       */
-      let queryString = getRepository(WorkTodo)
+      let sqlQueryString = getRepository(WorkTodo)
         .createQueryBuilder("wt")
         .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
         .leftJoinAndMapMany("wt", RepeatedDaysOfTheWeek, "rdotw", "wt.id = rdotw.work_todo_id")
         .where("wt.id = :workTodoId", { workTodoId: workTodoEntity.id });
       if (querystringInput?.courseId) {
-        queryString = queryString.andWhere("c.id = :courseId", { courseId: querystringInput.courseId });
+        sqlQueryString = sqlQueryString.andWhere("c.id = :courseId", { courseId: querystringInput.courseId });
       }
-      const joinResult = await queryString.getRawMany();
+      const joinResult = await sqlQueryString.getRawMany();
 
       if (joinResult.length) {
         // 특정 courseId, worktodoId를 만족하는 결과에서 요일 배열 생성하기
@@ -131,10 +133,10 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     return workTodoGetDtoArrayResult;
   }
 
-  async deleteWorkTodo(id: number): Promise<void> {
+  async deleteWorkTodo(userId: number, id: number): Promise<void> {
     // 검색을 위한 객체
     const workTodoEntitiesInput = new Array<WorkTodo>();
-    const workTodoEntityInput = new WorkTodo(id, undefined, undefined, undefined, undefined, undefined);
+    const workTodoEntityInput = new WorkTodo(id, undefined, undefined, undefined, undefined, undefined, userId);
 
     workTodoEntitiesInput.push(workTodoEntityInput);
     const workTodoFindResult = await this.find(workTodoEntitiesInput);
