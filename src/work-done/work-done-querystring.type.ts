@@ -1,4 +1,4 @@
 export type WorkDoneQuerystringType = {
-  userId: number;
+  userId?: number;
   courseId?: number;
 };

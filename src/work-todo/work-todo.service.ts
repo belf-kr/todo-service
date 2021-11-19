@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { getRepository, Repository } from "typeorm";
+import { addDays } from "date-fns";
 
 import { WorkTodoGetDto } from "./work-todo-get.dto";
 import { WorkTodoPostDto } from "./work-todo-post.dto";
@@ -87,27 +88,54 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     await this.repeatedDaysOfTheWeekService.create(repeatedDaysOfTheWeekEntities);
   }
 
-  async getWorkTodosByConditions(querystringInput: WorkTodoQuerystringDto): Promise<WorkTodoGetDto[]> {
-    const workTodoEntityFilter = new Array<WorkTodo>();
-    workTodoEntityFilter.push(
-      new WorkTodo(
-        undefined,
-        new Course(querystringInput.courseId, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined),
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        querystringInput.userId
-      )
-    );
+  async getRepeatedWorkTodos(querystringInput: WorkTodoQuerystringDto, workTodoEntitiesInput: WorkTodo[], workTodoJoinResult: any) {
+    const repeatedWorkTodoEntitiesFilteredResult = new Array<WorkTodo>();
 
+    // 반복 일수만큼 반복
+    for (const workTodoEntityInput of workTodoEntitiesInput) {
+      let activeDateCriteria = workTodoEntityInput.activeDate;
+
+      while (activeDateCriteria <= new Date(querystringInput.maximumActiveDate)) {
+        repeatedWorkTodoEntitiesFilteredResult.push(
+          new WorkTodo(
+            workTodoEntityInput.id,
+            workTodoEntityInput.courseId,
+            workTodoEntityInput.recurringCycleDate,
+            workTodoEntityInput.title,
+            workTodoEntityInput.explanation,
+            activeDateCriteria,
+            workTodoEntityInput.userId
+          )
+        );
+
+        activeDateCriteria = addDays(activeDateCriteria, workTodoEntityInput.recurringCycleDate);
+      }
+    }
+
+    // 반복 요일마다 반복
+    // TODO: Do something here
+
+    return repeatedWorkTodoEntitiesFilteredResult;
+  }
+
+  async getWorkTodosByConditions(querystringInput: WorkTodoQuerystringDto): Promise<WorkTodoGetDto[]> {
     /*
         SELECT *
         FROM work_todo wt
-        INNER JOIN Course c on wt.course_id
-        WHERE c.id = ? AND c.user_id = ? AND wt.user_id = ?
     */
-    const workTodoEntitiesFilteredResult = await this.find(workTodoEntityFilter);
+    let sqlQueryString = getRepository(WorkTodo).createQueryBuilder("wt");
+
+    if (querystringInput.userId) {
+      sqlQueryString = sqlQueryString.andWhere("wt.user_id = :userId", { userId: querystringInput.userId });
+    }
+    if (querystringInput.courseId) {
+      sqlQueryString = sqlQueryString.andWhere("wt.course_id = :courseId", { courseId: querystringInput.courseId });
+    }
+    if (querystringInput.activeDate) {
+      sqlQueryString = sqlQueryString.andWhere("wt.active_date >= :activeDate", { activeDate: querystringInput.activeDate });
+    }
+
+    let workTodoEntitiesFilteredResult = await sqlQueryString.getMany();
     const workTodoGetDtoArrayResult = new Array<WorkTodoGetDto>();
 
     /*
@@ -116,11 +144,15 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
               INNER JOIN course c on work_todo.course_id = c.id
               LEFT JOIN repeated_days_of_the_week rdotw on work_todo.id = rdotw.work_todo_id
     */
-    const sqlQueryString = getRepository(WorkTodo)
+    sqlQueryString = getRepository(WorkTodo)
       .createQueryBuilder("wt")
       .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
       .leftJoinAndMapMany("wt", RepeatedDaysOfTheWeek, "rdotw", "wt.id = rdotw.work_todo_id");
     const workTodosJoinResult = await sqlQueryString.getRawMany();
+
+    if (querystringInput.activeDate) {
+      workTodoEntitiesFilteredResult = await this.getRepeatedWorkTodos(querystringInput, workTodoEntitiesFilteredResult, workTodosJoinResult);
+    }
 
     // 위 SELECT 구문에서 질의된 결과중 querystringInput으로 유저가 입력한 결과와 동일한 것들만 사용한다.
     for (const workTodoEntityFilteredItem of workTodoEntitiesFilteredResult) {

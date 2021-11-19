@@ -34,7 +34,7 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Get()
-  async getAllCourses(@Query("userId") userId: number) {
+  async getAllCourses(@Query("userId") userId?: number) {
     let serviceResult: CourseGetDto[];
 
     try {
