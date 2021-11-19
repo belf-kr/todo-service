@@ -88,46 +88,61 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   }
 
   async getWorkTodosByConditions(querystringInput: WorkTodoQuerystringDto): Promise<WorkTodoGetDto[]> {
-    const workTodoEntitiesFilter = new Array<WorkTodo>();
-    workTodoEntitiesFilter.push(new WorkTodo(undefined, undefined, undefined, undefined, undefined, undefined, querystringInput.userId));
-    const workTodoEntitiesFilteredResult = await this.find(workTodoEntitiesFilter);
+    const workTodoEntityFilter = new Array<WorkTodo>();
+    workTodoEntityFilter.push(
+      new WorkTodo(
+        undefined,
+        new Course(querystringInput.courseId, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined),
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        querystringInput.userId
+      )
+    );
 
+    /*
+        SELECT *
+        FROM work_todo wt
+        INNER JOIN Course c on wt.course_id
+        WHERE c.id = ? AND c.user_id = ? AND wt.user_id = ?
+    */
+    const workTodoEntitiesFilteredResult = await this.find(workTodoEntityFilter);
     const workTodoGetDtoArrayResult = new Array<WorkTodoGetDto>();
 
-    for (const workTodoEntity of workTodoEntitiesFilteredResult) {
+    /*
+      SELECT *
+      FROM work_todo
+              INNER JOIN course c on work_todo.course_id = c.id
+              LEFT JOIN repeated_days_of_the_week rdotw on work_todo.id = rdotw.work_todo_id
+    */
+    const sqlQueryString = getRepository(WorkTodo)
+      .createQueryBuilder("wt")
+      .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
+      .leftJoinAndMapMany("wt", RepeatedDaysOfTheWeek, "rdotw", "wt.id = rdotw.work_todo_id");
+    const workTodosJoinResult = await sqlQueryString.getRawMany();
+
+    // 위 SELECT 구문에서 질의된 결과중 querystringInput으로 유저가 입력한 결과와 동일한 것들만 사용한다.
+    for (const workTodoEntityFilteredItem of workTodoEntitiesFilteredResult) {
       /*
-        SELECT *
-        FROM work_todo
-                INNER JOIN course c on work_todo.course_id = c.id
-                LEFT JOIN repeated_days_of_the_week rdotw on work_todo.id = rdotw.work_todo_id
-        WHERE work_todo.id = ?
-          AND c.id = ?
+      WHERE wt_id = ?
       */
-      let sqlQueryString = getRepository(WorkTodo)
-        .createQueryBuilder("wt")
-        .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
-        .leftJoinAndMapMany("wt", RepeatedDaysOfTheWeek, "rdotw", "wt.id = rdotw.work_todo_id")
-        .where("wt.id = :workTodoId", { workTodoId: workTodoEntity.id });
-      if (querystringInput?.courseId) {
-        sqlQueryString = sqlQueryString.andWhere("c.id = :courseId", { courseId: querystringInput.courseId });
+      const filteredWorkTodoJoinResult = workTodosJoinResult.filter((workTodoJoinItem) => workTodoJoinItem["wt_id"] === workTodoEntityFilteredItem.id);
+
+      // 반복 정보 관련 요일 배열 생성
+      const repeatedDaysOfTheWeekEntitiesResult = new Array<RepeatedDaysOfTheWeek>();
+      for (const filteredJoinItem of filteredWorkTodoJoinResult) {
+        const repeatedDayOfTheWeekEntity = new RepeatedDaysOfTheWeek();
+
+        repeatedDayOfTheWeekEntity.dayOfTheWeek = filteredJoinItem["rdotw_day_of_the_week"] ?? undefined;
+        repeatedDaysOfTheWeekEntitiesResult.push(repeatedDayOfTheWeekEntity);
       }
-      const joinResult = await sqlQueryString.getRawMany();
 
-      if (joinResult.length) {
-        // 특정 courseId, worktodoId를 만족하는 결과에서 요일 배열 생성하기
-        const repeatedDaysOfTheWeekEntitiesResult = new Array<RepeatedDaysOfTheWeek>();
-        for (const joinItem of joinResult) {
-          const repeatedDayOfTheWeekEntity = new RepeatedDaysOfTheWeek();
+      const workTodoGetDto = WorkTodoGetDto.entityConstructor(workTodoEntityFilteredItem, repeatedDaysOfTheWeekEntitiesResult);
 
-          repeatedDayOfTheWeekEntity.dayOfTheWeek = joinItem["rdotw_day_of_the_week"] ?? undefined;
-          repeatedDaysOfTheWeekEntitiesResult.push(repeatedDayOfTheWeekEntity);
-        }
-
-        const workTodoGetDto = WorkTodoGetDto.entityConstructor(workTodoEntity, repeatedDaysOfTheWeekEntitiesResult);
-        workTodoGetDto.courseTitle = joinResult[0]["c_title"];
-        workTodoGetDto.color = joinResult[0]["c_color"];
-        workTodoGetDtoArrayResult.push(workTodoGetDto);
-      }
+      workTodoGetDto.courseTitle = filteredWorkTodoJoinResult[0]["c_title"];
+      workTodoGetDto.color = filteredWorkTodoJoinResult[0]["c_color"];
+      workTodoGetDtoArrayResult.push(workTodoGetDto);
     }
 
     return workTodoGetDtoArrayResult;

@@ -30,7 +30,7 @@ Content-Type: application/json
 GET {{Host}}/{{Router}}?userId=
 
 ### work_todo 조건에 알맞은 리스트 가져오기
-GET {{Host}}/{{Router}}?userId=&courseId=1
+GET {{Host}}/{{Router}}?userId=&courseId=
 
 ### work_todo 삭제
 DELETE {{Host}}/{{Router}}/1?userid=
