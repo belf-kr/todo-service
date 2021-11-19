@@ -34,11 +34,16 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
 
   // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
-  async getWorkTodosByConditions(@Query("userId") userId: number, @Query("courseId") courseId?: number) {
+  async getWorkTodosByConditions(
+    @Query("userId") userId: number,
+    @Query("courseId") courseId?: number,
+    @Query("activeDate") activeDate?: Date,
+    @Query("maximumActiveDate") maximumActiveDate?: Date
+  ) {
     let serviceResult: WorkTodoGetDto[];
 
     try {
-      const querystringInput = new WorkTodoQuerystringDto(userId, courseId);
+      const querystringInput = new WorkTodoQuerystringDto(userId, courseId, activeDate, maximumActiveDate);
 
       // 할일 리스트 저장
       serviceResult = await this.workTodoService.getWorkTodosByConditions(querystringInput);

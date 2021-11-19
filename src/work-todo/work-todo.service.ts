@@ -88,26 +88,20 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
   }
 
   async getWorkTodosByConditions(querystringInput: WorkTodoQuerystringDto): Promise<WorkTodoGetDto[]> {
-    const workTodoEntityFilter = new Array<WorkTodo>();
-    workTodoEntityFilter.push(
-      new WorkTodo(
-        undefined,
-        new Course(querystringInput.courseId, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined),
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        querystringInput.userId
-      )
-    );
-
     /*
         SELECT *
         FROM work_todo wt
-        INNER JOIN Course c on wt.course_id
-        WHERE c.id = ? AND c.user_id = ? AND wt.user_id = ?
+        WHERE wt.course_id = ? AND wt.user_id = ?
     */
-    const workTodoEntitiesFilteredResult = await this.find(workTodoEntityFilter);
+    let sqlQueryString = getRepository(WorkTodo)
+      .createQueryBuilder("wt")
+      .where("wt.course_id = :courseId", { courseId: querystringInput.courseId })
+      .andWhere("wt.user_id = :userId", { userId: querystringInput.userId });
+    if (querystringInput.activeDate) {
+      sqlQueryString = sqlQueryString.andWhere("wt.active_date >= :activeDate", { activeDate: querystringInput.activeDate });
+    }
+
+    const workTodoEntitiesFilteredResult = await sqlQueryString.getMany();
     const workTodoGetDtoArrayResult = new Array<WorkTodoGetDto>();
 
     /*
@@ -116,7 +110,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
               INNER JOIN course c on work_todo.course_id = c.id
               LEFT JOIN repeated_days_of_the_week rdotw on work_todo.id = rdotw.work_todo_id
     */
-    const sqlQueryString = getRepository(WorkTodo)
+    sqlQueryString = getRepository(WorkTodo)
       .createQueryBuilder("wt")
       .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
       .leftJoinAndMapMany("wt", RepeatedDaysOfTheWeek, "rdotw", "wt.id = rdotw.work_todo_id");
