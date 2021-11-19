@@ -27,7 +27,7 @@ export class WorkDoneController {
 
   // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
-  async getWorkTodosByConditions(@Query("userId") userId: number, @Query("courseId") courseId?: number) {
+  async getWorkTodosByConditions(@Query("userId") userId?: number, @Query("courseId") courseId?: number) {
     let serviceResult: WorkDoneDto[];
 
     try {
@@ -47,7 +47,7 @@ export class WorkDoneController {
   }
 
   @Get(":id")
-  async getWorkDone(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
+  async getWorkDone(@Param("id", ParseIntPipe) id: number, @Query("userId") userId?: number) {
     let serviceResult: WorkDoneDto;
 
     try {
