@@ -18,13 +18,13 @@ export class Course {
     if (id) {
       this.id = id;
     }
-    if (originalCourseId && originalCourseId.id !== undefined) {
+    if (originalCourseId?.id) {
       this.originalCourseId = originalCourseId;
     }
     if (color) {
       this.color = color;
     }
-    if (creatorId !== undefined) {
+    if (creatorId) {
       this.creatorId = creatorId;
     }
     if (startDate) {

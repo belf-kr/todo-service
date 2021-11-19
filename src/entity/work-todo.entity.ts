@@ -8,7 +8,7 @@ export class WorkTodo {
     if (id) {
       this.id = id;
     }
-    if (courseId && courseId.id !== undefined) {
+    if (courseId?.id) {
       this.courseId = courseId;
     }
     if (recurringCycleDate) {
