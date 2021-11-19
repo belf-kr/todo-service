@@ -1,3 +1,3 @@
 export type CourseQuerystringType = {
-  userId: number;
+  userId?: number;
 };

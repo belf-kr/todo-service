@@ -122,9 +122,12 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     /*
         SELECT *
         FROM work_todo wt
-        WHERE wt.course_id = ? AND wt.user_id = ?
     */
-    let sqlQueryString = getRepository(WorkTodo).createQueryBuilder("wt").where("wt.user_id = :userId", { userId: querystringInput.userId });
+    let sqlQueryString = getRepository(WorkTodo).createQueryBuilder("wt");
+
+    if (querystringInput.userId) {
+      sqlQueryString = sqlQueryString.andWhere("wt.user_id = :userId", { userId: querystringInput.userId });
+    }
     if (querystringInput.courseId) {
       sqlQueryString = sqlQueryString.andWhere("wt.course_id = :courseId", { courseId: querystringInput.courseId });
     }

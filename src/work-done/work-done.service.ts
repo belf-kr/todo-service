@@ -79,8 +79,10 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     sqlQueryString = sqlQueryString
       .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
       .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
-      .where("wd.user_id = :userId", { userId: querystringInput.userId })
-      .andWhere("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
+      .where("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
+    if (querystringInput.userId) {
+      sqlQueryString = sqlQueryString.where("wd.user_id = :userId", { userId: querystringInput.userId });
+    }
 
     // query string 을 사용해 SELECT 수행
     /*

@@ -1,5 +1,5 @@
 export type WorkTodoQuerystringType = {
-  userId: number;
+  userId?: number;
   courseId?: number;
   activeDate?: Date;
   maximumActiveDate?: Date;

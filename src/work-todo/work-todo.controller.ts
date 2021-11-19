@@ -35,7 +35,7 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
   // TODO: Custom pipe 만들어 param을 선택 사항 가능하게 만들기
   @Get()
   async getWorkTodosByConditions(
-    @Query("userId") userId: number,
+    @Query("userId") userId?: number,
     @Query("courseId") courseId?: number,
     @Query("activeDate") activeDate?: Date,
     @Query("maximumActiveDate") maximumActiveDate?: Date
