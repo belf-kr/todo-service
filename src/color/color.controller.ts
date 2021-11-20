@@ -1,6 +1,7 @@
-import { Controller, Get, HttpException } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, Post, ValidationPipe } from "@nestjs/common";
 
 import { ColorService } from "./color.service";
+import { ColorDto } from "./color.dto";
 
 import { Color } from "src/entity/color.entity";
 
@@ -31,5 +32,20 @@ export class ColorController extends CRUDController<Color> {
     }
 
     return serviceResult;
+  }
+
+  @Post()
+  async createColor(@Body(new ValidationPipe({ groups: ["userInput"] })) colorDtoInput: ColorDto) {
+    try {
+      await this.colorService.createColor(colorDtoInput);
+    } catch (error) {
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+
+      // API에 에러를 토스
+      throw new HttpException(message, httpStatusCode);
+    }
+
+    return;
   }
 }
