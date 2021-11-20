@@ -63,7 +63,7 @@ export class CourseService extends CRUDService<Course> {
     await this.create(courseEntities);
   }
 
-  async getAllCourses(querystringInput: CourseQuerystringDto): Promise<CourseGetDto[]> {
+  async getCoursesByConditions(querystringInput: CourseQuerystringDto): Promise<CourseGetDto[]> {
     const courseEntitiesFilter: Course[] = new Array<Course>();
     courseEntitiesFilter.push(new Course(undefined, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined));
     const courseEntitiesResult = await this.find(courseEntitiesFilter);
