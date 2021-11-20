@@ -34,14 +34,14 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Get()
-  async getAllCourses(@Query("userId") userId?: number) {
+  async getCoursesByConditions(@Query("userId") userId?: number) {
     let serviceResult: CourseGetDto[];
 
     try {
       const querystringInput = new CourseQuerystringDto(userId);
 
       // 코스 리스트 저장
-      serviceResult = await this.courseService.getAllCourses(querystringInput);
+      serviceResult = await this.courseService.getCoursesByConditions(querystringInput);
     } catch (error) {
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
