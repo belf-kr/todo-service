@@ -65,7 +65,9 @@ export class CourseService extends CRUDService<Course> {
 
   async getCoursesByConditions(querystringInput: CourseQuerystringDto): Promise<CourseGetDto[]> {
     const courseEntitiesFilter: Course[] = new Array<Course>();
-    courseEntitiesFilter.push(new Course(undefined, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined));
+    courseEntitiesFilter.push(
+      new Course(querystringInput.courseId, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined)
+    );
     const courseEntitiesResult = await this.find(courseEntitiesFilter);
     // DTO 형태로 반환하기 위한 CourseDTO 배열
     const courseGetDtoArrayResult = new Array<CourseGetDto>();
