@@ -8,7 +8,7 @@ export class CourseDto implements CourseType {
   constructor(courseTypeInput?: CourseType) {
     if (courseTypeInput !== undefined) {
       this.color = courseTypeInput.color ?? undefined;
-      this.creatorId = courseTypeInput.creatorId ?? undefined;
+      this.userId = courseTypeInput.userId ?? undefined;
       this.endDate = courseTypeInput.endDate ?? undefined;
       this.explanation = courseTypeInput.explanation ?? undefined;
       this.id = courseTypeInput.id ?? undefined;
@@ -24,7 +24,7 @@ export class CourseDto implements CourseType {
 
     if (courseEntityInput !== undefined) {
       courseDto.color = courseEntityInput.color?.id ?? undefined;
-      courseDto.creatorId = courseEntityInput.creatorId ?? undefined;
+      courseDto.userId = courseEntityInput.userId ?? undefined;
       courseDto.endDate = courseEntityInput.endDate ?? undefined;
       courseDto.explanation = courseEntityInput.explanation ?? undefined;
       courseDto.id = courseEntityInput.id ?? undefined;
@@ -47,8 +47,8 @@ export class CourseDto implements CourseType {
   @IsNotEmpty({ always: true })
   color: string;
 
-  @IsInt({ always: true, message: "creatorId 값이 비어있습니다." })
-  creatorId: number;
+  @IsInt({ always: true, message: "userId 값이 비어있습니다." })
+  userId: number;
 
   @IsDate({ groups: ["userUpdate"] })
   startDate: Date;

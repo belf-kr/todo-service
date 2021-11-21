@@ -2,7 +2,7 @@ const DatabaseConfig = () => ({
   type: "mysql",
   entities: ["dist/**/*.entity{.ts,.js}"],
   synchronize: Boolean(process.env.DB_SYNCHRONIZE),
-  migrationsTableName: "migrations",
+  migrationsTableName: "typeorm_migrations",
   migrations: ["dist/src/migrations/*{.ts,.js}"],
   cli: {
     migrationsDir: "src/migrations",

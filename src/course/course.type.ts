@@ -2,7 +2,7 @@ export type CourseType = {
   id: number;
   originalCourseId?: number;
   color?: string;
-  creatorId?: number;
+  userId?: number;
   startDate?: Date;
   endDate?: Date;
   explanation?: string;

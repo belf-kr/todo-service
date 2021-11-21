@@ -1,0 +1,24 @@
+# 로컬환경 테스트 용도로 사용됩니다.
+version: "3.7"
+services:
+  todo:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: jp3pe/belf-kr/todo-service/nestjs
+    container_name: todo-service
+    ports:
+      - "3003:3003"
+    environment:
+      - DB_MASTER_HOST=host.docker.internal
+      - DB_MASTER_PORT=3306
+      - DB_MASTER_USERNAME=root
+      - DB_MASTER_PASSWORD=example
+      - DB_MASTER_DATABASE=belf
+      - DB_SLAVE_HOST=host.docker.internal
+      - DB_SLAVE_PORT=3306
+      - DB_SLAVE_USERNAME=root
+      - DB_SLAVE_PASSWORD=example
+      - DB_SLAVE_DATABASE=belf
+      - DB_SYNCHRONIZE=false
+      - SERVER_PORT=3003
