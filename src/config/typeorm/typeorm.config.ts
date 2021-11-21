@@ -1,9 +1,7 @@
 import { ConnectionOptions } from "typeorm";
-import dotenv = require("dotenv");
+import "./env";
 
-import DbConfig from "./database.config";
-
-dotenv.config();
+import DbConfig from "../database.config";
 
 /**
  * 실제 코드에서는 사용되지 않으며 package.json의 script를 통해 안전하게 마이그레이션을 진행하기 위하여 사용됩니다.
