@@ -18,4 +18,6 @@ WORKDIR /app
 ## Step 1의 builder에서 build된 프로젝트를 가져온다
 COPY --from=builder /app ./
 
-CMD npm build && npm run-migrations && npm run start:prod
+RUN npm run run-migrations
+
+CMD ["npm", "run", "start:prod"]
