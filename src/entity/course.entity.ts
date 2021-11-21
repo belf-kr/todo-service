@@ -8,7 +8,7 @@ export class Course {
     id?: number,
     originalCourseId?: Course,
     color?: Color,
-    creatorId?: number,
+    userId?: number,
     startDate?: Date,
     endDate?: Date,
     explanation?: string,
@@ -24,8 +24,8 @@ export class Course {
     if (color) {
       this.color = color;
     }
-    if (creatorId) {
-      this.creatorId = creatorId;
+    if (userId) {
+      this.userId = userId;
     }
     if (startDate) {
       this.startDate = startDate;
@@ -62,8 +62,8 @@ export class Course {
   @JoinColumn({ name: "color" })
   color: Color;
 
-  @Column({ name: "creator_id" })
-  creatorId: number;
+  @Column({ name: "user_id" })
+  userId: number;
 
   @Column({
     type: "date",
