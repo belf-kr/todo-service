@@ -1,4 +1,4 @@
-import { Body, Delete, Get, HttpException, HttpStatus, Post, Put } from "@nestjs/common";
+import { Body, HttpException, HttpStatus } from "@nestjs/common";
 
 import { CRUDService } from "./crud.service";
 
@@ -14,7 +14,6 @@ export class CRUDController<T> {
   }
 
   // 1개 이상의 행 Create
-  @Post()
   async create(@Body() crudEntities: T[]): Promise<HttpStatus> {
     try {
       await this.crudService.create(crudEntities);
@@ -33,7 +32,6 @@ export class CRUDController<T> {
   }
 
   // 1개 이상의 행 Read
-  @Get()
   async read(@Body() crudEntities: T[]): Promise<HttpStatus> {
     let result: T[];
 
@@ -63,7 +61,6 @@ export class CRUDController<T> {
 
   // 1개 이상의 행 Update
   // 업데이트를 위해서는 검색 결과에 사용될 엔티티 객체의 배열과, 변경될 객체의 속성 값에 대한 값들을 객체 형태로 넘겨줘야함
-  @Put()
   async update(@Body("crudEntitySearchFilters") crudEntitySearchFilters: T[], @Body("crudChangeResult") crudChangeResult: T): Promise<HttpStatus> {
     try {
       await this.crudService.update(crudEntitySearchFilters, crudChangeResult);
@@ -82,7 +79,6 @@ export class CRUDController<T> {
   }
 
   // 1개 이상의 행 Delete
-  @Delete()
   async delete(@Body() crudEntities: T[]): Promise<HttpStatus> {
     try {
       await this.crudService.delete(crudEntities);

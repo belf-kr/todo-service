@@ -14,6 +14,15 @@ export class ColorService extends CRUDService<Color> {
     super(colorRepository);
   }
 
+  async createColor(colorDtoInput: ColorDto): Promise<void> {
+    const colorEntity = new Color(colorDtoInput.id);
+
+    const colorEntities = new Array<Color>();
+    colorEntities.push(colorEntity);
+
+    await this.create(colorEntities);
+  }
+
   async getAllColors(): Promise<string[]> {
     const blankColorEntities: Color[] = new Array<Color>();
     // Color DTO class 형태에 맞추어 ORM 결과를 저장

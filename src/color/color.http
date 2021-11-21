@@ -4,3 +4,11 @@
 ### color 정보 전체 조회
 GET {{Host}}/{{Router}}
 Content-Type: application/json
+
+### Color 생성
+POST {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "id": "#FFFFFF"
+}
