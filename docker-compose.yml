@@ -4,7 +4,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: ghcr.io/belf-kr/todo-service/nestjs
+    image: jp3pe/belf-kr/todo-service/nestjs
     container_name: todo-service
     ports:
       - "3003:3003"
