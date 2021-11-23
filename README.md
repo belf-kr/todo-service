@@ -25,7 +25,7 @@
 ### 개발 환경
 
 1. .env.dev 파일에 특이사항이 있는 경우 수정합니다.
-1. `npm i && npm run start:dev` 명령을 이용해 todo service를 시작합니다.
+1. VSCode 디버그 창 내부에 있는 NestJS start 버튼을 눌러 시작합니다.
 1. TypeORM을 통해서 todo service에서 사용하는 MySQL Table이 정상적으로 생성 되었는지 확인합니다.
 
 ### QA/production 환경
