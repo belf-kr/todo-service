@@ -10,7 +10,7 @@ import { AppService } from "./app.service";
 
 import AppConfig from "./config/app.config";
 
-import { LoggingInterceptor } from "./logging/loggin.interceptor";
+import { LoggingInterceptor } from "./interceptor/loggin.interceptor";
 
 import { ColorModule } from "./color/color.module";
 import { CourseModule } from "./course/course.module";
