@@ -33,6 +33,46 @@
 1. README.md 파일 내 환경변수 표를 참고해 자신의 서버 환경에 알맞은 OS 환경변수를 설정합니다.
 1. `npm i && npm run start:prod` 명령을 이용해서 todo service를 시작합니다.
 
+## TypeORM 사용해 DB Schema 동기화
+
+### 클래스 파일 생성
+
+![TypeORM을 사용한 클래스 파일 생성](./readme/img/create-typeorm-migration-class.png)
+
+`npm run create-migration-dev -n 생성할_클래스_파일명` 명령어를 사용해서 동기화에 사용될 클래스 파일을 생성한다.
+
+### 클래스 파일 구현
+
+![MigrationInterface 구현 클래스](./readme/img/realize-interface.png)
+
+생성된 `up`, `down` 메소드의 내부를 채워줍니다.
+
+- up: DB Schema 동기화시 실행될 SQL
+- down: DB Schema 동기화 롤백시 실행될 SQL
+
+### DB Schema 동기화 실행
+
+![Migration 수행](./readme/img/run-migration-command.png)
+
+`npm run run-migrations-dev` 명령어를 실행하고, DB Schema 동기화 명령이 정상 동작 되었음을 확인합니다.
+
+### DB Schema 동기화 취소
+
+![Migration revert 실행](./readme/img/revert-migration-command.png)
+`npm run revert-migrations-dev` 명령어를 사용해 DB Schema 동기화 명령을 취소합니다.
+
+### 질의응답
+
+#### QA/Prod 환경에선 DB Schema 동기화 명령어를 어떻게 샐행하나요?
+
+- `npm run start:prod` 명령을 통해 Todo 서비스 구동전 `npm run run-migrations` 명령어가 실행됩니다. 관련 내용은 Dockerfile을 참고하세요.
+
+#### 수행된 DB Schema 동기화 작업을 취소하거나, 특정 동기화 작업을 취소하고 싶을땐 어떻게 해야하나요?
+
+- DB Schema 동기화 작업은 단방향적으로 진행 되어야합니다. 특정 동기화 작업을 취소하는건 불가능하거나, 가능하더라도 권장하지 않습니다.
+
+- 새로운 DB Schema 동기화 클래스 파일을 생성후 메소드 구현을 위한 SQL을 입력하는게 가장 권장되는 방법입니다.
+
 ## 환경 변수
 
 ### 환경 변수 표 범례
