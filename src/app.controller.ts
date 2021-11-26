@@ -13,7 +13,7 @@ export class AppController {
 
   @Get("ping")
   getPing(): void {
-    console.log(`Begin controller: ${new Date().toUTCString}`);
+    console.log(`Begin controller: ${new Date().toUTCString()}, and ${new Date().getUTCMilliseconds()}ms`);
     return;
   }
 
