@@ -2,10 +2,15 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConnectionOptions } from "typeorm";
+import { APP_INTERCEPTOR } from "@nestjs/core";
 import Joi = require("joi");
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+
+import AppConfig from "./config/app.config";
+
+import { LoggingInterceptor } from "./interceptor/logging.interceptor";
 
 import { ColorModule } from "./color/color.module";
 import { CourseModule } from "./course/course.module";
@@ -14,8 +19,6 @@ import { CourseTagModule } from "./course-tag/course-tag.module";
 import { WorkTodoModule } from "./work-todo/work-todo.module";
 import { RepeatedDaysOfTheWeekModule } from "./repeated-days-of-the-week/repeated-days-of-the-week.module";
 import { WorkDoneModule } from "./work-done/work-done.module";
-
-import AppConfig from "./config/app.config";
 
 @Module({
   imports: [
@@ -56,6 +59,12 @@ import AppConfig from "./config/app.config";
     WorkDoneModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: LoggingInterceptor,
+    },
+  ],
 })
 export class AppModule {}
