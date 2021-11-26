@@ -4,7 +4,7 @@ metadata:
   name: todo-service
   namespace: qa
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: todo-service
@@ -19,16 +19,6 @@ spec:
           imagePullPolicy: "Always"
           ports:
             - containerPort: 3000
-          livenessProbe:
-            httpGet:
-              path: /ping
-              port: 3000
-            # 웹 서버 시작 전 typeorm 마이그레이션이 오래걸리기 때문에 일정 시간 기달리도록 합니다.
-            initialDelaySeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /ping
-              port: 3000
           resources:
             requests:
               cpu: 5m
