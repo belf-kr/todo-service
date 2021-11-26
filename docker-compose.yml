@@ -1,24 +1,40 @@
 # 로컬환경 테스트 용도로 사용됩니다.
-version: "3.7"
+version: "3.8"
 services:
-  todo:
+  mysql-service:
+    build:
+      context: ./docker/mysql
+      dockerfile: Dockerfile
+    image: jp3pe/belf-kr/todo-mysql-service
+    container_name: belf-todo-mysql-service
+    ports:
+      - 3308:3306
+    command:
+      # 한글과 이모지 입력을 위하여 기본 문자셋 인코딩 변경
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+  todo-service:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: jp3pe/belf-kr/todo-service/nestjs
-    container_name: todo-service
+    image: jp3pe/belf-kr/todo-service
+    depends_on: 
+      - mysql-service
+    container_name: belf-todo-service
     ports:
       - "3003:3003"
     environment:
+      - SERVER_PORT=3003
       - DB_MASTER_HOST=host.docker.internal
-      - DB_MASTER_PORT=3306
+      - DB_MASTER_PORT=3308
       - DB_MASTER_USERNAME=root
       - DB_MASTER_PASSWORD=example
       - DB_MASTER_DATABASE=belf
       - DB_SLAVE_HOST=host.docker.internal
-      - DB_SLAVE_PORT=3306
+      - DB_SLAVE_PORT=3308
       - DB_SLAVE_USERNAME=root
       - DB_SLAVE_PASSWORD=example
       - DB_SLAVE_DATABASE=belf
       - DB_SYNCHRONIZE=false
-      - SERVER_PORT=3003
+    command: ["sh", "-c", "sleep 20 && npm run start:prod"]
+    
