@@ -177,6 +177,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
       workTodoGetDto.courseTitle = filteredWorkTodoJoinResult[0]["c_title"];
       workTodoGetDto.color = filteredWorkTodoJoinResult[0]["c_color"];
+      workTodoGetDto.courseId = filteredWorkTodoJoinResult[0]["c_id"];
       workTodoGetDtoArrayResult.push(workTodoGetDto);
     }
 
