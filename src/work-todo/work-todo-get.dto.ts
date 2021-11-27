@@ -16,6 +16,10 @@ export class WorkTodoGetDto extends WorkTodoDto implements WorkTodoGetInterface 
       if (workTodoGetInterfaceInput.color) {
         this.color = workTodoGetInterfaceInput.color ?? undefined;
       }
+
+      if (workTodoGetInterfaceInput.courseId) {
+        this.courseId = workTodoGetInterfaceInput.courseId ?? undefined;
+      }
     }
   }
 
@@ -39,4 +43,6 @@ export class WorkTodoGetDto extends WorkTodoDto implements WorkTodoGetInterface 
   color: string;
 
   repeatedDaysOfTheWeek: number[];
+
+  courseId: number;
 }
