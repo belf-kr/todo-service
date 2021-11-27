@@ -58,6 +58,25 @@ export class WorkTodoController extends CRUDController<WorkTodo> {
     return serviceResult;
   }
 
+  @Get(":id")
+  async getWorkTodo(@Param("id", ParseIntPipe) id: number) {
+    let serviceResult: WorkTodoGetDto[];
+
+    try {
+      const querystringInput = new WorkTodoQuerystringDto(undefined, undefined, undefined, undefined, id);
+
+      serviceResult = await this.workTodoService.getWorkTodosByConditions(querystringInput);
+    } catch (error) {
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+
+      // API에 에러를 토스
+      throw new HttpException(message, httpStatusCode);
+    }
+
+    return serviceResult;
+  }
+
   @Delete(":id")
   async deleteWorkTodo(@Query("userId") userId: number, @Param("id", ParseIntPipe) id: number) {
     try {
