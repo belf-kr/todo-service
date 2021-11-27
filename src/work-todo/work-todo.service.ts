@@ -134,6 +134,9 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     if (querystringInput.activeDate) {
       sqlQueryString = sqlQueryString.andWhere("wt.active_date >= :activeDate", { activeDate: querystringInput.activeDate });
     }
+    if (querystringInput.workTodoId) {
+      sqlQueryString = sqlQueryString.andWhere("wt.id = :workTodoId", { workTodoId: querystringInput.workTodoId });
+    }
 
     let workTodoEntitiesFilteredResult = await sqlQueryString.getMany();
     const workTodoGetDtoArrayResult = new Array<WorkTodoGetDto>();
