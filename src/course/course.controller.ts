@@ -10,9 +10,12 @@ import { CRUDController } from "src/common/crud.controller";
 
 import { Course } from "src/entity/course.entity";
 
+import { CourseImportationService } from "src/course-importation/course-importation.service";
+import { CourseImportationDto } from "src/course-importation/course-importation.dto";
+
 @Controller("courses")
 export class CourseController extends CRUDController<Course> {
-  constructor(private readonly courseService: CourseService) {
+  constructor(private readonly courseService: CourseService, private readonly courseImportationService: CourseImportationService) {
     super(courseService);
   }
 
@@ -24,6 +27,15 @@ export class CourseController extends CRUDController<Course> {
       // course import
       if (coursePostDtoInput.originalCourseId) {
         courseEntity = await this.courseService.importCourse(coursePostDtoInput);
+
+        await this.courseImportationService.createCoureseImportation(
+          new CourseImportationDto({
+            id: undefined,
+            userId: coursePostDtoInput.userId,
+            courseId: courseEntity.id,
+            originalCourseId: coursePostDtoInput.originalCourseId,
+          })
+        );
       }
       // course 생성
       else {
