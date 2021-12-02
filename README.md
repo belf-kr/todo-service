@@ -1,5 +1,29 @@
 # todo-service
 
+## 빠른 시작
+
+### 컨테이너 생성
+
+```
+docker-compose up -d
+```
+
+위의 명령어를 입력해 docker image 생성 후 컨테이너를 생성합니다.
+
+### 컨테이너 삭제
+
+```
+docker-compose down
+```
+
+위의 명령어를 입력해 컨테이너를 삭제합니다.
+
+### API 요청
+
+#### ping
+
+http://localhost:3003/ping
+
 ## 개요
 
 할일 관리에 대한 서비스를 제공합니다.
@@ -18,9 +42,8 @@
 1. typeorm
 1. mysql:5.7.16
 1. vscode
-1. docker
 
-## 빠른 시작
+## 시작하기
 
 ### 개발 환경
 
@@ -28,7 +51,7 @@
 1. VSCode 디버그 창 내부에 있는 NestJS start 버튼을 눌러 시작합니다.
 1. TypeORM을 통해서 todo service에서 사용하는 MySQL Table이 정상적으로 생성 되었는지 확인합니다.
 
-### QA/production 환경
+### QA/Production 환경
 
 1. README.md 파일 내 환경변수 표를 참고해 자신의 서버 환경에 알맞은 OS 환경변수를 설정합니다.
 1. `npm i && npm run start:prod` 명령을 이용해서 todo service를 시작합니다.
