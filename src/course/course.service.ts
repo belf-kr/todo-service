@@ -32,6 +32,32 @@ export class CourseService extends CRUDService<Course> {
     super(courseRepository);
   }
 
+  async importCourse(coursePostDtoInput: CoursePostDto): Promise<Course> {
+    const sqlQueryString = getRepository(Course).createQueryBuilder("c").where("c.id = :courseId", { courseId: coursePostDtoInput.originalCourseId });
+    const originalCourseEntity = await sqlQueryString.getOne();
+    if (!originalCourseEntity) {
+      throw new HttpException({ data: "존재하지 않는 origialCourseId값 입니다.", status: HttpStatus.NOT_FOUND }, HttpStatus.NOT_FOUND);
+    }
+
+    // Modify data
+    const courseEntity = new Course(
+      undefined,
+      originalCourseEntity,
+      originalCourseEntity.color,
+      coursePostDtoInput.userId,
+      new Date(),
+      undefined,
+      originalCourseEntity.explanation,
+      originalCourseEntity.title,
+      0
+    );
+
+    const courseEntities = new Array<Course>();
+    courseEntities.push(courseEntity);
+
+    return (await this.create(courseEntities))[0];
+  }
+
   async createCourse(courseDtoInput: CourseDto): Promise<Course> {
     const colorEntity = new Color(courseDtoInput.color);
 

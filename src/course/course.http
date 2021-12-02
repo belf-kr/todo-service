@@ -18,6 +18,7 @@ Content-Type: application/json
     "color": "#FF8484",
     "title": "영어공부하기1",
     "explanation": "토익 ...",
+    "userId": 1,
     "tags": [
         {
             "value": "자동차"
@@ -25,9 +26,31 @@ Content-Type: application/json
         {
             "value": "하하하"
         }
-    ],
-    "userId": 1
+    ]
 }
+
+### course import
+POST {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "originalCourseId": 1,
+    "color": "#FF8484",
+    "startDate": "2020-12-02T02:06:12.946Z",
+    "endDate": "2021-12-02T02:06:12.946Z",
+    "explanation": "토익 ...",
+    "userId": 1,
+    "title": "import 테스트",
+    "tags": [
+        {
+            "value": "자동차"
+        },
+        {
+            "value": "하하하"
+        }
+    ]
+}
+
 
 ### course 삭제
 DELETE {{Host}}/{{Router}}/courses/1?userId=
