@@ -21,7 +21,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     super(workDoneRepository);
   }
 
-  async createWorkDone(workDoneTypeInput: WorkDoneType): Promise<void> {
+  async createWorkDone(workDoneTypeInput: WorkDoneType): Promise<WorkDone> {
     // 올바른 FK인지 검증한다.
     const workTodoEntitiesInput = new Array<WorkTodo>();
     const workTodoEntityInput = new WorkTodo(workDoneTypeInput.workTodoId, undefined, undefined, undefined, undefined, undefined);
@@ -49,7 +49,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
 
     workDoneEntitiesInput.push(workDoneEntityInput);
 
-    await this.create(workDoneEntitiesInput);
+    return (await this.create(workDoneEntitiesInput))[0];
   }
 
   async getWorkDonesByConditions(querystringInput: WorkDoneQuerystringDto): Promise<WorkDoneDto[]> {

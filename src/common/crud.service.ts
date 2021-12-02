@@ -9,8 +9,8 @@ export class CRUDService<T> {
   ) {}
 
   // 1개 이상의 행 Create
-  async create(crudEntities: T[]): Promise<void> {
-    await this.crudRepository.save(crudEntities);
+  async create(crudEntities: T[]): Promise<T[]> {
+    return await this.crudRepository.save(crudEntities);
   }
 
   // 1개 행 Read

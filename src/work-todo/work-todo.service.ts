@@ -27,7 +27,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     super(workTodoRepository);
   }
 
-  async createWorkTodo(workTodoPostDtoInput: WorkTodoPostDto): Promise<void> {
+  async createWorkTodo(workTodoPostDtoInput: WorkTodoPostDto): Promise<WorkTodo> {
     // 올바른 FK인지 검증한다.
     const courseEntitiesInput = new Array<Course>();
     const courseEntityInput = new Course(workTodoPostDtoInput.courseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined);
@@ -52,37 +52,21 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
     workTodoEntities.push(workTodoEntity);
 
-    await this.create(workTodoEntities);
+    return (await this.create(workTodoEntities))[0];
   }
 
-  async createRepeatedDaysOfTheWeek(workTodoPostDtoInput: WorkTodoPostDto): Promise<void> {
-    // createWorkTodo 메소드에서 생성된 work todo의 id 값을 알아낸다.
-    let workTodoEntitiesFindResult = new Array<WorkTodo>();
-    const workTodoEntity = new WorkTodo(
-      undefined,
-      new Course(workTodoPostDtoInput.id, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
-      workTodoPostDtoInput.recurringCycleDate,
-      workTodoPostDtoInput.title,
-      workTodoPostDtoInput.explanation,
-      workTodoPostDtoInput.activeDate
-    );
-
-    workTodoEntitiesFindResult.push(workTodoEntity);
-    workTodoEntitiesFindResult = await this.find(workTodoEntitiesFindResult);
-
+  async createRepeatedDaysOfTheWeek(workTodoEntity: WorkTodo, workTodoPostDtoInput: WorkTodoPostDto): Promise<void> {
     const repeatedDaysOfTheWeekEntities = new Array<RepeatedDaysOfTheWeek>();
 
     // 사용자가 입력한 반복 요일 정보를 요일 entity 객체 배열에 저장
     for (const daysOfTheWeekItem of workTodoPostDtoInput.repeatedDaysOfTheWeek) {
-      for (const workTodoEntityItem of workTodoEntitiesFindResult) {
-        const repeatedDaysOfTheWeekEntity = new RepeatedDaysOfTheWeek(
-          undefined,
-          new WorkTodo(workTodoEntityItem.id, undefined, undefined, undefined, undefined, undefined),
-          daysOfTheWeekItem
-        );
+      const repeatedDaysOfTheWeekEntity = new RepeatedDaysOfTheWeek(
+        undefined,
+        new WorkTodo(workTodoEntity.id, undefined, undefined, undefined, undefined, undefined),
+        daysOfTheWeekItem
+      );
 
-        repeatedDaysOfTheWeekEntities.push(repeatedDaysOfTheWeekEntity);
-      }
+      repeatedDaysOfTheWeekEntities.push(repeatedDaysOfTheWeekEntity);
     }
 
     await this.repeatedDaysOfTheWeekService.create(repeatedDaysOfTheWeekEntities);
