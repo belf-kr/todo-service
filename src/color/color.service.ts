@@ -14,13 +14,13 @@ export class ColorService extends CRUDService<Color> {
     super(colorRepository);
   }
 
-  async createColor(colorDtoInput: ColorDto): Promise<void> {
+  async createColor(colorDtoInput: ColorDto): Promise<Color> {
     const colorEntity = new Color(colorDtoInput.id);
 
     const colorEntities = new Array<Color>();
     colorEntities.push(colorEntity);
 
-    await this.create(colorEntities);
+    return (await this.create(colorEntities))[0];
   }
 
   async getAllColors(): Promise<string[]> {
