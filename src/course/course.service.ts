@@ -45,8 +45,8 @@ export class CourseService extends CRUDService<Course> {
       originalCourseEntity,
       originalCourseEntity.color,
       coursePostDtoInput.userId,
-      new Date(),
-      undefined,
+      coursePostDtoInput.startDate ?? new Date(),
+      coursePostDtoInput.endDate ?? new Date(),
       originalCourseEntity.explanation,
       originalCourseEntity.title,
       0

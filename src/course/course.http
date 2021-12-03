@@ -35,20 +35,9 @@ Content-Type: application/json
 
 {
     "originalCourseId": 1,
-    "color": "#FF8484",
-    "startDate": "2020-12-02T02:06:12.946Z",
-    "endDate": "2021-12-02T02:06:12.946Z",
-    "explanation": "토익 ...",
-    "userId": 1,
-    "title": "import 테스트",
-    "tags": [
-        {
-            "value": "자동차"
-        },
-        {
-            "value": "하하하"
-        }
-    ]
+    "startDate": "2020-12-02",
+    "endDate": "2021-12-02",
+    "userId": 1
 }
 
 

@@ -18,7 +18,7 @@ export class CourseImportationService extends CRUDService<CourseImportation> {
     super(courseImportationRepository);
   }
 
-  async createCoureseImportation(courseImportationDtoInput: CourseImportationDto): Promise<CourseImportation> {
+  async createCourseImportation(courseImportationDtoInput: CourseImportationDto): Promise<CourseImportation> {
     // 올바른 FK인지 검증한다.
     const originalCourseEntityResult = await this.courseService.getCoursesByConditions(
       new CourseQuerystringDto(undefined, courseImportationDtoInput.originalCourseId)
@@ -38,7 +38,7 @@ export class CourseImportationService extends CRUDService<CourseImportation> {
       undefined,
       courseImportationDtoInput.userId,
       new Course(courseImportationDtoInput.courseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
-      new Course(courseImportationDtoInput.originalCourseId)
+      new Course(courseImportationDtoInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined)
     );
 
     courseImportationEntities.push(courseImportationEntity);

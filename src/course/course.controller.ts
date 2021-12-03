@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
 import { CoursePostDto } from "./course-post.dto";
@@ -20,7 +20,7 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Post()
-  async createCourse(@Body(new ValidationPipe({ groups: ["userInput"] })) coursePostDtoInput: CoursePostDto) {
+  async createCourse(@Body() coursePostDtoInput: CoursePostDto) {
     try {
       let courseEntity: Course;
 
@@ -28,7 +28,7 @@ export class CourseController extends CRUDController<Course> {
       if (coursePostDtoInput.originalCourseId) {
         courseEntity = await this.courseService.importCourse(coursePostDtoInput);
 
-        await this.courseImportationService.createCoureseImportation(
+        await this.courseImportationService.createCourseImportation(
           new CourseImportationDto({
             id: undefined,
             userId: coursePostDtoInput.userId,
@@ -40,9 +40,9 @@ export class CourseController extends CRUDController<Course> {
       // course 생성
       else {
         courseEntity = await this.courseService.createCourse(coursePostDtoInput);
+        await this.courseService.createNewTags(coursePostDtoInput.tags);
+        await this.courseService.createCourseTag(courseEntity, coursePostDtoInput);
       }
-      await this.courseService.createNewTags(coursePostDtoInput.tags);
-      await this.courseService.createCourseTag(courseEntity, coursePostDtoInput);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);
