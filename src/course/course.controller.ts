@@ -13,9 +13,16 @@ import { Course } from "src/entity/course.entity";
 import { CourseImportationService } from "src/course-importation/course-importation.service";
 import { CourseImportationDto } from "src/course-importation/course-importation.dto";
 
+import { TagService } from "src/tag/tag.service";
+import { TagQuerystringDto } from "src/tag/tag.querystring.dto";
+
 @Controller("courses")
 export class CourseController extends CRUDController<Course> {
-  constructor(private readonly courseService: CourseService, private readonly courseImportationService: CourseImportationService) {
+  constructor(
+    private readonly courseService: CourseService,
+    private readonly courseImportationService: CourseImportationService,
+    private readonly tagService: TagService
+  ) {
     super(courseService);
   }
 
@@ -36,13 +43,15 @@ export class CourseController extends CRUDController<Course> {
             originalCourseId: coursePostDtoInput.originalCourseId,
           })
         );
+
+        coursePostDtoInput.tags = await this.tagService.getTagsByConditions(new TagQuerystringDto(courseEntity.originalCourseId.id));
       }
       // course 생성
       else {
         courseEntity = await this.courseService.createCourse(coursePostDtoInput);
         await this.courseService.createNewTags(coursePostDtoInput.tags);
-        await this.courseService.createCourseTag(courseEntity, coursePostDtoInput);
       }
+      await this.courseService.createCourseTag(courseEntity, coursePostDtoInput.tags);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);

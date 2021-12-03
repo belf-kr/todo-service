@@ -169,11 +169,11 @@ export class CourseService extends CRUDService<Course> {
   }
 
   // 코스와 태그의 관계를 삽입 해 주기 위한 메소드
-  async createCourseTag(courseEntity: Course, coursePostDtoInput: CoursePostDto): Promise<void> {
+  async createCourseTag(courseEntity: Course, tagEntities: Tag[]): Promise<void> {
     let tagEntitiesFindResult = new Array<Tag>();
 
     const inputTagEntities = new Array<Tag>();
-    for (const tagType of coursePostDtoInput.tags) {
+    for (const tagType of tagEntities) {
       const tagEntity = new Tag(undefined, tagType.value);
       inputTagEntities.push(tagEntity);
     }
