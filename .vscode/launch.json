@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "command": "npm i && npm run prebuild && npm run start:dev",
+            "command": "source ./env-14.16.1/bin/activate && npm i && npm run prebuild && npm run start:dev",
             "name": "Nestjs start",
             "request": "launch",
             "type": "node-terminal"

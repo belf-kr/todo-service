@@ -36,3 +36,6 @@ lerna-debug.log*
 ### mysql (@JP3Pe, 김재광)
 docker/mysql/master/mysql-data
 docker/mysql/slave1/mysql-data
+
+# nodeenv
+env-14.16.1

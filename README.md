@@ -48,6 +48,7 @@ http://localhost:3003/ping
 ### 개발 환경
 
 1. .env.dev 파일에 특이사항이 있는 경우 수정합니다.
+1. `nodeenv --node=14.16.1 env-14.16.1` 명령을 실행해서 프로젝트 디렉토리 내부에 `node`, `npm` 실행 환경을 생성합니다.
 1. VSCode 디버그 창 내부에 있는 NestJS start 버튼을 눌러 시작합니다.
 1. TypeORM을 통해서 todo service에서 사용하는 MySQL Table이 정상적으로 생성 되었는지 확인합니다.
 
