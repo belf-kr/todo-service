@@ -47,7 +47,32 @@ http://localhost:3003/ping
 
 ### 개발 환경
 
+#### nodeenv 설치
+
+##### nodeenv란
+
+개발 PC에서 여러 node 실행 환경을 구분지어 구동할 수 있는 프로그램입니다.
+개발환경 구축을 하는데 사용할 것이며, 프로젝트 디렉토리 하위에 node, npm 관련 바이너리 파일 등을 생성하는데 사용합니다.<br>
+[공식 링크](https://github.com/nodenv/nodenv)
+
+##### Windows(WSL Ubuntu) 설치법
+
+`git clone https://github.com/nodenv/nodenv.git ~/.nodenv`<br>
+공식 git repository를 clone합니다.
+
+`echo 'export PATH="$HOME/.nodenv/bin:$PATH"' >> ~/.bashrc`<br>
+Linux PATH에 방금 git clone한 repository속 명령어를 등록합니다.
+
+작업을 수행했던 터미널 창을 닫고 새로운 터미널 창을 열어줍니다.
+
+##### MacOS 설치법
+
+`brew install nodeenv` 명령을 입력해서 설치합니다.
+
+#### 환경 구성
+
 1. .env.dev 파일에 특이사항이 있는 경우 수정합니다.
+1. `nodeenv --node=14.16.1 env-14.16.1` 명령을 실행해서 프로젝트 디렉토리 내부에 `node`, `npm` 실행 환경을 생성합니다.
 1. VSCode 디버그 창 내부에 있는 NestJS start 버튼을 눌러 시작합니다.
 1. TypeORM을 통해서 todo service에서 사용하는 MySQL Table이 정상적으로 생성 되었는지 확인합니다.
 
