@@ -9,7 +9,8 @@ Content-Type: application/json
     "workTodoId": 1,
     "title": "한 일의 제목1",
     "content": "json 컨텐츠 1",
-    "userId": 1
+    "userId": 1,
+    "actionDate": "2021-11-06T08:50:00.12"
 }
 
 ### work_done 전체 리스트 가져오기
