@@ -2,6 +2,8 @@ import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGenerat
 
 import { WorkTodo } from "./work-todo.entity";
 
+import { WorkDoneDto } from "src/work-done/work-done.dto";
+
 @Entity({})
 export class WorkDone {
   constructor(id?: number, title?: string, content?: string, userId?: number, workTodoId?: WorkTodo, actionDate?: Date) {
@@ -23,6 +25,29 @@ export class WorkDone {
     if (actionDate) {
       this.actionDate = actionDate;
     }
+  }
+
+  static dtoConstructor(workDoneDtoInput: WorkDoneDto): WorkDone {
+    const workDoneEntity = new WorkDone();
+
+    workDoneEntity.id = workDoneDtoInput.id ?? undefined;
+    workDoneEntity.title = workDoneDtoInput.title ?? undefined;
+    workDoneEntity.content = workDoneDtoInput.content ?? undefined;
+    workDoneEntity.userId = workDoneDtoInput.userId ?? undefined;
+    workDoneEntity.workTodoId = new WorkTodo(workDoneDtoInput?.workTodoId, undefined, undefined, undefined, undefined, undefined, undefined);
+    workDoneEntity.actionDate = workDoneDtoInput.actionDate ?? undefined;
+
+    return workDoneEntity;
+  }
+
+  static dtosConstructor(workDoneDtosInput: WorkDoneDto[]): WorkDone[] {
+    const workDoneEntities = new Array<WorkDone>();
+
+    for (const workDoneDto of workDoneDtosInput) {
+      workDoneEntities.push(this.dtoConstructor(workDoneDto));
+    }
+
+    return workDoneEntities;
   }
 
   @PrimaryGeneratedColumn()

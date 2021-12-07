@@ -17,6 +17,8 @@ import { CourseService } from "src/course/course.service";
 
 import { RepeatedDaysOfTheWeekService } from "src/repeated-days-of-the-week/repeated-days-of-the-week.service";
 
+import { WorkDone } from "src/entity/work-done.entity";
+
 @Injectable()
 export class WorkTodoService extends CRUDService<WorkTodo> {
   constructor(
@@ -181,5 +183,25 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     }
 
     await this.delete(workTodoEntitiesInput);
+  }
+
+  convertWorkDones(workDoneEntities: WorkDone[], courseEntity: Course): WorkTodo[] {
+    const workTodoEntities = new Array<WorkTodo>();
+
+    for (const workDoneEntity of workDoneEntities) {
+      let workTodoActionDate = undefined;
+      const dayToSubstract = workDoneEntity.actionDate ?? 0;
+      const dayDifference = Math.abs(+new Date(workDoneEntity.actionDate) - +new Date(courseEntity.originalCourseId.startDate));
+
+      if (dayToSubstract) {
+        workTodoActionDate = new Date(+new Date(dayDifference) + +new Date(courseEntity.startDate));
+      }
+
+      const workTodoEntity = new WorkTodo(undefined, courseEntity, 0, workDoneEntity.title, workDoneEntity.content, workTodoActionDate, courseEntity.userId);
+
+      workTodoEntities.push(workTodoEntity);
+    }
+
+    return workTodoEntities;
   }
 }
