@@ -79,8 +79,7 @@ export class WorkDone {
   @CreateDateColumn({
     type: "datetime",
     name: "action_date",
-    nullable: true,
-    default: () => null,
+    nullable: false,
   })
   actionDate: Date;
 }
