@@ -19,6 +19,7 @@ import { CourseTagModule } from "./course-tag/course-tag.module";
 import { WorkTodoModule } from "./work-todo/work-todo.module";
 import { RepeatedDaysOfTheWeekModule } from "./repeated-days-of-the-week/repeated-days-of-the-week.module";
 import { WorkDoneModule } from "./work-done/work-done.module";
+import { CourseImportationModule } from "./course-importation/course-importation.module";
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { WorkDoneModule } from "./work-done/work-done.module";
     WorkTodoModule,
     RepeatedDaysOfTheWeekModule,
     WorkDoneModule,
+    CourseImportationModule,
   ],
   controllers: [AppController],
   providers: [

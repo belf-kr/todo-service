@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Color } from "./color.entity";
 
@@ -47,7 +47,7 @@ export class Course {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne(() => Course, (course) => course.id, {
+  @ManyToOne(() => Course, (course) => course.id, {
     onDelete: "SET NULL",
     nullable: true,
   })

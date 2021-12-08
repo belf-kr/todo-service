@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { forwardRef, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { CourseService } from "./course.service";
@@ -12,8 +12,21 @@ import { CourseTagModule } from "src/course-tag/course-tag.module";
 
 import { ColorModule } from "src/color/color.module";
 
+import { CourseImportationModule } from "src/course-importation/course-importation.module";
+import { WorkTodoModule } from "src/work-todo/work-todo.module";
+
+import { WorkDoneModule } from "src/work-done/work-done.module";
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Course]), TagModule, CourseTagModule, ColorModule],
+  imports: [
+    TypeOrmModule.forFeature([Course]),
+    TagModule,
+    CourseTagModule,
+    ColorModule,
+    forwardRef(() => CourseImportationModule),
+    forwardRef(() => WorkTodoModule),
+    WorkDoneModule,
+  ],
   providers: [CourseService],
   controllers: [CourseController],
   exports: [CourseService],

@@ -32,6 +32,32 @@ export class CourseService extends CRUDService<Course> {
     super(courseRepository);
   }
 
+  async importCourse(coursePostDtoInput: CoursePostDto): Promise<Course> {
+    const sqlQueryString = getRepository(Course).createQueryBuilder("c").where("c.id = :courseId", { courseId: coursePostDtoInput.originalCourseId });
+    const originalCourseEntity = await sqlQueryString.getOne();
+    if (!originalCourseEntity) {
+      throw new HttpException({ data: "존재하지 않는 origialCourseId값 입니다.", status: HttpStatus.NOT_FOUND }, HttpStatus.NOT_FOUND);
+    }
+
+    // Modify data
+    const courseEntity = new Course(
+      undefined,
+      originalCourseEntity,
+      originalCourseEntity.color,
+      coursePostDtoInput.userId,
+      coursePostDtoInput.startDate ?? new Date(),
+      coursePostDtoInput.endDate ?? new Date(),
+      originalCourseEntity.explanation,
+      originalCourseEntity.title,
+      0
+    );
+
+    const courseEntities = new Array<Course>();
+    courseEntities.push(courseEntity);
+
+    return (await this.create(courseEntities))[0];
+  }
+
   async createCourse(courseDtoInput: CourseDto): Promise<Course> {
     const colorEntity = new Color(courseDtoInput.color);
 
@@ -143,11 +169,11 @@ export class CourseService extends CRUDService<Course> {
   }
 
   // 코스와 태그의 관계를 삽입 해 주기 위한 메소드
-  async createCourseTag(courseEntity: Course, coursePostDtoInput: CoursePostDto): Promise<void> {
+  async createCourseTag(courseEntity: Course, tagEntities: Tag[]): Promise<void> {
     let tagEntitiesFindResult = new Array<Tag>();
 
     const inputTagEntities = new Array<Tag>();
-    for (const tagType of coursePostDtoInput.tags) {
+    for (const tagType of tagEntities) {
       const tagEntity = new Tag(undefined, tagType.value);
       inputTagEntities.push(tagEntity);
     }
