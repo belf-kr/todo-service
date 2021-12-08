@@ -18,6 +18,7 @@ Content-Type: application/json
     "color": "#FF8484",
     "title": "영어공부하기1",
     "explanation": "토익 ...",
+    "userId": 1,
     "tags": [
         {
             "value": "자동차"
@@ -25,9 +26,20 @@ Content-Type: application/json
         {
             "value": "하하하"
         }
-    ],
+    ]
+}
+
+### course import
+POST {{Host}}/{{Router}}
+Content-Type: application/json
+
+{
+    "originalCourseId": 1,
+    "startDate": "2021-12-07",
+    "endDate": "2021-12-10",
     "userId": 1
 }
+
 
 ### course 삭제
 DELETE {{Host}}/{{Router}}/courses/1?userId=

@@ -12,5 +12,6 @@ import { WorkTodoModule } from "src/work-todo/work-todo.module";
   imports: [TypeOrmModule.forFeature([WorkDone]), WorkTodoModule],
   providers: [WorkDoneService],
   controllers: [WorkDoneController],
+  exports: [WorkDoneService],
 })
 export class WorkDoneModule {}
