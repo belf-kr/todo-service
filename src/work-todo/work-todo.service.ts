@@ -109,7 +109,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
         SELECT *
         FROM work_todo wt
     */
-    let sqlQueryString = getRepository(WorkTodo).createQueryBuilder("wt");
+    let sqlQueryString = getRepository(WorkTodo).createQueryBuilder("wt").where("wt.is_delete = 0");
 
     if (querystringInput.userId) {
       sqlQueryString = sqlQueryString.andWhere("wt.user_id = :userId", { userId: querystringInput.userId });
