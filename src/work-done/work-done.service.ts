@@ -44,7 +44,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
       workDoneTypeInput.content,
       workDoneTypeInput.userId,
       workTodoEntityInput,
-      workDoneTypeInput.actionDate
+      workDoneTypeInput.actionDate ?? undefined
     );
 
     workDoneEntitiesInput.push(workDoneEntityInput);
