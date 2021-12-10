@@ -109,7 +109,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
         SELECT *
         FROM work_todo wt
     */
-    let sqlQueryString = getRepository(WorkTodo).createQueryBuilder("wt");
+    let sqlQueryString = getRepository(WorkTodo).createQueryBuilder("wt").where("wt.is_delete = 0");
 
     if (querystringInput.userId) {
       sqlQueryString = sqlQueryString.andWhere("wt.user_id = :userId", { userId: querystringInput.userId });
@@ -182,7 +182,16 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
       throw new HttpException({ data: "조건을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
     }
 
-    await this.delete(workTodoEntitiesInput);
+    const workTodoIds = workTodoFindResult.map((workTodo) => {
+      return workTodo.id;
+    });
+
+    const sqlQueryString = getRepository(WorkTodo)
+      .createQueryBuilder("wt")
+      .update(WorkTodo)
+      .set({ isDelete: true })
+      .where("id in (:workTodoIds)", { workTodoIds: workTodoIds });
+    await sqlQueryString.execute();
   }
 
   convertWorkDones(workDoneEntities: WorkDone[], courseEntity: Course): WorkTodo[] {
