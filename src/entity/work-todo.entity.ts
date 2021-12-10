@@ -68,4 +68,10 @@ export class WorkTodo {
     name: "user_id",
   })
   userId: number;
+
+  @Column({
+    name: "is_delete",
+    default: false,
+  })
+  isDelete: boolean;
 }
