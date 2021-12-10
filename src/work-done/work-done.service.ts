@@ -44,6 +44,7 @@ export class WorkDoneService extends CRUDService<WorkDone> {
       workDoneTypeInput.content,
       workDoneTypeInput.userId,
       workTodoEntityInput,
+      // DBMS에서 default값으로 현재 시간을 입력한다.
       workDoneTypeInput.actionDate ?? undefined
     );
 
