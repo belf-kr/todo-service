@@ -109,12 +109,18 @@ export class CourseService extends CRUDService<Course> {
           LEFT  JOIN tag t on ct.tag_id = t.id
           WHERE ct.course_id = ?
         */
-      const joinResult = await getRepository(Course)
+      let sqlQueryString = getRepository(Course)
         .createQueryBuilder("c")
         .leftJoinAndMapMany("c", CourseTag, "ct", "c.id = ct.course_id")
         .leftJoinAndMapMany("c", Tag, "t", "ct.tag_id = t.id")
-        .where("ct.course_id = :courseId", { courseId: courseEntity.id })
-        .getRawMany();
+        .where("ct.course_id = :courseId", { courseId: courseEntity.id });
+      if (querystringInput?.belfOnly?.toString().toLowerCase() === "true") {
+        sqlQueryString = sqlQueryString.andWhere("c.original_course_id IS NOT NULL");
+      }
+      if (querystringInput?.userId) {
+        sqlQueryString = sqlQueryString.andWhere("c.user_id = :userId", { userId: querystringInput.userId });
+      }
+      const joinResult = await sqlQueryString.getRawMany();
 
       // Tag Entity 배열을 생성하기
       const tagEntitiesResult = new Array<Tag>();
@@ -124,8 +130,11 @@ export class CourseService extends CRUDService<Course> {
         tagEntitiesResult.push(tagEntity);
       }
 
-      const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult);
-      courseGetDtoArrayResult.push(courseGetDto);
+      // where 구문에서 걸러진 값을 반환하는 문제 방지
+      if (joinResult.length > 0) {
+        const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult);
+        courseGetDtoArrayResult.push(courseGetDto);
+      }
     }
 
     return courseGetDtoArrayResult;

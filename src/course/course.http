@@ -8,7 +8,7 @@ GET {{Host}}/{{Router}}
 GET {{Host}}/{{Router}}/1
 
 ### course 조건으로 조회
-GET {{Host}}/{{Router}}?userId=
+GET {{Host}}/{{Router}}?userId=&belfOnly=
 
 ### course 생성
 POST {{Host}}/{{Router}}
