@@ -47,9 +47,9 @@ export class CourseController extends CRUDController<Course> {
         await this.courseImportationService.createCourseImportation(
           new CourseImportationDto({
             id: undefined,
-            userId: coursePostDtoInput.userId,
+            userId: courseEntity.userId,
             courseId: courseEntity.id,
-            originalCourseId: coursePostDtoInput.originalCourseId,
+            originalCourseId: courseEntity.originalCourseId.id,
           })
         );
 

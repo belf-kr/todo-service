@@ -112,8 +112,10 @@ export class CourseService extends CRUDService<Course> {
       let sqlQueryString = getRepository(Course)
         .createQueryBuilder("c")
         .leftJoinAndMapMany("c", CourseTag, "ct", "c.id = ct.course_id")
-        .leftJoinAndMapMany("c", Tag, "t", "ct.tag_id = t.id")
-        .where("ct.course_id = :courseId", { courseId: courseEntity.id });
+        .leftJoinAndMapMany("c", Tag, "t", "ct.tag_id = t.id");
+      if (querystringInput?.courseId) {
+        sqlQueryString = sqlQueryString.where("c.id = :courseId", { courseId: courseEntity.id });
+      }
       if (querystringInput?.belfOnly?.toString().toLowerCase() === "true") {
         sqlQueryString = sqlQueryString.andWhere("c.original_course_id IS NOT NULL");
       }
