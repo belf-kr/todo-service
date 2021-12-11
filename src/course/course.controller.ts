@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, Param, ParseIntPipe, Post, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, ParseIntPipe, Post, Query } from "@nestjs/common";
 
 import { CourseService } from "./course.service";
 import { CoursePostDto } from "./course-post.dto";
@@ -21,6 +21,7 @@ import { WorkTodoService } from "src/work-todo/work-todo.service";
 
 import { WorkDoneService } from "src/work-done/work-done.service";
 import { WorkDoneQuerystringDto } from "src/work-done/work-done-querystring.dto";
+import { WorkTodo } from "src/entity/work-todo.entity";
 
 @Controller("courses")
 export class CourseController extends CRUDController<Course> {
@@ -135,5 +136,32 @@ export class CourseController extends CRUDController<Course> {
     }
 
     return;
+  }
+
+  @Get("/search")
+  async searchCourses(@Query("search") search: string, @Query("take") take?: number, @Query("skip") skip?: number) {
+    search = search.trim();
+    const remove_warning_str_reg = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+
+    //특수문자 검증
+    if (remove_warning_str_reg.test(search)) {
+      search = search.replace(remove_warning_str_reg, "");
+    }
+
+    if (search.length < 3) {
+      throw new HttpException("검색할 문자열의 길이가 3보다 길어야합니다.", HttpStatus.BAD_REQUEST);
+    }
+
+    const searchDTO = new WorkTodo(undefined, undefined, undefined, search, search, undefined, undefined);
+
+    try {
+      return await this.courseService.searchCoursesAndSize(searchDTO, take | 10, skip | 0);
+    } catch (error) {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+      // API에 에러를 토스
+      throw new HttpException(message, httpStatusCode);
+    }
   }
 }

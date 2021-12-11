@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Like, Repository } from "typeorm";
 
 import { CourseDto } from "./course.dto";
 import { CourseGetDto } from "./course-get.dto";
@@ -20,6 +20,7 @@ import { TagType } from "src/tag/tag.type";
 import { CourseTagService } from "src/course-tag/course-tag.service";
 
 import { ColorService } from "src/color/color.service";
+import { WorkTodo } from "src/entity/work-todo.entity";
 
 @Injectable()
 export class CourseService extends CRUDService<Course> {
@@ -30,6 +31,20 @@ export class CourseService extends CRUDService<Course> {
     private readonly colorService: ColorService
   ) {
     super(courseRepository);
+  }
+
+  async searchCoursesAndSize(searchDTO: WorkTodo, take: number, skip: number) {
+    const [result, size] = await getRepository(Course).findAndCount({
+      where: { title: Like(`%${searchDTO.title}%`), explanation: Like(`%${searchDTO.explanation}%`) },
+      order: { likeCount: "DESC" },
+      take: take,
+      skip: skip,
+    });
+
+    return {
+      data: result,
+      size: size,
+    };
   }
 
   async importCourse(coursePostDtoInput: CoursePostDto): Promise<Course> {
