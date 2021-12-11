@@ -102,6 +102,24 @@ export class CourseController extends CRUDController<Course> {
     return serviceResult;
   }
 
+  @Get("search")
+  async courseSearch(@Query("keyword") keyword: string) {
+    let serviceResult: CourseGetDto[];
+
+    try {
+      serviceResult = await this.courseService.getCourseBySearch(keyword);
+    } catch (error) {
+      // 동작에 실패한 경우 Catch 구문에 예외를 넘김
+      const httpStatusCode = getErrorHttpStatusCode(error);
+      const message = getErrorMessage(error);
+
+      // API에 에러를 토스
+      throw new HttpException(message, httpStatusCode);
+    }
+
+    return serviceResult;
+  }
+
   @Get(":id")
   async getCourses(@Param("id", ParseIntPipe) id: number) {
     let serviceResult: CourseGetDto[];
