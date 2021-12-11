@@ -34,21 +34,31 @@ export class CourseService extends CRUDService<Course> {
 
   async importCourse(coursePostDtoInput: CoursePostDto): Promise<Course> {
     const sqlQueryString = getRepository(Course).createQueryBuilder("c").where("c.id = :courseId", { courseId: coursePostDtoInput.originalCourseId });
-    const originalCourseEntity = await sqlQueryString.getOne();
-    if (!originalCourseEntity) {
+    const originalCourseRawEntity = await sqlQueryString.getRawOne();
+    if (!originalCourseRawEntity) {
       throw new HttpException({ data: "존재하지 않는 origialCourseId값 입니다.", status: HttpStatus.NOT_FOUND }, HttpStatus.NOT_FOUND);
     }
 
     // Modify data
     const courseEntity = new Course(
       undefined,
-      originalCourseEntity,
-      originalCourseEntity.color,
+      new Course(
+        originalCourseRawEntity["c_id"],
+        originalCourseRawEntity["c_original_course_id"] ?? undefined,
+        originalCourseRawEntity["c_color"],
+        originalCourseRawEntity["c_user_id"],
+        originalCourseRawEntity["c_start_date"],
+        originalCourseRawEntity["c_end_date"],
+        originalCourseRawEntity["c_explanation"],
+        originalCourseRawEntity["c_title"],
+        originalCourseRawEntity["c_like_count"]
+      ),
+      new Color(originalCourseRawEntity["c_color"]),
       coursePostDtoInput.userId,
       coursePostDtoInput.startDate ?? new Date(),
       coursePostDtoInput.endDate ?? new Date(),
-      originalCourseEntity.explanation,
-      originalCourseEntity.title,
+      originalCourseRawEntity["c_explanation"],
+      originalCourseRawEntity["c_title"],
       0
     );
 
