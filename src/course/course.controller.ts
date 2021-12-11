@@ -47,9 +47,9 @@ export class CourseController extends CRUDController<Course> {
         await this.courseImportationService.createCourseImportation(
           new CourseImportationDto({
             id: undefined,
-            userId: coursePostDtoInput.userId,
+            userId: courseEntity.userId,
             courseId: courseEntity.id,
-            originalCourseId: coursePostDtoInput.originalCourseId,
+            originalCourseId: courseEntity.originalCourseId.id,
           })
         );
 
@@ -82,11 +82,11 @@ export class CourseController extends CRUDController<Course> {
   }
 
   @Get()
-  async getCoursesByConditions(@Query("userId") userId?: number) {
+  async getCoursesByConditions(@Query("userId") userId?: number, @Query("courseId") courseId?: number, @Query("belfOnly") belfOnly?: boolean) {
     let serviceResult: CourseGetDto[];
 
     try {
-      const querystringInput = new CourseQuerystringDto(userId);
+      const querystringInput = new CourseQuerystringDto(userId, courseId, belfOnly);
 
       // 코스 리스트 저장
       serviceResult = await this.courseService.getCoursesByConditions(querystringInput);
