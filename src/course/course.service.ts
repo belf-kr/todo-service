@@ -103,8 +103,8 @@ export class CourseService extends CRUDService<Course> {
     const sqlQueryString = getRepository(Course)
       .createQueryBuilder("c")
       .where("c.title like :keyword", { keyword: `%${keyword}%` });
-    const courseEntitiesResult = await sqlQueryString.getMany();
-    const joinResult = this.courseJoiner(courseEntitiesResult, undefined);
+    const courseEntitiesResult = await this.find(await sqlQueryString.getMany());
+    const joinResult = await this.courseJoiner(courseEntitiesResult, undefined);
 
     return joinResult;
   }
