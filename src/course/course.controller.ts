@@ -60,9 +60,10 @@ export class CourseController extends CRUDController<Course> {
         const workDoneDtosResult = await this.workDoneService.getWorkDonesByConditions(
           new WorkDoneQuerystringDto(undefined, coursePostDtoInput.originalCourseId)
         );
-        const convertedWorkTodoEntities = this.workTodoService.convertWorkDones(WorkDone.dtosConstructor(workDoneDtosResult), courseEntity);
+        const convertedWorkTodoEntities = await this.workTodoService.convertWorkDones(WorkDone.dtosConstructor(workDoneDtosResult), courseEntity);
         await this.workTodoService.create(convertedWorkTodoEntities);
       }
+
       // course 생성
       else {
         courseEntity = await this.courseService.createCourse(coursePostDtoInput);

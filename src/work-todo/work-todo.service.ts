@@ -12,12 +12,11 @@ import { CRUDService } from "src/common/crud.service";
 import { WorkTodo } from "src/entity/work-todo.entity";
 import { Course } from "src/entity/course.entity";
 import { RepeatedDaysOfTheWeek } from "src/entity/repeated-day-of-the-week.entity";
+import { WorkDone } from "src/entity/work-done.entity";
 
 import { CourseService } from "src/course/course.service";
 
 import { RepeatedDaysOfTheWeekService } from "src/repeated-days-of-the-week/repeated-days-of-the-week.service";
-
-import { WorkDone } from "src/entity/work-done.entity";
 
 @Injectable()
 export class WorkTodoService extends CRUDService<WorkTodo> {
@@ -194,19 +193,38 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     await sqlQueryString.execute();
   }
 
-  convertWorkDones(workDoneEntities: WorkDone[], courseEntity: Course): WorkTodo[] {
+  async convertWorkDones(workDoneEntities: WorkDone[], courseEntity: Course): Promise<WorkTodo[]> {
     const workTodoEntities = new Array<WorkTodo>();
 
-    for (const workDoneEntity of workDoneEntities) {
-      let workTodoActionDate = undefined;
+    for (let workDoneEntity of workDoneEntities) {
+      // id를 사용해 workTodoEntity의 전체 정보를 조회후, 기존 데이터에 덮어 씌운다.
+      workDoneEntity = new WorkDone(
+        workDoneEntity.id,
+        workDoneEntity.title,
+        workDoneEntity.content,
+        workDoneEntity.userId,
+        await this.findOne(new WorkTodo(workDoneEntity.workTodoId.id, undefined, undefined, undefined, undefined, undefined, undefined)),
+        workDoneEntity.actionDate
+      );
+      let workTodoActionDate = new Date();
       const dayToSubstract = workDoneEntity.actionDate ?? 0;
-      const dayDifference = Math.abs(+new Date(workDoneEntity.actionDate) - +new Date(courseEntity.originalCourseId.startDate));
+      // TODO: 날짜 차이 로직 구하는 기능 추가
+      // const dayDifference = Math.abs(+new Date(workDoneEntity.actionDate) - +new Date(courseEntity.originalCourseId.startDate));
+      const dayDifference = new Date();
 
       if (dayToSubstract) {
         workTodoActionDate = new Date(+new Date(dayDifference) + +new Date(courseEntity.startDate));
       }
 
-      const workTodoEntity = new WorkTodo(undefined, courseEntity, 0, workDoneEntity.title, workDoneEntity.content, workTodoActionDate, courseEntity.userId);
+      const workTodoEntity = new WorkTodo(
+        undefined,
+        courseEntity,
+        0,
+        workDoneEntity.title,
+        workDoneEntity.workTodoId.explanation,
+        workTodoActionDate,
+        courseEntity.userId
+      );
 
       workTodoEntities.push(workTodoEntity);
     }

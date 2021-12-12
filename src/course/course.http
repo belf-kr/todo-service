@@ -35,8 +35,6 @@ Content-Type: application/json
 
 {
     "originalCourseId": 1,
-    "startDate": "2021-12-07",
-    "endDate": "2021-12-10",
     "userId": 1
 }
 
