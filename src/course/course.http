@@ -1,6 +1,9 @@
 @Host = http://localhost:3003
 @Router = courses
 
+### course title 검색
+GET {{Host}}/{{Router}}/search?keyword=
+
 ### course id로 조회
 GET {{Host}}/{{Router}}/1
 
