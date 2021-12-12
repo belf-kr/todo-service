@@ -99,33 +99,36 @@ export class CourseService extends CRUDService<Course> {
     return (await this.create(courseEntities))[0];
   }
 
-  async getCoursesByConditions(querystringInput: CourseQuerystringDto): Promise<CourseGetDto[]> {
-    const courseEntitiesFilter: Course[] = new Array<Course>();
-    courseEntitiesFilter.push(
-      new Course(querystringInput.courseId, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined)
-    );
-    const courseEntitiesResult = await this.find(courseEntitiesFilter);
+  async getCourseBySearch(keyword: string) {
+    const sqlQueryString = getRepository(Course)
+      .createQueryBuilder("c")
+      .where("c.title like :keyword", { keyword: `%${keyword}%` });
+    const courseEntitiesResult = await sqlQueryString.getMany();
+    const joinResult = this.courseJoiner(courseEntitiesResult, undefined);
+
+    return joinResult;
+  }
+
+  async courseJoiner(coursesInput: Course[], querystringInput?: CourseQuerystringDto) {
     // DTO 형태로 반환하기 위한 CourseDTO 배열
     const courseGetDtoArrayResult = new Array<CourseGetDto>();
 
     // course 테이블과 course-tag 테이블의 조인 처리
     // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
-    for (const courseEntity of courseEntitiesResult) {
+    for (const courseEntity of coursesInput) {
       // course에 대한 tag 값을 join 해서 가져온다
       /*
-          SELECT *
-          FROM course c
-          LEFT  JOIN course_tag ct on c.id = ct.course_id
-          LEFT  JOIN tag t on ct.tag_id = t.id
-          WHERE ct.course_id = ?
-        */
+       SELECT *
+       FROM course c
+       LEFT  JOIN course_tag ct on c.id = ct.course_id
+       LEFT  JOIN tag t on ct.tag_id = t.id
+       WHERE ct.course_id = ?
+     */
       let sqlQueryString = getRepository(Course)
         .createQueryBuilder("c")
         .leftJoinAndMapMany("c", CourseTag, "ct", "c.id = ct.course_id")
         .leftJoinAndMapMany("c", Tag, "t", "ct.tag_id = t.id");
-      if (querystringInput?.courseId) {
-        sqlQueryString = sqlQueryString.where("c.id = :courseId", { courseId: courseEntity.id });
-      }
+      sqlQueryString = sqlQueryString.where("c.id = :courseId", { courseId: courseEntity.id });
       if (querystringInput?.belfOnly?.toString().toLowerCase() === "true") {
         sqlQueryString = sqlQueryString.andWhere("c.original_course_id IS NOT NULL");
       }
@@ -150,6 +153,16 @@ export class CourseService extends CRUDService<Course> {
     }
 
     return courseGetDtoArrayResult;
+  }
+
+  async getCoursesByConditions(querystringInput: CourseQuerystringDto): Promise<CourseGetDto[]> {
+    const courseEntitiesFilter: Course[] = new Array<Course>();
+    courseEntitiesFilter.push(
+      new Course(querystringInput.courseId, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined)
+    );
+    const courseEntitiesResult = await this.find(courseEntitiesFilter);
+
+    return await this.courseJoiner(courseEntitiesResult, querystringInput);
   }
 
   async deleteCourse(userId: number, id: number): Promise<void> {
