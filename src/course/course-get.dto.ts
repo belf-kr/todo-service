@@ -17,7 +17,7 @@ export class CourseGetDto extends CourseDto implements CourseGetInterface {
     }
   }
 
-  static entityConstructor(courseEntityInput?: Course, tagEntitiesInput?: Tag[]) {
+  static entityConstructor(courseEntityInput?: Course, tagEntitiesInput?: Tag[], userEmail?: string) {
     const courseDto = super.entityConstructor(courseEntityInput);
     const courseGetDto = new CourseGetDto(courseDto as CourseGetInterface);
 
@@ -30,8 +30,12 @@ export class CourseGetDto extends CourseDto implements CourseGetInterface {
       }
     }
 
+    courseGetDto.userEmail = userEmail ?? undefined;
+
     return courseGetDto;
   }
 
   tags: TagDto[];
+
+  userEmail: string;
 }
