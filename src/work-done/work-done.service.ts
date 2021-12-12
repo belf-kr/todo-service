@@ -62,9 +62,6 @@ export class WorkDoneService extends CRUDService<WorkDone> {
 
     const workTodoQuerystringInput = new WorkTodoQuerystringDto(querystringInput.userId, querystringInput.courseId);
     const wokrTodoDtoArrayResult = await this.workTodoService.getWorkTodosByConditions(workTodoQuerystringInput);
-    if (wokrTodoDtoArrayResult.length === 0) {
-      throw new HttpException({ data: "workTodo의 id 값을 만족하는 데이터가 없습니다.", status: HttpStatus.BAD_REQUEST }, HttpStatus.BAD_REQUEST);
-    }
 
     const workTodoIdArray = new Array<number>();
     // number 배열을 workTodoDtoArrayResult로 부터 생성한다.
@@ -79,10 +76,12 @@ export class WorkDoneService extends CRUDService<WorkDone> {
       */
     sqlQueryString = sqlQueryString
       .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
-      .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
-      .where("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
+      .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id");
+    if (workTodoIdArray.length) {
+      sqlQueryString = sqlQueryString.where("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
+    }
     if (querystringInput.userId) {
-      sqlQueryString = sqlQueryString.where("wd.user_id = :userId", { userId: querystringInput.userId });
+      sqlQueryString = sqlQueryString.andWhere("wd.user_id = :userId", { userId: querystringInput.userId });
     }
 
     // query string 을 사용해 SELECT 수행
