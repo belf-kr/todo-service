@@ -57,7 +57,6 @@ export class Course {
   @ManyToOne(() => Color, (color) => color.id, {
     onDelete: "SET NULL",
     nullable: true,
-    eager: true,
   })
   @JoinColumn({ name: "color" })
   color: Color;
