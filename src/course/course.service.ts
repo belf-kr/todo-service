@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { getRepository, Repository } from "typeorm";
+import { getConnection, getRepository, Repository } from "typeorm";
 
 import { CourseDto } from "./course.dto";
 import { CourseGetDto } from "./course-get.dto";
@@ -110,12 +110,21 @@ export class CourseService extends CRUDService<Course> {
   }
 
   async courseJoiner(coursesInput: Course[], querystringInput?: CourseQuerystringDto) {
+    const queryRunner = getConnection().createQueryRunner();
     // DTO 형태로 반환하기 위한 CourseDTO 배열
     const courseGetDtoArrayResult = new Array<CourseGetDto>();
 
     // course 테이블과 course-tag 테이블의 조인 처리
     // 코스의 정보와 코스에 대한 태그 정보를 입력한다.
     for (const courseEntity of coursesInput) {
+      // userId를 기반으로 users 테이블 정보를 가져온다.
+      queryRunner.query(`use belf;`);
+      const userResult = await queryRunner.query(
+        `SELECT id, email, password, name, avatar_image, connected_at, kakao_talk_socials_id
+        FROM users
+        WHERE id = ?`,
+        [courseEntity.userId]
+      );
       // course에 대한 tag 값을 join 해서 가져온다
       /*
        SELECT *
@@ -147,7 +156,7 @@ export class CourseService extends CRUDService<Course> {
 
       // where 구문에서 걸러진 값을 반환하는 문제 방지
       if (joinResult.length > 0) {
-        const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult);
+        const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult, userResult[0]["email"]);
         courseGetDtoArrayResult.push(courseGetDto);
       }
     }
