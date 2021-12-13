@@ -21,8 +21,8 @@ export class AppController {
     return this.appService.getVersion();
   }
 
-  @Get("env")
-  getEnv(): NodeJS.ProcessEnv {
-    return this.appService.getEnv();
-  }
+  // @Get("env")
+  // getEnv(): NodeJS.ProcessEnv {
+  //   return this.appService.getEnv();
+  // }
 }
