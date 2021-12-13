@@ -92,9 +92,6 @@ export class CourseController extends CRUDController<Course> {
       // 코스 리스트 저장
       serviceResult = await this.courseService.getCoursesByConditions(querystringInput);
     } catch (error) {
-      console.log("Debug error log!");
-      console.log(error);
-      console.log("Debug error log finished!");
       // 동작에 실패한 경우 Catch 구문에 예외를 넘김
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);

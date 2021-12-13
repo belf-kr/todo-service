@@ -169,10 +169,6 @@ export class CourseService extends CRUDService<Course> {
           if (userResult.length > 0) {
             userEmail = userResult[0]["email"] ?? undefined;
           }
-          console.log("Course joiner debug start!");
-          console.log("userResult");
-          console.log(userResult);
-          console.log("Course joiner debug finished!");
           const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult, userEmail);
           courseGetDtoArrayResult.push(courseGetDto);
         }
