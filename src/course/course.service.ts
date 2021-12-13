@@ -164,6 +164,10 @@ export class CourseService extends CRUDService<Course> {
 
         // where 구문에서 걸러진 값을 반환하는 문제 방지
         if (joinResult.length > 0) {
+          console.log("Course joiner debug start!");
+          console.log("userResult");
+          console.log(userResult);
+          console.log("Course joiner debug finished!");
           const courseGetDto = CourseGetDto.entityConstructor(courseEntity, tagEntitiesResult, userResult[0]["email"]);
           courseGetDtoArrayResult.push(courseGetDto);
         }
