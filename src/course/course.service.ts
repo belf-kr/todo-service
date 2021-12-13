@@ -105,6 +105,7 @@ export class CourseService extends CRUDService<Course> {
     if (keyword) {
       const sqlQueryString = getRepository(Course)
         .createQueryBuilder("c")
+        .leftJoinAndSelect("c.color", "color")
         .where("c.title like :keyword", { keyword: `%${keyword}%` });
       const courseEntitiesResult = await sqlQueryString.getMany();
       joinResult = await this.courseJoiner(courseEntitiesResult, undefined);
@@ -175,11 +176,15 @@ export class CourseService extends CRUDService<Course> {
   }
 
   async getCoursesByConditions(querystringInput: CourseQuerystringDto): Promise<CourseGetDto[]> {
-    const courseEntitiesFilter: Course[] = new Array<Course>();
-    courseEntitiesFilter.push(
-      new Course(querystringInput.courseId, undefined, undefined, querystringInput.userId, undefined, undefined, undefined, undefined, undefined)
-    );
-    const courseEntitiesResult = await this.find(courseEntitiesFilter);
+    let sqlQueryString = getRepository(Course).createQueryBuilder("c").leftJoinAndSelect("c.color", "color");
+    if (querystringInput.courseId) {
+      sqlQueryString = sqlQueryString.where("c.id = :courseId", { courseId: querystringInput.courseId });
+    }
+    if (querystringInput.userId) {
+      sqlQueryString = sqlQueryString.andWhere("c.userId = :userId", { userId: querystringInput.userId });
+    }
+
+    const courseEntitiesResult = await sqlQueryString.getMany();
 
     return await this.courseJoiner(courseEntitiesResult, querystringInput);
   }
