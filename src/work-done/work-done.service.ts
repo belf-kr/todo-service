@@ -63,29 +63,30 @@ export class WorkDoneService extends CRUDService<WorkDone> {
     const workTodoQuerystringInput = new WorkTodoQuerystringDto(querystringInput.userId, querystringInput.courseId);
     const wokrTodoDtoArrayResult = await this.workTodoService.getWorkTodosByConditions(workTodoQuerystringInput);
 
-    const workTodoIdArray = new Array<number>();
-    // number 배열을 workTodoDtoArrayResult로 부터 생성한다.
-    for (const item of wokrTodoDtoArrayResult) {
-      workTodoIdArray.push(item.id);
-    }
+    if (wokrTodoDtoArrayResult.length) {
+      const workTodoIdArray = new Array<number>();
+      // number 배열을 workTodoDtoArrayResult로 부터 생성한다.
+      for (const item of wokrTodoDtoArrayResult) {
+        workTodoIdArray.push(item.id);
+      }
 
-    /*
+      /*
                 INNER JOIN work_todo wt on wd.work_todo_id = wt.id
                 INNER JOIN course c on wt.course_id = c.id
         WHERE   wd.work_todo_id IN (?);
       */
-    sqlQueryString = sqlQueryString
-      .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
-      .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id");
-    if (workTodoIdArray.length) {
-      sqlQueryString = sqlQueryString.where("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
-    }
-    if (querystringInput.userId) {
-      sqlQueryString = sqlQueryString.andWhere("wd.user_id = :userId", { userId: querystringInput.userId });
-    }
+      sqlQueryString = sqlQueryString
+        .innerJoinAndMapMany("wd", WorkTodo, "wt", "wd.work_todo_id = wt.id")
+        .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id");
+      if (workTodoIdArray.length) {
+        sqlQueryString = sqlQueryString.where("wd.work_todo_id in (:workTodoIds)", { workTodoIds: workTodoIdArray });
+      }
+      if (querystringInput.userId) {
+        sqlQueryString = sqlQueryString.andWhere("wd.user_id = :userId", { userId: querystringInput.userId });
+      }
 
-    // query string 을 사용해 SELECT 수행
-    /*
+      // query string 을 사용해 SELECT 수행
+      /*
         SELECT  wd.id,
                 wd.title,
                 wd.content,
@@ -93,21 +94,21 @@ export class WorkDoneService extends CRUDService<WorkDone> {
                 wd.action_date,
                 wd.work_todo_id
       */
-    const selectResult = await sqlQueryString.getRawMany();
+      const selectResult = await sqlQueryString.getRawMany();
 
-    // SELECT 결과 DTO 배열에 매핑
-    for (const selectItem of selectResult) {
-      const workDoneDto = new WorkDoneDto();
+      // SELECT 결과 DTO 배열에 매핑
+      for (const selectItem of selectResult) {
+        const workDoneDto = new WorkDoneDto();
 
-      workDoneDto.id = selectItem["wd_id"];
-      workDoneDto.title = selectItem["wd_title"];
-      workDoneDto.content = selectItem["wd_content"];
-      workDoneDto.actionDate = selectItem["wd_action_date"];
-      workDoneDto.workTodoId = selectItem["wd_work_todo_id"];
+        workDoneDto.id = selectItem["wd_id"];
+        workDoneDto.title = selectItem["wd_title"];
+        workDoneDto.content = selectItem["wd_content"];
+        workDoneDto.actionDate = selectItem["wd_action_date"];
+        workDoneDto.workTodoId = selectItem["wd_work_todo_id"];
 
-      workDoneDtoArrayResult.push(workDoneDto);
+        workDoneDtoArrayResult.push(workDoneDto);
+      }
     }
-
     return workDoneDtoArrayResult;
   }
 
