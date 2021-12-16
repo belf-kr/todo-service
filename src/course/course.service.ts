@@ -86,7 +86,7 @@ export class CourseService extends CRUDService<Course> {
       new Course(courseDtoInput.originalCourseId, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined),
       colorEntity,
       courseDtoInput.userId,
-      courseDtoInput.startDate,
+      courseDtoInput.startDate ?? new Date(),
       courseDtoInput.endDate,
       courseDtoInput.explanation,
       courseDtoInput.title,

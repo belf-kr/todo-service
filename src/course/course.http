@@ -26,7 +26,8 @@ Content-Type: application/json
         {
             "value": "하하하"
         }
-    ]
+    ],
+    "startDate": "2021-11-05"
 }
 
 ### course import
