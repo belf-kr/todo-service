@@ -1,5 +1,6 @@
 const DatabaseConfig = () => ({
   type: "mysql",
+  timezone: "Z",
   entities: ["dist/**/*.entity{.ts,.js}"],
   synchronize: Boolean(process.env.DB_SYNCHRONIZE),
   migrationsTableName: "typeorm_migrations",
