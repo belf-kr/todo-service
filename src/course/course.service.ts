@@ -259,6 +259,6 @@ export class CourseService extends CRUDService<Course> {
   }
 
   async withdrawalUser(userId: number) {
-    await getRepository(Course).createQueryBuilder("c").delete().where("c.user_id = :userId", { userId: userId }).execute();
+    await getRepository(Course).createQueryBuilder("c").delete().from(Course).where("user_id = :userId", { userId: userId }).execute();
   }
 }

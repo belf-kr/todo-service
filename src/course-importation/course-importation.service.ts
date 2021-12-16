@@ -47,6 +47,6 @@ export class CourseImportationService extends CRUDService<CourseImportation> {
   }
 
   async withdrawalUser(userId: number) {
-    await getRepository(CourseImportation).createQueryBuilder("ci").delete().where("ci.user_id = :userId", { userId: userId }).execute();
+    await getRepository(CourseImportation).createQueryBuilder("ci").delete().from(CourseImportation).where("user_id = :userId", { userId: userId }).execute();
   }
 }

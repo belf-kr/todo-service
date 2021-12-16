@@ -22,10 +22,10 @@ export class UserController {
   @Delete(":userId")
   async withdrawarUser(@Param("userId", ParseIntPipe) userId: number) {
     try {
-      await this.courseService.withdrawalUser(userId);
-      await this.courseImportationService.withdrawalUser(userId);
-      await this.workTodoService.withdrawalUser(userId);
       await this.workDoneService.withdrawalUser(userId);
+      await this.workTodoService.withdrawalUser(userId);
+      await this.courseImportationService.withdrawalUser(userId);
+      await this.courseService.withdrawalUser(userId);
     } catch (error) {
       const httpStatusCode = getErrorHttpStatusCode(error);
       const message = getErrorMessage(error);

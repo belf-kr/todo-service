@@ -150,6 +150,6 @@ export class WorkDoneService extends CRUDService<WorkDone> {
   }
 
   async withdrawalUser(userId: number) {
-    await getRepository(WorkDone).createQueryBuilder("wd").delete().where("wd.user_id = :userId", { userId: userId }).execute();
+    await getRepository(WorkDone).createQueryBuilder("wd").delete().from(WorkDone).where("user_id = :userId", { userId: userId }).execute();
   }
 }
