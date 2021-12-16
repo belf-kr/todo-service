@@ -206,14 +206,12 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
         await this.findOne(new WorkTodo(workDoneEntity.workTodoId.id, undefined, undefined, undefined, undefined, undefined, undefined)),
         workDoneEntity.actionDate
       );
-      let workTodoActionDate = new Date();
-      const dayToSubstract = workDoneEntity.actionDate ?? 0;
-      // TODO: 날짜 차이 로직 구하는 기능 추가
-      // const dayDifference = Math.abs(+new Date(workDoneEntity.actionDate) - +new Date(courseEntity.originalCourseId.startDate));
-      const dayDifference = new Date();
+      let workTodoActionDate = workDoneEntity.workTodoId.activeDate;
+      // import 되는 new Date(work-done) - new Date(work-todo)
+      const dayDifference = Math.abs(+new Date(workDoneEntity.actionDate) - +new Date(workDoneEntity.workTodoId.activeDate));
 
-      if (dayToSubstract) {
-        workTodoActionDate = new Date(+new Date(dayDifference) + +new Date(courseEntity.startDate));
+      if (dayDifference) {
+        workTodoActionDate = new Date(new Date(+new Date(dayDifference) + +new Date()));
       }
 
       const workTodoEntity = new WorkTodo(
