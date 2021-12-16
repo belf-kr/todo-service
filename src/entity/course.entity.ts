@@ -66,7 +66,6 @@ export class Course {
 
   @Column({
     type: "date",
-    nullable: true,
     name: "start_date",
   })
   startDate: Date;
