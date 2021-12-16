@@ -1,3 +1,5 @@
 @Host = http://localhost:3003
 @Router = users
 
+### user 회원탈퇴
+DELETE {{Host}}/{{Router}}/1

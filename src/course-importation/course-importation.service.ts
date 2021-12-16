@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 
 import { CourseImportationDto } from "./course-importation.dto";
 
@@ -44,5 +44,9 @@ export class CourseImportationService extends CRUDService<CourseImportation> {
     courseImportationEntities.push(courseImportationEntity);
 
     return (await this.create(courseImportationEntities))[0];
+  }
+
+  async withdrawalUser(userId: number) {
+    await getRepository(CourseImportation).createQueryBuilder("ci").delete().where("ci.user_id = :userId", { userId: userId }).execute();
   }
 }
