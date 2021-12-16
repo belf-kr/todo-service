@@ -39,4 +39,4 @@ Content-Type: application/json
 }
 
 ### course 삭제
-DELETE {{Host}}/{{Router}}/courses/1?userId=
+DELETE {{Host}}/{{Router}}/1?userId=

@@ -231,4 +231,8 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
 
     return workTodoEntities;
   }
+
+  async withdrawalUser(userId: number) {
+    await getRepository(WorkTodo).createQueryBuilder("wt").update(WorkTodo).set({ isDelete: true }).where("user_id = :userId", { userId: userId }).execute();
+  }
 }
