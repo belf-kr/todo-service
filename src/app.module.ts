@@ -20,6 +20,7 @@ import { WorkTodoModule } from "./work-todo/work-todo.module";
 import { RepeatedDaysOfTheWeekModule } from "./repeated-days-of-the-week/repeated-days-of-the-week.module";
 import { WorkDoneModule } from "./work-done/work-done.module";
 import { CourseImportationModule } from "./course-importation/course-importation.module";
+import { UserModule } from "./user/user.module";
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { CourseImportationModule } from "./course-importation/course-importation
     RepeatedDaysOfTheWeekModule,
     WorkDoneModule,
     CourseImportationModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
