@@ -32,7 +32,7 @@ export class WorkTodo {
   id: number;
 
   @ManyToOne(() => Course, (course) => course.id, {
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
     eager: true,
   })
   @JoinColumn({ name: "course_id" })
