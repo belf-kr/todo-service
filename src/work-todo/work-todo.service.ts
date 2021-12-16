@@ -134,7 +134,7 @@ export class WorkTodoService extends CRUDService<WorkTodo> {
     */
     sqlQueryString = getRepository(WorkTodo)
       .createQueryBuilder("wt")
-      .innerJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
+      .leftJoinAndMapMany("wt", Course, "c", "wt.course_id = c.id")
       .leftJoinAndMapMany("wt", RepeatedDaysOfTheWeek, "rdotw", "wt.id = rdotw.work_todo_id");
     const workTodosJoinResult = await sqlQueryString.getRawMany();
 
