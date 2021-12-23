@@ -37,4 +37,4 @@ services:
       - DB_SLAVE_PASSWORD=example
       - DB_SLAVE_DATABASE=belf
       - DB_SYNCHRONIZE=false
-    command: ["sh", "-c", "sleep 20 && npm run start:prod"]
+    command: ["sh", "-c", "sleep 20 && npm run start:docker"]
