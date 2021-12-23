@@ -18,13 +18,14 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: jp3pe/belf-kr/todo-service
-    depends_on: 
+    depends_on:
       - mysql-service
     container_name: belf-todo-service
     ports:
       - "3003:3003"
     environment:
       - SERVER_PORT=3003
+      - SERVER_PORT_OAUTH=3001
       - DB_MASTER_HOST=host.docker.internal
       - DB_MASTER_PORT=3308
       - DB_MASTER_USERNAME=root
@@ -37,4 +38,3 @@ services:
       - DB_SLAVE_DATABASE=belf
       - DB_SYNCHRONIZE=false
     command: ["sh", "-c", "sleep 20 && npm run start:prod"]
-    

@@ -43,6 +43,7 @@ import { UserModule } from "./user/user.module";
         DB_SLAVE_DATABASE: Joi.string().required().default("belf"),
         DB_SYNCHRONIZE: Joi.boolean().default(false),
         SERVER_PORT: Joi.number().default(3000),
+        SERVER_PORT_OAUTH: Joi.number().default(8080),
       }),
     }),
     TypeOrmModule.forRootAsync({
