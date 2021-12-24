@@ -10,6 +10,39 @@ docker-compose up -d
 
 위의 명령어를 입력해 docker image 생성 후 컨테이너를 생성합니다.
 
+```sql
+use belf;
+
+CREATE PROCEDURE INSERT_DEFAULT_COLORS() BEGIN
+INSERT INTO belf.color (id)
+VALUES ('#84AAFF');
+INSERT INTO belf.color (id)
+VALUES ('#84D0FD');
+INSERT INTO belf.color (id)
+VALUES ('#84FFD0');
+INSERT INTO belf.color (id)
+VALUES ('#84FFF6');
+INSERT INTO belf.color (id)
+VALUES ('#8D84FB');
+INSERT INTO belf.color (id)
+VALUES ('#D9FF84');
+INSERT INTO belf.color (id)
+VALUES ('#DF5BFF');
+INSERT INTO belf.color (id)
+VALUES ('#FF8484');
+INSERT INTO belf.color (id)
+VALUES ('#FF84B8');
+INSERT INTO belf.color (id)
+VALUES ('#FFD484');
+END;
+
+CALL INSERT_DEFAULT_COLORS();
+```
+
+이후 mysql server에 접속하여 위의 프로시저를 실행합니다.
+
+> 위의 프로시저는 `course` table에 들어가는 color 값들 입니다. 원래는 원하는 색상 데이터를 추가하여 사용하도록 디자인되어 있지만 belf의 모든 service를 실행 후 front-server에서 course 생성 페이지로 가보면 color 값이 없어서 당황스럽습니다. color를 생성할 수 있는 UI가 따로 있는 것도 아니라서 빠른 이해 및 사용을 위하여 시드 데이터를 넣어주는 것 입니다.
+
 ### 컨테이너 삭제
 
 ```
@@ -141,6 +174,7 @@ Linux PATH에 방금 git clone한 repository속 명령어를 등록합니다.
 | NODE_ENV           | ✅  |   ✅    |               | development, production | `NodeJS 실행 환경` 을 설정하는 값으로, 미리 선언한 npm 스크립트로 값이 설정됩니다.  |
 | STAGES             | 🚫  |   ✅    |               | qa, prod                | `k8s에서` 실행 환경에 맞는 svc를 연결 및 디버깅을 위해 사용되는 값입니다.           |
 | SERVER_PORT        | ✅  |   ✅    |     3000      | 3000, 3003              | `HTTP listen port`를 지정하기 위해서 사용되는 값입니다.                             |
+| SERVER_PORT_OAUTH  | ✅  |   ✅    |     8080      | 8080, 3001              | 사용자 정보를 조회하기 위한 OAuth 서비스와 연동을 위한 `HTTP Listen port` 값입니다. |
 | DB_MASTER_HOST     | ✅  |   ✅    |               | localhost               | `DB 주소`로 `MASTER 환경`에서 사용되는 값입니다.                                    |
 | DB_MASTER_PORT     | ✅  |   ✅    |     3306      | 3306                    | `DB port`로 `MASTER 환경`에서 사용되는 값입니다.                                    |
 | DB_MASTER_USERNAME | ✅  |   ✅    |               | root                    | `DB 계정명`으로 `MASTER 환경`에서 사용되는 값입니다.                                |
