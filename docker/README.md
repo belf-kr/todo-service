@@ -1,5 +1,7 @@
 # MySQL
 
+[`한국어(KR)`](./README.md) | [English](./README.en-US.md)
+
 실제 서비스, QA 테스트 서버, 로컬 테스트 환경 3곳 모두에서 사용되는 DBMS 이며, Oracle의 제품입니다.
 
 로컬에서 빠른 DB 환경 구성을 위해 Docker을 사용해 MySQL을 구성하는 방법을 안내합니다.

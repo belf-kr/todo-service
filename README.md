@@ -1,5 +1,7 @@
 # todo-service
 
+[`한국어(KR)`](./README.md) | [English](./README.en-US.md)
+
 ## 빠른 시작
 
 ### 컨테이너 생성
