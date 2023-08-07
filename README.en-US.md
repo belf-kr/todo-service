@@ -111,7 +111,7 @@ Enter the command `brew install nodeenv` to install.
 1. Press the NestJS start button inside the VSCode debug window to start.
 1. Verify that the MySQL Table used by the todo service is created successfully through TypeORM.
 
-### QA/Production 환경
+### QA/Production environment
 
 1. Use the table of environment variables in the README.md file to set the appropriate OS environment variables for your server environment.
 1. Start the todo service using the command `npm i && npm run start:prod`.
